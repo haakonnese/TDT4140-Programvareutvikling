@@ -7,7 +7,7 @@ Dersom man har både python2 og python3 installert, bytt ut pip med pip3.
 
 ```
 pip install pip --upgrade
-pip install -r requirements.txt
+pip install -r backend/requirements.txt
 
 cd frontend
 npm install
