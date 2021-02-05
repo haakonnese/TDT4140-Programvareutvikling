@@ -28,5 +28,5 @@ Dersom python er installert, kjør
 python -m pip install -U pip
 ```
 
-Hvis ikke, last ned python fra https://www.python.org/downloads/\
+Hvis ikke, last ned python fra https://www.python.org/downloads/ \
 Dersom npm ikke finnes, lastes Node.js ned fra https://nodejs.org/en/download/
