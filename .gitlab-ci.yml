@@ -1,0 +1,59 @@
+stages:
+  - setup
+  - build
+  - test
+
+setup:
+  image: node:latest
+  stage: setup
+  script:
+    - cd frontend
+    - npm install
+  artifacts:
+    paths:
+      - frontend/node_modules/
+    expire_in: 1 week
+
+build:
+  image: node:latest
+  stage: build
+  script:
+    - cd frontend
+    - npm run build
+
+test-react:
+  image: node:latest
+  stage: test
+  script:
+    - cd frontend
+    - npm run test
+
+lint-react:
+  image: node:latest
+  stage: test
+  script:
+    - cd frontend
+    - npm run lint
+
+image: python:latest
+lint-django:
+  image: python:latest
+  stage: test
+  script:
+    - cd backend
+    - pip install pip --upgrade
+    - pip install -r requirements.txt
+    - flake8
+  variables:
+    SECRET_KEY: SECRET_KEY
+
+test-django:
+  image: python:latest
+  stage: test
+  script:
+    - cd backend
+    - pip install pip --upgrade
+    - pip install -r requirements.txt
+    - python manage.py test
+  variables:
+    SECRET_KEY: SECRET_KEY
