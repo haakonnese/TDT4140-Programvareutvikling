@@ -12,14 +12,22 @@ import Typography from "@material-ui/core/Typography";
 import useStyles from "./styles";
 import Container from "@material-ui/core/Container";
 import App from "../App";
-import Copyright from "../Copyright";
+import Copyright from "../service/Copyright";
 import InputTextField from "./InputTextField";
 import { useHistory } from "react-router-dom";
 
 export default function Registation() {
+  // Error messages
   const emailError = "E-posten finnes allerede";
   const passwordError = "Passordene stemmer ikke";
+  const toYoungError =
+    "Du er for ung til å registrere bruker. Man må være minst 13 år";
+  const toOldError = "Man kan ikke være så gammel";
+
+  // css for jsx
   const classes = useStyles();
+
+  // used to render new component without refreshing browser
   const history = useHistory();
   const [details, setDetails] = useState({
     first_name: "",
@@ -31,25 +39,29 @@ export default function Registation() {
     password: "",
   });
 
+  // hooks
   const [passwordCheck, setPasswordCheck] = useState("");
   const [loggedIn, setLoggedIn] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [errorType, setErrorType] = useState("");
+
+  // check if logged in
   useEffect(() => {
     if (sessionStorage.getItem("userData")) {
       setLoggedIn(true);
     }
   }, []);
 
+  // submit-button. What to do when someone tries to register
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    // error-handeling
     if (parseInt(details.birth_year) < 1900) {
       setErrorType("number");
-      setErrorMessage("Man kan ikke være så gammel");
+      setErrorMessage(toOldError);
     } else if (parseInt(details.birth_year) > new Date().getFullYear() - 13) {
-      setErrorMessage(
-        "Du er for ung til å registrere bruker. Man må være minst 13 år"
-      );
+      setErrorMessage(toYoungError);
       setErrorType("number");
     } else if (details.password !== passwordCheck) {
       setErrorMessage(passwordError);
@@ -57,6 +69,7 @@ export default function Registation() {
     } else {
       setErrorMessage("");
       setErrorType("");
+      // send registration to database and then do something with the result
       PostData("registration", details)
         .then((result) => {
           console.log(result);
@@ -169,7 +182,13 @@ export default function Registation() {
             id="password2"
             label="Gjenta passord"
             error={errorMessage === passwordError}
-            helperText={errorMessage === passwordError ? errorMessage : false}
+            helperText={
+              errorMessage === passwordError
+                ? errorMessage
+                : errorMessage === ""
+                ? " "
+                : false
+            }
             onChange={(e) => setPasswordCheck(e.target.value)}
           />
           <Button

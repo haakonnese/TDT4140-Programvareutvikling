@@ -2,6 +2,7 @@ import React from "react";
 import TextField from "@material-ui/core/TextField";
 import PropTypes from "prop-types";
 
+// define which type the input field will be
 InputTextField.propTypes = {
   value: PropTypes.string.isRequired,
   type: PropTypes.string.isRequired,

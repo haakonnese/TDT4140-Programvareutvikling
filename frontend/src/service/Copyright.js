@@ -1,13 +1,13 @@
 import React from "react";
 import Typography from "@material-ui/core/Typography";
 import Link from "@material-ui/core/Link";
-import sellPointURL from "./sellPointURL";
+import { SELLPOINT_URL } from "./sellPointURL";
 
 export default function Copyright() {
   return (
     <Typography variant="body2" color="textSecondary" align="center">
       {"Copyright © "}
-      <Link color="inherit" href={sellPointURL}>
+      <Link color="inherit" href={SELLPOINT_URL}>
         SellPoint
       </Link>{" "}
       {new Date().getFullYear()}

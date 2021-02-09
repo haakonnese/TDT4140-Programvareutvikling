@@ -14,25 +14,34 @@ import Typography from "@material-ui/core/Typography";
 import useStyles from "./styles";
 import Container from "@material-ui/core/Container";
 import App from "../App";
-import Copyright from "../Copyright";
+import Copyright from "../service/Copyright";
 import { useHistory } from "react-router-dom";
 
 export default function SignIn() {
+  // css for jsx
   const classes = useStyles();
+
+  // used to render new component without refreshing browser
   const history = useHistory();
+
+  // hooks
   const [details, setDetails] = useState({ email: "", password: "" });
   const [loggedIn, setLoggedIn] = useState(false);
   const [wrongPassword, setWrongPassword] = useState(false);
 
+  // check if logged in
   useEffect(() => {
     if (sessionStorage.getItem("userData")) {
       setLoggedIn(true);
     }
   }, []);
 
+  // submit-button. What to do when someone tries to log in
   const handleSubmit = (e) => {
     e.preventDefault();
     setWrongPassword(false);
+
+    // send log-in credentials to database and check if they were correct
     PostData("login", details)
       .then((result) => {
         console.log(result);
@@ -116,11 +125,11 @@ export default function SignIn() {
             Logg Inn
           </Button>
           <Grid container>
-            <Grid item xs>
+            {/* <Grid item xs>
               <Link href="#" variant="body2">
                 Glemt passord?
               </Link>
-            </Grid>
+            </Grid> */}
             <Grid item>
               <Link
                 style={{ cursor: "pointer" }}
