@@ -24,14 +24,14 @@ repos:
     rev: v7.19.0
     hooks:
       - id: eslint
-  - repo: local
-    hooks:
-      - id: pre-commit-django-test
-        name: Django test
-        entry: python backend/manage.py test backend
-        language: system
-        types: [python]
-        pass_filenames: false
+  # - repo: local
+  #   hooks:
+  #     - id: pre-commit-django-test
+  #       name: Django test
+  #       entry: python3 backend/manage.py test backend
+  #       language: system
+  #       types: [python]
+  #       pass_filenames: false
   - repo: local
     hooks:
       - id: pre-commit-react-test
