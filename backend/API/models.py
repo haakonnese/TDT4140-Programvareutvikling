@@ -20,6 +20,17 @@ class Profile(models.Model):
         return self.user.username
 
 
+class Ad(models.Model):
+    created_by_user = models.ForeignKey(Profile, on_delete=models.CASCADE)
+    pub_date = models.DateField()
+    headline = models.CharField(max_length=100)
+    description = models.CharField(max_length=250)
+    category = models.CharField(max_length=50)
+
+    def __str__(self):
+        return self.headline
+
+
 @receiver(post_save, sender=User)
 def update_user_profile(sender, instance, created, **kwargs):
     if created:
