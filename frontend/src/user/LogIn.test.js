@@ -21,41 +21,42 @@ afterEach(() => {
   document.body.removeChild(container);
   container = null;
 });
-it("will say wrong password", async () => {
-  act(() => {
-    ReactDOM.render(<LogIn />, container);
+describe("Log in component", () => {
+  it("will say wrong password", async () => {
+    act(() => {
+      ReactDOM.render(<LogIn />, container);
+    });
+    PostData.mockImplementation(() => Promise.reject(new Error("Error")));
+    const email = container.querySelector('Input[type="email"]');
+    email.value = "test@test.com";
+    const password = container.querySelector('Input[type="password"]');
+    password.value = "password";
+    const button = container.querySelector("button");
+    await act(async () => {
+      button.dispatchEvent(new MouseEvent("click", { bubbles: true }));
+    });
+    const errorText = screen.getByText(/Feil brukernavn eller passord!/i);
+    expect(errorText).toBeInTheDocument();
   });
-  PostData.mockImplementation(() => Promise.reject(new Error("Error")));
-  const email = container.querySelector('Input[type="email"]');
-  email.value = "test@test.com";
-  const password = container.querySelector('Input[type="password"]');
-  password.value = "password";
-  const button = container.querySelector("button");
-  await act(async () => {
-    button.dispatchEvent(new MouseEvent("click", { bubbles: true }));
-  });
-  const errorText = screen.getByText(/Feil brukernavn eller passord!/i);
-  expect(errorText).not.toBe(undefined);
-});
 
-it("will not say wrong password", async () => {
-  act(() => {
-    ReactDOM.render(<LogIn />, container);
+  it("will not say wrong password", async () => {
+    act(() => {
+      ReactDOM.render(<LogIn />, container);
+    });
+    PostData.mockImplementation(() =>
+      Promise.resolve({
+        userData: { email: "test@test.com", password: "test" },
+      })
+    );
+    const email = container.querySelector('Input[type="email"]');
+    email.value = "test@test.com";
+    const password = container.querySelector('Input[type="password"]');
+    password.value = "password";
+    const button = container.querySelector("button");
+    await act(async () => {
+      button.dispatchEvent(new MouseEvent("click", { bubbles: true }));
+    });
+    const errorText = screen.queryByText(/Feil brukernavn eller passord!/i);
+    expect(errorText).not.toBeInTheDocument();
   });
-  PostData.mockImplementation(() =>
-    Promise.resolve({
-      userData: { email: "test@test.com", password: "test" },
-    })
-  );
-  const email = container.querySelector('Input[type="email"]');
-  email.value = "test@test.com";
-  const password = container.querySelector('Input[type="password"]');
-  password.value = "password";
-  const button = container.querySelector("button");
-  console.log(button.innerHTML);
-  await act(async () => {
-    button.dispatchEvent(new MouseEvent("click", { bubbles: true }));
-  });
-  const errorText = screen.getByText(/Feil brukernavn eller passord!/i);
-  expect(errorText).not.toBe(undefined);
 });

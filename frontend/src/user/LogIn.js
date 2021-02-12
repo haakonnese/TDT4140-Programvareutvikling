@@ -45,7 +45,7 @@ export default function LogIn() {
     PostData("login", details)
       .then((result) => {
         if (result.userData) {
-          sessionStorage.setItem({ userData: result });
+          sessionStorage.setItem("userData", JSON.stringify(result.userData));
           setLoggedIn(true);
         } else {
           setWrongPassword(true);
