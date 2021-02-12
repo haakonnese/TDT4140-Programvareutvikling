@@ -17,7 +17,7 @@ import App from "../App";
 import Copyright from "../service/Copyright";
 import { useHistory } from "react-router-dom";
 
-export default function SignIn() {
+export default function LogIn() {
   // css for jsx
   const classes = useStyles();
 
@@ -44,20 +44,16 @@ export default function SignIn() {
     // send log-in credentials to database and check if they were correct
     PostData("login", details)
       .then((result) => {
-        console.log(result);
         if (result.userData) {
           sessionStorage.setItem({ userData: result });
           setLoggedIn(true);
         } else {
           setWrongPassword(true);
-          console.log("Feil");
         }
       })
-      .catch((error) => {
+      .catch(() => {
         setWrongPassword(true);
-        console.log("Feil", error);
       });
-    console.log(details);
   };
   if (loggedIn) {
     return <App />;

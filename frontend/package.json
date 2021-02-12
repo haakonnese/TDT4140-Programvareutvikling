@@ -18,7 +18,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "set CI=true && react-scripts test",
+    "test": "set CI=true && react-scripts test --passWithNoTests",
     "eject": "react-scripts eject",
     "format": "prettier --write \"**/*.{js,jsx,json,md}\"",
     "lint": "eslint src"
