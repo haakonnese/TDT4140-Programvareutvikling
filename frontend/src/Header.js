@@ -6,7 +6,8 @@ import Button from "@material-ui/core/Button";
 // import IconButton from "@material-ui/core/IconButton";
 // import SearchIcon from "@material-ui/icons/Search";
 import Typography from "@material-ui/core/Typography";
-import { useHistory } from "react-router-dom";
+import { Link } from "react-router-dom";
+
 // import Link from "@material-ui/core/Link";
 
 const useStyles = makeStyles((theme) => ({
@@ -16,6 +17,7 @@ const useStyles = makeStyles((theme) => ({
     overflowX: "auto",
     display: "flex",
     alignItems: "center",
+    color: "inherit",
   },
   toolbarTitle: {
     float: "left",
@@ -26,35 +28,32 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function Header(props) {
-  const history = useHistory();
+  //   const history = useHistory();
   const classes = useStyles();
   const { title } = props;
 
   return (
     <React.Fragment>
       <Toolbar className={classes.toolbar}>
-        <Typography
-          component="h2"
-          variant="h5"
-          color="inherit"
-          noWrap
-          className={classes.toolbarTitle}
-          style={{ cursor: "pointer" }}
-          onClick={(e) => history.push("/")}
-        >
-          {title}
-        </Typography>
+        <Link to="/">
+          <Typography
+            component="h2"
+            variant="h5"
+            color="textPrimary"
+            noWrap
+            className={classes.toolbarTitle}
+          >
+            {title}
+          </Typography>
+        </Link>
         {/* <IconButton>
           <SearchIcon />
         </IconButton> */}
-        <Button
-          variant="outlined"
-          size="small"
-          className={classes.logIn}
-          onClick={(e) => history.push("/logginn")}
-        >
-          Logg inn
-        </Button>
+        <Link to="/logginn">
+          <Button variant="outlined" size="small" className={classes.logIn}>
+            Logg inn
+          </Button>
+        </Link>
       </Toolbar>
     </React.Fragment>
   );

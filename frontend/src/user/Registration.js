@@ -3,7 +3,6 @@ import { PostData } from "../service/PostData";
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
-import Link from "@material-ui/core/Link";
 import Grid from "@material-ui/core/Grid";
 import TextField from "@material-ui/core/TextField";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
@@ -12,7 +11,7 @@ import useStyles from "./styles";
 import Container from "@material-ui/core/Container";
 import App from "../App";
 import InputTextField from "./InputTextField";
-import { useHistory } from "react-router-dom";
+import { Link } from "react-router-dom";
 import {
   emailError,
   passwordError,
@@ -23,8 +22,6 @@ export default function Registation() {
   // css for jsx
   const classes = useStyles();
 
-  // used to render new component without refreshing browser
-  const history = useHistory();
   const [details, setDetails] = useState({
     first_name: "",
     last_name: "",
@@ -196,11 +193,7 @@ export default function Registation() {
           </Button>
           <Grid container>
             <Grid item>
-              <Link
-                style={{ cursor: "pointer" }}
-                onClick={(e) => history.push("/logginn")}
-                variant="body2"
-              >
+              <Link to="/logginn" variant="body2">
                 {"Har du allerede bruker? Logg inn her"}
               </Link>
             </Grid>

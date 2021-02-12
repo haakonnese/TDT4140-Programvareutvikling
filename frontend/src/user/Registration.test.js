@@ -6,6 +6,7 @@ import { PostData } from "../service/PostData";
 import Registration from "./Registration";
 import { act } from "react-dom/test-utils";
 import userEvent from "@testing-library/user-event";
+import { BrowserRouter as Router } from "react-router-dom";
 import {
   emailError,
   passwordError,
@@ -31,7 +32,12 @@ let container,
 beforeEach(async () => {
   container = document.createElement("div");
   act(() => {
-    ReactDOM.render(<Registration />, container);
+    ReactDOM.render(
+      <Router>
+        <Registration />
+      </Router>,
+      container
+    );
   });
   document.body.appendChild(container);
 

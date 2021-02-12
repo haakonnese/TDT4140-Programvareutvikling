@@ -4,21 +4,17 @@ import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import TextField from "@material-ui/core/TextField";
-import Link from "@material-ui/core/Link";
+import { Link } from "react-router-dom";
 import Grid from "@material-ui/core/Grid";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Typography from "@material-ui/core/Typography";
 import useStyles from "./styles";
 import Container from "@material-ui/core/Container";
 import App from "../App";
-import { useHistory } from "react-router-dom";
 
 export default function LogIn() {
   // css for jsx
   const classes = useStyles();
-
-  // used to render new component without refreshing browser
-  const history = useHistory();
 
   // hooks
   const [details, setDetails] = useState({ email: "", password: "" });
@@ -124,7 +120,7 @@ export default function LogIn() {
             <Grid item>
               <Link
                 style={{ cursor: "pointer" }}
-                onClick={(e) => history.push("/registrer")}
+                to="/registrer"
                 variant="body2"
               >
                 {"Ny? Registrer deg her"}

@@ -6,6 +6,7 @@ import { PostData } from "../service/PostData";
 import LogIn from "./LogIn";
 import { act } from "react-dom/test-utils";
 import userEvent from "@testing-library/user-event";
+import { BrowserRouter as Router } from "react-router-dom";
 
 jest.mock("../service/PostData", () => ({
   PostData: jest.fn(),
@@ -16,6 +17,14 @@ let container;
 beforeEach(() => {
   container = document.createElement("div");
   document.body.appendChild(container);
+  act(() => {
+    ReactDOM.render(
+      <Router>
+        <LogIn />
+      </Router>,
+      container
+    );
+  });
 });
 
 afterEach(() => {
@@ -24,9 +33,6 @@ afterEach(() => {
 });
 describe("Log in component", () => {
   it("will say wrong password", async () => {
-    act(() => {
-      ReactDOM.render(<LogIn />, container);
-    });
     PostData.mockImplementation(() => Promise.reject(new Error("Error")));
     const email = container.querySelector('Input[type="email"]');
     email.value = "test@test.com";
@@ -41,9 +47,6 @@ describe("Log in component", () => {
   });
 
   it("will not say wrong password", async () => {
-    act(() => {
-      ReactDOM.render(<LogIn />, container);
-    });
     PostData.mockImplementation(() =>
       Promise.resolve({
         userData: { email: "test@test.com", password: "test" },
