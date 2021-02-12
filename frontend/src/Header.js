@@ -12,17 +12,16 @@ import { useHistory } from "react-router-dom";
 const useStyles = makeStyles((theme) => ({
   toolbar: {
     borderBottom: `1px solid ${theme.palette.divider}`,
-  },
-  toolbarTitle: {
-    flex: 1,
-  },
-  toolbarSecondary: {
     justifyContent: "space-between",
     overflowX: "auto",
+    display: "flex",
+    alignItems: "center",
   },
-  toolbarLink: {
-    padding: theme.spacing(1),
-    flexShrink: 0,
+  toolbarTitle: {
+    float: "left",
+  },
+  logIn: {
+    float: "right",
   },
 }));
 
@@ -51,16 +50,12 @@ export default function Header(props) {
         <Button
           variant="outlined"
           size="small"
+          className={classes.logIn}
           onClick={(e) => history.push("/logginn")}
         >
           Logg inn
         </Button>
       </Toolbar>
-      <Toolbar
-        component="nav"
-        variant="dense"
-        className={classes.toolbarSecondary}
-      ></Toolbar>
     </React.Fragment>
   );
 }
