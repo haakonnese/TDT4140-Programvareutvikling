@@ -1,5 +1,6 @@
 import React from "react";
 import { Grid } from "@material-ui/core";
+import PostData from "../service/PostData";
 import Product from "./Product/Product";
 
 const products = [
@@ -18,6 +19,19 @@ const products = [
 ];
 
 function Products() {
+  PostData("login", "")
+    .then((result) => {
+      console.log(result);
+      if (result.product) {
+        products.push(result.product);
+      } else {
+        console.log("Feil");
+      }
+    })
+    .catch((error) => {
+      console.log("Feil", error);
+    });
+
   return (
     <main>
       <Grid container justify="center" spacing={4}>

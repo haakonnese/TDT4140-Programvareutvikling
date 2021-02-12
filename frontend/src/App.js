@@ -1,11 +1,22 @@
 import React from "react";
 import Products from "./marketplace/components/Products/Products";
+import Navbar from "./marketplace/components/Navbar/Navbar";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import ProductInfo from "./marketplace/components/ProductInfo/ProductInfo";
 
 function App() {
   return (
-    <div>
-      <Products />
-    </div>
+    <Router>
+      <div>
+        <Navbar />
+        <Switch>
+          <Route exact path="/">
+            <Products />
+          </Route>
+          <Route exact path="/product/id" component={(ProductInfo, null)} />
+        </Switch>
+      </div>
+    </Router>
   );
 }
 

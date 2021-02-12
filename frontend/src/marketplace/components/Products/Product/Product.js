@@ -1,4 +1,5 @@
 import React from "react";
+// import ProductInfo from "../../ProductInfo/ProductInfo";
 import {
   Card,
   CardMedia,
@@ -9,9 +10,7 @@ import {
   IconButton,
 } from "@material-ui/core";
 import FavoriteBorderIcon from "@material-ui/icons/FavoriteBorder";
-
 import useStyles from "./styles";
-
 import PropTypes from "prop-types";
 
 Product.propTypes = {
@@ -49,6 +48,8 @@ function Product(props) {
         >
           Mer info
         </Button>
+        {/* En knapp for å legge produkt til i favoritter - kan jobbes på med onClick osv. */}
+        {/* Kan kommenteres ut når vi har opprettet favoritter hos bruker */}
         <IconButton className={classes.iconButton} aria-label="Favoriser">
           <FavoriteBorderIcon />
         </IconButton>
