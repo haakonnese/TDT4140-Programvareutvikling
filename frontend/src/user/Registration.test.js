@@ -6,6 +6,12 @@ import { PostData } from "../service/PostData";
 import Registration from "./Registration";
 import { act } from "react-dom/test-utils";
 import userEvent from "@testing-library/user-event";
+import {
+  emailError,
+  passwordError,
+  toYoungError,
+  toOldError,
+} from "./errorMessages";
 
 jest.mock("../service/PostData", () => ({
   PostData: jest.fn(),
@@ -68,7 +74,7 @@ describe("Registration component", () => {
     act(() => {
       userEvent.click(button);
     });
-    const errorText = screen.getByText(/Passordene stemmer ikke/i);
+    const errorText = screen.getByText(passwordError);
     expect(errorText).toBeInTheDocument();
   });
 
@@ -78,9 +84,7 @@ describe("Registration component", () => {
     act(() => {
       userEvent.click(button);
     });
-    const errorText = screen.getByText(
-      /Du er for ung til å registrere bruker. Man må være minst 13 år/i
-    );
+    const errorText = screen.getByText(toYoungError);
     expect(errorText).toBeInTheDocument();
   });
 
@@ -90,7 +94,7 @@ describe("Registration component", () => {
     act(() => {
       userEvent.click(button);
     });
-    const errorText = screen.getByText(/Man kan ikke være så gammel/i);
+    const errorText = screen.getByText(toOldError);
     expect(errorText).toBeInTheDocument();
   });
 
@@ -101,7 +105,7 @@ describe("Registration component", () => {
     await act(async () => {
       userEvent.click(button);
     });
-    const errorText = screen.getByText(/E-posten finnes allerede/i);
+    const errorText = screen.getByText(emailError);
     expect(errorText).toBeInTheDocument();
   });
 });

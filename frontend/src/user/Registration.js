@@ -15,15 +15,13 @@ import App from "../App";
 import Copyright from "../service/Copyright";
 import InputTextField from "./InputTextField";
 import { useHistory } from "react-router-dom";
-
+import {
+  emailError,
+  passwordError,
+  toYoungError,
+  toOldError,
+} from "./errorMessages";
 export default function Registation() {
-  // Error messages
-  const emailError = "E-posten finnes allerede";
-  const passwordError = "Passordene stemmer ikke";
-  const toYoungError =
-    "Du er for ung til å registrere bruker. Man må være minst 13 år";
-  const toOldError = "Man kan ikke være så gammel";
-
   // css for jsx
   const classes = useStyles();
 
