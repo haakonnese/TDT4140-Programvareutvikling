@@ -4,17 +4,13 @@ import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import TextField from "@material-ui/core/TextField";
-// import FormControlLabel from "@material-ui/core/FormControlLabel";
-// import Checkbox from "@material-ui/core/Checkbox";
 import Link from "@material-ui/core/Link";
 import Grid from "@material-ui/core/Grid";
-import Box from "@material-ui/core/Box";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Typography from "@material-ui/core/Typography";
 import useStyles from "./styles";
 import Container from "@material-ui/core/Container";
 import App from "../App";
-import Copyright from "../service/Copyright";
 import { useHistory } from "react-router-dom";
 
 export default function LogIn() {
@@ -39,7 +35,6 @@ export default function LogIn() {
   // submit-button. What to do when someone tries to log in
   const handleSubmit = (e) => {
     e.preventDefault();
-    setWrongPassword(false);
 
     // send log-in credentials to database and check if they were correct
     PostData("login", details)
@@ -138,9 +133,9 @@ export default function LogIn() {
           </Grid>
         </form>
       </div>
-      <Box mt={8}>
+      {/* <Box mt={8}>
         <Copyright />
-      </Box>
+      </Box> */}
     </Container>
   );
 }
