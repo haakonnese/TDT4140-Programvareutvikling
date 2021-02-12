@@ -42,9 +42,7 @@ export default function Registation() {
   // hooks
   const [passwordCheck, setPasswordCheck] = useState("");
   const [loggedIn, setLoggedIn] = useState(false);
-  const [errorMessage, setErrorMessage] = useState("");
-  const [errorType, setErrorType] = useState("");
-
+  const [error, setError] = useState({ errorMessage: "", errorType: "" });
   // check if logged in
   useEffect(() => {
     if (sessionStorage.getItem("userData")) {
@@ -55,36 +53,29 @@ export default function Registation() {
   // submit-button. What to do when someone tries to register
   const handleSubmit = (e) => {
     e.preventDefault();
-
     // error-handeling
     if (parseInt(details.birth_year) < 1900) {
-      setErrorType("number");
-      setErrorMessage(toOldError);
+      setError({ errorMessage: toOldError, errorType: "number" });
     } else if (parseInt(details.birth_year) > new Date().getFullYear() - 13) {
-      setErrorMessage(toYoungError);
-      setErrorType("number");
+      setError({ errorMessage: toYoungError, errorType: "number" });
     } else if (details.password !== passwordCheck) {
-      setErrorMessage(passwordError);
-      setErrorType("password");
+      setError({ errorMessage: passwordError, errorType: "password" });
     } else {
-      setErrorMessage("");
-      setErrorType("");
       // send registration to database and then do something with the result
       PostData("registration", details)
         .then((result) => {
           console.log(result);
           if (result.userData) {
-            sessionStorage.setItem({ userData: result });
+            sessionStorage.setItem("userData", JSON.stringify(result.userData));
             setLoggedIn(true);
           } else {
-            console.log("Feil");
+            setError({ erorMessage: emailError, errorType: "email" });
           }
         })
-        .catch((error) => {
-          console.log("Feil", error);
+        .catch(() => {
+          setError({ erorMessage: emailError, errorType: "email" });
         });
     }
-    console.log(details);
   };
   if (loggedIn) {
     return <App />;
@@ -103,9 +94,10 @@ export default function Registation() {
           <InputTextField
             value="first_name"
             type="textfield"
-            id="first_name"
+            id="firstName"
             label="Fornavn"
             autoComplete="given-name"
+            val={details.first_name}
             details={details}
             setDetails={setDetails}
             autoFocus
@@ -113,9 +105,10 @@ export default function Registation() {
           <InputTextField
             value="last_name"
             type="textfield"
-            id="last_name"
+            id="lastName"
             label="Etternavn"
             autoComplete="family-name"
+            val={details.last_name}
             details={details}
             setDetails={setDetails}
           />
@@ -124,10 +117,11 @@ export default function Registation() {
             type="email"
             id="email"
             label="E-post"
-            errorMessage={errorMessage}
-            errorType={errorType}
+            errorMessage={error.errorMessage}
+            errorType={error.errorType}
             displayHelper={emailError}
             autoComplete="email"
+            val={details.email}
             details={details}
             setDetails={setDetails}
           />
@@ -137,6 +131,7 @@ export default function Registation() {
             id="tel"
             label="Telefonnummer"
             autoComplete="tel"
+            val={details.phone}
             details={details}
             setDetails={setDetails}
           />
@@ -146,18 +141,20 @@ export default function Registation() {
             id="city"
             label="Hjemby"
             autoComplete="off"
+            val={details.city}
             details={details}
             setDetails={setDetails}
           />
           <InputTextField
             value="birth_year"
             type="number"
-            id="birth_year"
+            id="birthYear"
             label="Fødselsår"
             autoComplete="bday-year"
-            errorMessage={errorMessage}
-            errorType={errorType}
-            displayHelper={errorMessage}
+            errorMessage={error.errorMessage}
+            errorType={error.errorType}
+            displayHelper={error.errorMessage}
+            val={details.birth_year}
             details={details}
             setDetails={setDetails}
           />
@@ -166,9 +163,10 @@ export default function Registation() {
             type="password"
             id="password"
             label="Passord"
-            errorMessage={errorMessage}
-            errorType={errorType}
+            errorMessage={error.errorMessage}
+            errorType={error.errorType}
             autoComplete="off"
+            val={details.password}
             details={details}
             setDetails={setDetails}
           />
@@ -181,11 +179,11 @@ export default function Registation() {
             type="password"
             id="password2"
             label="Gjenta passord"
-            error={errorMessage === passwordError}
+            error={error.errorMessage === passwordError}
             helperText={
-              errorMessage === passwordError
-                ? errorMessage
-                : errorMessage === ""
+              error.errorMessage === passwordError
+                ? error.errorMessage
+                : error.errorMessage === ""
                 ? " "
                 : false
             }

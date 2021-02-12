@@ -5,6 +5,7 @@ import "@testing-library/jest-dom/extend-expect";
 import { PostData } from "../service/PostData";
 import LogIn from "./LogIn";
 import { act } from "react-dom/test-utils";
+import userEvent from "@testing-library/user-event";
 
 jest.mock("../service/PostData", () => ({
   PostData: jest.fn(),
@@ -33,7 +34,7 @@ describe("Log in component", () => {
     password.value = "password";
     const button = container.querySelector("button");
     await act(async () => {
-      button.dispatchEvent(new MouseEvent("click", { bubbles: true }));
+      userEvent.click(button);
     });
     const errorText = screen.getByText(/Feil brukernavn eller passord!/i);
     expect(errorText).toBeInTheDocument();
@@ -54,7 +55,7 @@ describe("Log in component", () => {
     password.value = "password";
     const button = container.querySelector("button");
     await act(async () => {
-      button.dispatchEvent(new MouseEvent("click", { bubbles: true }));
+      userEvent.click(button);
     });
     const errorText = screen.queryByText(/Feil brukernavn eller passord!/i);
     expect(errorText).not.toBeInTheDocument();

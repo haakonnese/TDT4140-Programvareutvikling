@@ -15,6 +15,7 @@ InputTextField.propTypes = {
   details: PropTypes.object.isRequired,
   autoFocus: PropTypes.bool,
   errorType: PropTypes.string,
+  val: PropTypes.string,
 };
 
 export default function InputTextField(props) {
@@ -24,7 +25,7 @@ export default function InputTextField(props) {
       margin="normal"
       required
       fullWidth
-      value={props.details.value}
+      value={props.val}
       onChange={(e) =>
         props.setDetails({ ...props.details, [props.value]: e.target.value })
       }
