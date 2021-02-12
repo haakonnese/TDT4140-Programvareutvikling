@@ -1,17 +1,19 @@
-# from django.shortcuts import render
-
+from django.shortcuts import render
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login
 from django.http import HttpResponse
 from rest_framework.decorators import api_view
 from django.contrib.auth import logout
+from .models import Ad
 
 
 @api_view(["POST"])
 def register_profile(request):
     if request.method == "POST":
         q_dict = request.POST
-        user = User.objects.create_user(q_dict["username"], q_dict["email"], q_dict["password"])
+        user = User.objects.create_user(
+            q_dict["username"], q_dict["email"], q_dict["password"]
+        )  # skal objektet være profile i stedet for user?
         user.refresh_from_db()  # load the profile instance created by the signal
         user.profile.birth_year = q_dict["birth_year"]
         user.profile.city = q_dict["city"]
@@ -38,3 +40,11 @@ def logout_view(request):
 def get_persons(request):
     users = User.objects.all()
     return HttpResponse(users)
+
+
+def view_ads(request):
+    user_key = request.user.primary_key
+    ads = Ad.objects.all().filter(not user_key)
+    # ads = sorted(Ad.objects.all(), key=
+
+    return render(request, "ads.html", {"ads": ads})
