@@ -1,16 +1,21 @@
-# from django.shortcuts import render
-
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login
 from django.http import HttpResponse
-from rest_framework.decorators import api_view
 from django.contrib.auth import logout
 from .serializers import ProfileSerializer
-from django.contrib.auth.decorators import login_required
+from rest_framework.renderers import JSONRenderer
+from django.views.decorators.csrf import csrf_exempt
 
 
-@api_view(["POST"])
+# Postman mangler CSRF-token for å kunne sende POST-forespørsel.
+# For at det skal fungere ble csrf_exempt lagt til,
+# som fjerner beskyttelsen, dette bør kanskje endres senere.
+# Vet ikke hvordan dette fikses enda.
+
+
+@csrf_exempt
 def register_profile(request):
+    """Funksjon som registerer en ny profil."""
     respons = HttpResponse()
     if request.method == "POST":
         q_dict = request.POST
@@ -24,7 +29,8 @@ def register_profile(request):
         user.profile.phone = q_dict["phone"]
         user.save()
         respons.status_code = 200
-        respons.write(ProfileSerializer(user.profile).data)
+        json = JSONRenderer().render(ProfileSerializer(user.profile).data)
+        respons.write(json)
         return respons
     else:
         respons.status_code = 405
@@ -32,30 +38,41 @@ def register_profile(request):
         return respons
 
 
-@api_view(["POST"])
-def login_user(request):  # 403, denne fungerer ikke.
+@csrf_exempt
+def login_user(request):
+    """Funksjon som logger en eksistrende bruker inn."""
     respons = HttpResponse()
-    username = request.POST["username"]
-    password = request.POST["password"]
-    user = authenticate(request, username=username, password=password)
-    print("hei")
-    if user is not None:
-        login(request, user)
-        respons.status_code = 200
-        respons.write(ProfileSerializer(user.profile).data)
-        return respons
+    if request.method == "POST":
+        username = request.POST["username"]
+        password = request.POST["password"]
+        user = authenticate(request, username=username, password=password)
+        if user is not None:
+            login(request, user)
+            respons.status_code = 200
+            json = JSONRenderer().render(ProfileSerializer(request.user.profile).data)
+            respons.write(json)
+            return respons
+        else:
+            respons.status_code = 404
+            return respons
     else:
-        respons.status_code = 404
+        respons.status_code = 405
         return respons
 
 
-def logout_view(request):  # Fungerer ikke før man kan logge inn.
+def logout_view(request):
+    """Funksjon som logger en pålogget bruker ut.
+    Kaster ikke error hvis brukeren ikke er pålogget"""
     logout(request)
     return HttpResponse("Du er logget ut!")
 
 
-@login_required
 def get_profile(request):
+    """Returnerer profilen til den påloggede brukeren i JSON format."""
     respons = HttpResponse()
-    respons.write(ProfileSerializer(request.user.profile).data)
+    if request.user.is_anonymous:
+        respons.status_code = 403
+        return respons
+    json = JSONRenderer().render(ProfileSerializer(request.user.profile).data)
+    respons.write(json)
     return respons
