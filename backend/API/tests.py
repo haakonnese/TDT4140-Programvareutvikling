@@ -1,43 +1,18 @@
-# from django.test import TestCase
-# from .models import Profile
-# Create your tests here.
-# """ from datetime import datetime
-# from django.test import TestCase
-
-# from .models import Profile, Ad
-
-# # (1)
-# class ProfileModelTest(TestCase):
-#     # (2)
-#     @classmethod
-#     def setUpTestData(self):
-#         self.user1 = Profile.objects.create()
-#         first_name="John"
-#         last_name="Doe"
+from django.test import TestCase
+from .models import Profile
+from django.contrib.auth.models import User
 
 
-#     # (3)
-#     def test_it_has_information_fields(self):
-#         self.assertIsInstance(self.user1.first_name, str)
-#         self.assertIsInstance(self.user1.last_name, str)
-#  """
-# (4)
-# def test_it_has_timestamps(self):
-# self.assertIsInstance(self.user1.last_update, datetime)
+class ProfileModelTest(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        pass
 
-
-# class ProfileModelTest(TestCase):
-#     # (2)
-#     @classmethod
-#     def setUpTestData(cls):
-#         user1 = Profile.objects.create()
-
-#         ##user1.city = "Dee"
-#         # print(user1)
-
-#     # (3)
-#     def test_it_has_information_fields(self):
-#         user1.city = "Trondheim"
-#         assertIsInstance(user1.city, str)
-#         # self.assertIsInstance(self.user1.city, str)
-#         # self.assertIsInstance(self.user1.last_name, str)
+    def test_it_has_information_fields(self):
+        user = User.objects.create_user("john", "lennon@thebeatles.com", "johnpassword")
+        # user = User.objects.get(username="john")
+        profile = Profile(user, phone="22334455", birth_year="1990", city="Trondheim")
+        self.assertEqual(profile.city, "Trondheim")
+        self.assertEqual(profile.phone, "22334455")
+        self.assertEqual(profile.birth_year, "1990")
+        # self.assertEqual(profile.username, 'john')
