@@ -19,7 +19,7 @@ const products = [
 ];
 
 function Products() {
-  PostData("login", "")
+  PostData("product", "")
     .then((result) => {
       console.log(result);
       if (result.product) {

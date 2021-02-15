@@ -15,6 +15,7 @@ export default makeStyles(() => ({
   infoButton: {
     display: "flex",
     justifyContent: "flex-start",
+    textDecorationLine: "none",
   },
   iconButton: {
     display: "flex",

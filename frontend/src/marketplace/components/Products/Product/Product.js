@@ -7,11 +7,12 @@ import {
   CardActions,
   Typography,
   Button,
-  IconButton,
+  // IconButton,
 } from "@material-ui/core";
-import FavoriteBorderIcon from "@material-ui/icons/FavoriteBorder";
+// import FavoriteBorderIcon from "@material-ui/icons/FavoriteBorder";
 import useStyles from "./styles";
 import PropTypes from "prop-types";
+import { Link } from "react-router-dom";
 
 Product.propTypes = {
   product: PropTypes.object.isRequired,
@@ -19,6 +20,7 @@ Product.propTypes = {
 };
 
 function Product(props) {
+  // css for jsx
   const classes = useStyles();
 
   return (
@@ -40,19 +42,22 @@ function Product(props) {
         </Typography>
       </CardContent>
       <CardActions disableSpacing className={classes.cardActions}>
-        <Button
-          className={classes.infoButton}
-          aria-label="Mer info"
-          variant="outlined"
-          color="primary"
-        >
-          Mer info
-        </Button>
+        <Link to={`/products/${props.product.id}`}>
+          <Button
+            renderAs="button"
+            className={classes.infoButton}
+            aria-label="Mer info"
+            variant="outlined"
+            color="primary"
+          >
+            Mer info
+          </Button>
+        </Link>
         {/* En knapp for å legge produkt til i favoritter - kan jobbes på med onClick osv. */}
         {/* Kan kommenteres ut når vi har opprettet favoritter hos bruker */}
-        <IconButton className={classes.iconButton} aria-label="Favoriser">
+        {/* <IconButton className={classes.iconButton} aria-label="Favoriser">
           <FavoriteBorderIcon />
-        </IconButton>
+        </IconButton> */}
       </CardActions>
     </Card>
   );
