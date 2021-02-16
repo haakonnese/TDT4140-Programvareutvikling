@@ -43,7 +43,7 @@ function ProductInfo({ match }) {
     .then((result) => {
       if (result.id) {
         setProducts(result);
-        console.log(products);
+        // console.log(products);
       } else {
         console.log("Feil");
       }
@@ -72,7 +72,7 @@ function ProductInfo({ match }) {
               <Typography varient="h5" gutterBottom>
                 {products.name}
               </Typography>
-              <Typography varient="h5">{products.price}</Typography>
+              <Typography varient="h5">{products.price}kr</Typography>
             </div>
             <Typography varient="h2" color="textSecondary">
               {products.description}
