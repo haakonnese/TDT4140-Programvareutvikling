@@ -1,72 +1,97 @@
-import React from "react";
-import { Card, CardMedia, CardContent, Typography } from "@material-ui/core";
+import React, { useState } from "react";
+import { useHistory } from "react-router-dom";
+import {
+  Card,
+  CardMedia,
+  CardContent,
+  Typography,
+  CircularProgress,
+  // IconButton,
+} from "@material-ui/core";
 import PropTypes from "prop-types";
+// favourite-button to add product to favourite-list
 // import FavoriteBorderIcon from "@material-ui/icons/FavoriteBorder";
 import useStyles from "./styles";
-import PostData from "../service/PostData";
-// import Product from "../Products/Product/Product";
+import { PostData } from "../service/PostData";
 
+// define which type the product info will be
 ProductInfo.propTypes = {
   match: PropTypes.object.isRequired,
-  product: PropTypes.object.isRequired,
   errorType: PropTypes.string,
 };
 
-const products = [
-  {
-    id: 1,
-    name: "stol",
-    description: "lite brukt stol til god pris",
-    price: "200kr",
-  },
-  {
-    id: 2,
-    name: "bord",
-    description: "lite brukt bord til god pris",
-    price: "900kr",
-  },
-];
+// ProductInfo test (paste "produkt" inside useState)
+// const produkt = {
+//   id: 1,
+//   name: "stol",
+//   description: "lite brukt stol til god pris",
+//   price: 200,
+//   firstName: "Hans",
+//   lastName: "Pettersen",
+//   sellerTlf: 98765432,
+//   imgUrl:
+//     "https://www.if.no/magasinet/imageshop/img_shp_img_ymq7qsg42u-780x450.jpeg",
+// };
 
 function ProductInfo({ match }) {
-  PostData("product", "")
+  // hooks
+  const history = useHistory();
+  const [products, setProducts] = useState();
+
+  // "match" matches given id with id from url
+  PostData("product", { id: match.params.id })
     .then((result) => {
-      console.log(result);
-      if (result.product.id) {
-        products.push(result.product);
+      if (result.id) {
+        setProducts(result);
+        console.log(products);
       } else {
         console.log("Feil");
       }
     })
-    .catch((error) => {
-      console.log("Feil", error);
+    .catch(() => {
+      history.push("/404");
     });
 
+  // css for jsx
   const classes = useStyles();
-  console.log(match);
   return (
     <main className={classes.main}>
-      {products
-        .filter((product) => product.id === Number(match.params.id))
-        .map((product) => (
-          <Card key={product.id} className={classes.root} justify="center">
+      {products ? (
+        <Card key={products.id} className={classes.root} justify="center">
+          {products.imgUrl ? (
             <CardMedia
               className={classes.media}
-              image=""
-              title={product.name}
+              image={products.imgUrl}
+              title={products.name}
             />
-            <CardContent>
-              <div className={classes.cardContent}>
-                <Typography varient="h5" gutterBottom>
-                  {product.name}
-                </Typography>
-                <Typography varient="h5">{product.price}</Typography>
-              </div>
-              <Typography varient="h2" color="textSecondary">
-                {product.description}
+          ) : (
+            <CircularProgress />
+          )}
+          <CardContent>
+            <div className={classes.cardContent}>
+              <Typography varient="h5" gutterBottom>
+                {products.name}
               </Typography>
-            </CardContent>
-          </Card>
-        ))}
+              <Typography varient="h5">{products.price}</Typography>
+            </div>
+            <Typography varient="h2" color="textSecondary">
+              {products.description}
+            </Typography>
+            <div className={classes.sellerInfo}>
+              <Typography varient="h2">
+                Selger: {products.firstName} {products.lastName}
+              </Typography>
+              <Typography varient="h2">Tlf: {products.sellerTlf}</Typography>
+              {/* Favorite-button for adding product to favorite-list */}
+              {/* <IconButton className={classes.iconButton} aria-label="Favoriser">
+                    <FavoriteBorderIcon />
+                  </IconButton> */}
+            </div>
+          </CardContent>
+        </Card>
+      ) : (
+        <CircularProgress />
+      )}
     </main>
   );
 }

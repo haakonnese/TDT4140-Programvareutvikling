@@ -1,7 +1,7 @@
 import React from "react";
-import { AppBar, Toolbar, IconButton, Typography } from "@material-ui/core";
+import { AppBar, Toolbar, Typography } from "@material-ui/core";
 import { Link } from "react-router-dom";
-import AccountCircleIcon from "@material-ui/icons/AccountCircle";
+// import AccountCircleIcon from "@material-ui/icons/AccountCircle";
 
 import useStyles from "./styles";
 
@@ -21,11 +21,12 @@ export default function Navbar() {
           SELLPOINT
         </Typography>
         <div className={classes.grow} />
-        <div className={classes.button}>
+        {/* profile-butten */}
+        {/* <div className={classes.button}>
           <IconButton aria-label="userprofile">
             <AccountCircleIcon />
           </IconButton>
-        </div>
+        </div> */}
       </Toolbar>
     </AppBar>
   );

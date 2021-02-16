@@ -11,13 +11,15 @@ export default makeStyles((theme) => ({
     width: "100%",
   },
   media: {
-    height: 0,
-    paddingTop: "300px", // 16:9
+    height: "50px",
+    paddingTop: "300px",
   },
   cardContent: {
     display: "flex",
     justifyContent: "space-between",
-    // textAlign: "center",
-    height: "100px",
+  },
+  sellerInfo: {
+    maxWidth: "100%",
+    justifyContent: "space-between",
   },
 }));

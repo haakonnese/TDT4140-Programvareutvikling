@@ -1,6 +1,6 @@
 import { BASE_URL } from "./sellPointURL";
 
-export default function PostData(type, userData) {
+export function PostData(type, userData) {
   // fetches data from the given endpoint and returns the promise (responseJson)
   return new Promise((resolve, reject) => {
     fetch(BASE_URL + type, {
