@@ -15,6 +15,10 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from API.views import register_profile
+from API.views import view_ads, view_single_ad
 
-urlpatterns = [path("admin/", admin.site.urls), path("API/register", register_profile)]
+urlpatterns = [
+    path("admin/", admin.site.urls),
+    path("api/ads", view_ads),
+    path("<id>", view_single_ad),
+]

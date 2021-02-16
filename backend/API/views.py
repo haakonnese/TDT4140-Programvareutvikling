@@ -43,8 +43,12 @@ def get_persons(request):
 
 
 def view_ads(request):
-    user_key = request.user.primary_key
-    ads = Ad.objects.all().filter(not user_key)
-    # ads = sorted(Ad.objects.all(), key=
+    context = {}
+    context["dataset"] = Ad.objects.all().order_by("-pub_date")
+    return render(request, "list_view.html", context)  # html-filen må ha navnet som frontend har laget
 
-    return render(request, "ads.html", {"ads": ads})
+
+def view_single_ad(request, id):
+    context = {}
+    context["data"] = Ad.objects.get(id=id)
+    return render(request, "detail.html", context)  # html-filen må ha navnet som frontend har laget
