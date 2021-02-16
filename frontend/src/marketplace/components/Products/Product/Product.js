@@ -6,11 +6,11 @@ import {
   CardActions,
   Typography,
   Button,
+  CircularProgress,
   // IconButton,
 } from "@material-ui/core";
 // favourite-button to add product to favourite-list
 // import FavoriteBorderIcon from "@material-ui/icons/FavoriteBorder";
-import CircularProgress from "@material-ui/core/CircularProgress";
 import useStyles from "./styles";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
