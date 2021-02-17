@@ -20,5 +20,5 @@ from API.views import view_ads, view_single_ad
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("api/ads", view_ads),
-    path("<id>", view_single_ad),
+    path("api/ads/<id>", view_single_ad),
 ]
