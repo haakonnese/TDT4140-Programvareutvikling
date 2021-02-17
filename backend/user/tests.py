@@ -4,10 +4,6 @@ from django.db import Error
 from rest_framework.test import APIClient
 from .models import Profile
 
-# Testene lager en ny person i databsen,
-# slik at id-en inkrementerer hver gang man kjører testene.
-# Kanskje mulig å registrere bruker uten at dette skjer?
-
 
 class ProfileTest(unittest.TestCase):
     @classmethod
@@ -116,3 +112,66 @@ class ProfileTest(unittest.TestCase):
             pass
         else:
             raise Error()
+
+    def test_edit_profile(self):
+        d = {"username": "bruker_i_testene", "password": "test1234"}
+        response = self.client.post("/api/user/login", d)
+        token_dict = response.data
+
+        # Legger til autoriseringstoken
+        self.client.credentials(HTTP_AUTHORIZATION="Token " + token_dict["token"])
+
+        d = {
+            "user": {
+                "email": "t@gmail.com",
+                "first_name": "Test",
+                "last_name": "TesterENDRING",
+                "username": "bruker_i_testene",
+            },
+            "birth_year": 2000,
+            "city": "Trondheim",
+            "phone": 22222222,
+        }
+        response = self.client.put("/api/user/edit_profile", d, format="json")
+        self.assertEqual(response.status_code, 200)
+        user = User.objects.get(username="bruker_i_testene")
+        self.assertEqual(d["user"]["last_name"], user.last_name)
+
+        # tester å endre brukernavn til et som er brukt
+        test_user = User.objects.create_user(
+            username="bruker_i_testeneENDRING",
+            email="lennon@thebeatles.com",
+            password="test1234",
+            last_name="Tester",
+            first_name="Test",
+        )
+        d = {
+            "user": {
+                "email": "t@gmail.com",
+                "first_name": "Test",
+                "last_name": "TesterENDRING",
+                "username": "bruker_i_testeneENDRING",
+            },
+            "birth_year": 2000,
+            "city": "Trondheim",
+            "phone": 22222222,
+        }
+        response = self.client.put("/api/user/edit_profile", d, format="json")
+        test_user.delete()
+        self.assertEqual(response.status_code, 403)
+
+    def test_set_password(self):
+        d = {"username": "bruker_i_testene", "password": "test1234"}
+        response = self.client.post("/api/user/login", d)
+        token_dict = response.data
+
+        # Legger til autoriseringstoken
+        self.client.credentials(HTTP_AUTHORIZATION="Token " + token_dict["token"])
+
+        # Sjekker at man kan endre passord
+        response = self.client.put("/api/user/edit_password", {"password": "test12345"}, format="json")
+        self.assertEqual(response.status_code, 200)
+
+        # sjekker at passordet må være langt nok
+        response = self.client.put("/api/user/edit_password", {"password": "test"}, format="json")
+        self.assertEqual(response.status_code, 403)
