@@ -16,6 +16,7 @@ InputTextField.propTypes = {
   autoFocus: PropTypes.bool,
   errorType: PropTypes.string,
   val: PropTypes.string,
+  user: PropTypes.bool,
 };
 
 export default function InputTextField(props) {
@@ -26,9 +27,16 @@ export default function InputTextField(props) {
       required
       fullWidth
       value={props.val}
-      onChange={(e) =>
-        props.setDetails({ ...props.details, [props.value]: e.target.value })
-      }
+      onChange={(e) => {
+        if (props.user) {
+          props.setDetails({
+            ...props.details,
+            user: { ...props.details.user, [props.value]: e.target.value },
+          });
+        } else {
+          props.setDetails({ ...props.details, [props.value]: e.target.value });
+        }
+      }}
       type={props.type}
       id={props.id}
       label={props.label}

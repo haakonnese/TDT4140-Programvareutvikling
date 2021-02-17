@@ -20,7 +20,7 @@ beforeEach(() => {
   act(() => {
     ReactDOM.render(
       <Router>
-        <LogIn />
+        <LogIn changeLoggedIn={(e) => true} loggedIn={false} />
       </Router>,
       container
     );
@@ -32,7 +32,7 @@ afterEach(() => {
   container = null;
 });
 describe("Log in component", () => {
-  it("will say wrong password", async () => {
+  it("will say wrong password - error", async () => {
     PostData.mockImplementation(() => Promise.reject(new Error("Error")));
     const email = container.querySelector('Input[type="email"]');
     email.value = "test@test.com";
@@ -49,7 +49,7 @@ describe("Log in component", () => {
   it("will not say wrong password", async () => {
     PostData.mockImplementation(() =>
       Promise.resolve({
-        userData: { email: "test@test.com", password: "test" },
+        token: "bd2740afbafaf01ab80a4bd0eb7d776321b6bd98",
       })
     );
     const email = container.querySelector('Input[type="email"]');
@@ -62,5 +62,23 @@ describe("Log in component", () => {
     });
     const errorText = screen.queryByText(/Feil brukernavn eller passord!/i);
     expect(errorText).not.toBeInTheDocument();
+  });
+
+  it("will say wrong password - wrong data", async () => {
+    PostData.mockImplementation(() =>
+      Promise.resolve({
+        user: "wrong data",
+      })
+    );
+    const email = container.querySelector('Input[type="email"]');
+    email.value = "test@test.com";
+    const password = container.querySelector('Input[type="password"]');
+    password.value = "password";
+    const button = container.querySelector("button");
+    await act(async () => {
+      userEvent.click(button);
+    });
+    const errorText = screen.queryByText(/Feil brukernavn eller passord!/i);
+    expect(errorText).toBeInTheDocument();
   });
 });

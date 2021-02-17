@@ -4,27 +4,26 @@ import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import TextField from "@material-ui/core/TextField";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import Grid from "@material-ui/core/Grid";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Typography from "@material-ui/core/Typography";
 import useStyles from "./styles";
 import Container from "@material-ui/core/Container";
-import App from "../App";
+import PropTypes from "prop-types";
 
-export default function LogIn() {
+export default function LogIn(props) {
   // css for jsx
   const classes = useStyles();
-
+  const { changeLoggedIn, loggedIn } = props;
   // hooks
-  const [details, setDetails] = useState({ email: "", password: "" });
-  const [loggedIn, setLoggedIn] = useState(false);
+  const [details, setDetails] = useState({ username: "", password: "" });
   const [wrongPassword, setWrongPassword] = useState(false);
-
+  const history = useHistory();
   // check if logged in
   useEffect(() => {
-    if (sessionStorage.getItem("userData")) {
-      setLoggedIn(true);
+    if (loggedIn) {
+      history.push("/");
     }
   }, []);
 
@@ -33,22 +32,22 @@ export default function LogIn() {
     e.preventDefault();
 
     // send log-in credentials to database and check if they were correct
-    PostData("login", details)
+    PostData("user/login", details)
       .then((result) => {
-        if (result.userData) {
-          sessionStorage.setItem("userData", JSON.stringify(result.userData));
-          setLoggedIn(true);
+        if (result.token) {
+          sessionStorage.setItem("token", result.token);
+          changeLoggedIn(true);
+          history.push("/");
         } else {
           setWrongPassword(true);
         }
       })
       .catch(() => {
+        // console.log(error);
         setWrongPassword(true);
       });
   };
-  if (loggedIn) {
-    return <App />;
-  }
+
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
@@ -65,8 +64,10 @@ export default function LogIn() {
             margin="normal"
             required
             fullWidth
-            value={details.email}
-            onChange={(e) => setDetails({ ...details, email: e.target.value })}
+            value={details.username}
+            onChange={(e) =>
+              setDetails({ ...details, username: e.target.value })
+            }
             type="email"
             id="email"
             label="Email"
@@ -135,3 +136,8 @@ export default function LogIn() {
     </Container>
   );
 }
+
+LogIn.propTypes = {
+  changeLoggedIn: PropTypes.func,
+  loggedIn: PropTypes.bool,
+};

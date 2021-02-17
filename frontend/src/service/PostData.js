@@ -5,9 +5,19 @@ export function PostData(type, userData) {
   return new Promise((resolve, reject) => {
     fetch(BASE_URL + type, {
       method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
       body: JSON.stringify(userData),
     })
-      .then((response) => response.json())
+      .then((response) => {
+        if (response.ok || response.created) {
+          return response.json();
+        } else {
+          throw new Error(response.status);
+        }
+      })
       .then((responseJson) => resolve(responseJson))
       .catch((error) => reject(error));
   });

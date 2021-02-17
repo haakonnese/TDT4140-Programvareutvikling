@@ -9,37 +9,34 @@ import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Typography from "@material-ui/core/Typography";
 import useStyles from "./styles";
 import Container from "@material-ui/core/Container";
-import App from "../App";
 import InputTextField from "./InputTextField";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
+import PropTypes from "prop-types";
+
 import {
   emailError,
   passwordError,
   toYoungError,
   toOldError,
 } from "./errorMessages";
-export default function Registation() {
+export default function Registation(props) {
   // css for jsx
   const classes = useStyles();
-
+  const history = useHistory();
+  const { changeLoggedIn, loggedIn } = props;
   const [details, setDetails] = useState({
-    first_name: "",
-    last_name: "",
+    user: { first_name: "", last_name: "", username: "", password: "" },
+    birth_year: "",
     phone: "",
     city: "",
-    birth_year: "",
-    email: "",
-    password: "",
   });
-
   // hooks
   const [passwordCheck, setPasswordCheck] = useState("");
-  const [loggedIn, setLoggedIn] = useState(false);
   const [error, setError] = useState({ errorMessage: "", errorType: "" });
   // check if logged in
   useEffect(() => {
-    if (sessionStorage.getItem("userData")) {
-      setLoggedIn(true);
+    if (loggedIn) {
+      history.push("/");
     }
   }, []);
 
@@ -51,16 +48,17 @@ export default function Registation() {
       setError({ errorMessage: toOldError, errorType: "number" });
     } else if (parseInt(details.birth_year) > new Date().getFullYear() - 13) {
       setError({ errorMessage: toYoungError, errorType: "number" });
-    } else if (details.password !== passwordCheck) {
+    } else if (details.user.password !== passwordCheck) {
       setError({ errorMessage: passwordError, errorType: "password" });
     } else {
       // send registration to database and then do something with the result
-      PostData("registration", details)
+      PostData("user/register", details)
         .then((result) => {
-          console.log(result);
-          if (result.userData) {
-            sessionStorage.setItem("userData", JSON.stringify(result.userData));
-            setLoggedIn(true);
+          // console.log(result);
+          if (result.token) {
+            sessionStorage.setItem("token", JSON.stringify(result.token));
+            changeLoggedIn(true);
+            history.push("/");
           } else {
             setError({ erorMessage: emailError, errorType: "email" });
           }
@@ -70,9 +68,7 @@ export default function Registation() {
         });
     }
   };
-  if (loggedIn) {
-    return <App />;
-  }
+
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
@@ -86,40 +82,44 @@ export default function Registation() {
         <form className={classes.form} onSubmit={handleSubmit}>
           <InputTextField
             value="first_name"
+            user={true}
             type="textfield"
             id="firstName"
             label="Fornavn"
             autoComplete="given-name"
-            val={details.first_name}
+            val={details.user.first_name}
             details={details}
             setDetails={setDetails}
             autoFocus
           />
           <InputTextField
             value="last_name"
+            user={true}
             type="textfield"
             id="lastName"
             label="Etternavn"
             autoComplete="family-name"
-            val={details.last_name}
+            val={details.user.last_name}
             details={details}
             setDetails={setDetails}
           />
           <InputTextField
-            value="email"
+            value="username"
+            user={true}
             type="email"
-            id="email"
+            id="username"
             label="E-post"
             errorMessage={error.errorMessage}
             errorType={error.errorType}
             displayHelper={emailError}
             autoComplete="email"
-            val={details.email}
+            val={details.user.username}
             details={details}
             setDetails={setDetails}
           />
           <InputTextField
             value="phone"
+            user={false}
             type="tel"
             id="tel"
             label="Telefonnummer"
@@ -130,6 +130,7 @@ export default function Registation() {
           />
           <InputTextField
             value="city"
+            user={false}
             type="textfield"
             id="city"
             label="Hjemby"
@@ -140,6 +141,7 @@ export default function Registation() {
           />
           <InputTextField
             value="birth_year"
+            user={false}
             type="number"
             id="birthYear"
             label="Fødselsår"
@@ -153,13 +155,14 @@ export default function Registation() {
           />
           <InputTextField
             value="password"
+            user={true}
             type="password"
             id="password"
             label="Passord"
             errorMessage={error.errorMessage}
             errorType={error.errorType}
             autoComplete="off"
-            val={details.password}
+            val={details.user.password}
             details={details}
             setDetails={setDetails}
           />
@@ -206,3 +209,8 @@ export default function Registation() {
     </Container>
   );
 }
+
+Registation.propTypes = {
+  changeLoggedIn: PropTypes.func,
+  loggedIn: PropTypes.bool,
+};

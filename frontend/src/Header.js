@@ -6,7 +6,7 @@ import Button from "@material-ui/core/Button";
 // import IconButton from "@material-ui/core/IconButton";
 // import SearchIcon from "@material-ui/icons/Search";
 import Typography from "@material-ui/core/Typography";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 
 // import Link from "@material-ui/core/Link";
 
@@ -30,7 +30,8 @@ const useStyles = makeStyles((theme) => ({
 export default function Header(props) {
   //   const history = useHistory();
   const classes = useStyles();
-  const { title } = props;
+  const { title, loggedIn, changeLoggedIn } = props;
+  const history = useHistory();
 
   return (
     <React.Fragment>
@@ -49,11 +50,26 @@ export default function Header(props) {
         {/* <IconButton>
           <SearchIcon />
         </IconButton> */}
-        <Link to="/logginn">
-          <Button variant="outlined" size="small" className={classes.logIn}>
-            Logg inn
+        {loggedIn ? (
+          <Button
+            variant="outlined"
+            size="small"
+            onClick={(e) => {
+              sessionStorage.removeItem("token");
+              changeLoggedIn(false);
+              history.push("/");
+            }}
+            className={classes.logIn}
+          >
+            Logg ut
           </Button>
-        </Link>
+        ) : (
+          <Link to="/logginn">
+            <Button variant="outlined" size="small" className={classes.logIn}>
+              Logg inn
+            </Button>
+          </Link>
+        )}
       </Toolbar>
     </React.Fragment>
   );
@@ -61,4 +77,6 @@ export default function Header(props) {
 
 Header.propTypes = {
   title: PropTypes.string,
+  loggedIn: PropTypes.bool,
+  changeLoggedIn: PropTypes.func,
 };

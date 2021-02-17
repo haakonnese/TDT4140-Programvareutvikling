@@ -21,7 +21,7 @@ jest.mock("../service/PostData", () => ({
 let container,
   firstName,
   lastName,
-  email,
+  username,
   tel,
   city,
   birthYear,
@@ -47,8 +47,8 @@ beforeEach(async () => {
   lastName = container.querySelector("#lastName");
   userEvent.type(lastName, "Normann");
 
-  email = container.querySelector("#email");
-  userEvent.type(email, "ola@normann.no");
+  username = container.querySelector("#username");
+  userEvent.type(username, "ola@normann.no");
 
   tel = container.querySelector("#tel");
   userEvent.type(tel, "90807060");
