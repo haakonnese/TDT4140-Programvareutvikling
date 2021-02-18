@@ -109,7 +109,7 @@ class ProfileTest(unittest.TestCase):
             raise Error()
 
     def test_edit_profile(self):
-        d = {"username": "bruker_i_testene", "password": "test1234"}
+        d = {"username": "bruker_i_testene@test.com", "password": "test1234"}
         response = self.client.post("/api/user/login", d)
         token_dict = response.data
 
@@ -118,10 +118,9 @@ class ProfileTest(unittest.TestCase):
 
         d = {
             "user": {
-                "email": "t@gmail.com",
                 "first_name": "Test",
                 "last_name": "TesterENDRING",
-                "username": "bruker_i_testene",
+                "username": "bruker_i_testene@test.com",
             },
             "birth_year": 2000,
             "city": "Trondheim",
@@ -129,23 +128,21 @@ class ProfileTest(unittest.TestCase):
         }
         response = self.client.put("/api/user/edit_profile", d, format="json")
         self.assertEqual(response.status_code, 200)
-        user = User.objects.get(username="bruker_i_testene")
+        user = User.objects.get(username="bruker_i_testene@test.com")
         self.assertEqual(d["user"]["last_name"], user.last_name)
 
         # tester å endre brukernavn til et som er brukt
         test_user = User.objects.create_user(
-            username="bruker_i_testeneENDRING",
-            email="lennon@thebeatles.com",
+            username="bruker_i_testene@test.comENDRING",
             password="test1234",
             last_name="Tester",
             first_name="Test",
         )
         d = {
             "user": {
-                "email": "t@gmail.com",
                 "first_name": "Test",
                 "last_name": "TesterENDRING",
-                "username": "bruker_i_testeneENDRING",
+                "username": "bruker_i_testene@test.comENDRING",
             },
             "birth_year": 2000,
             "city": "Trondheim",
@@ -156,7 +153,7 @@ class ProfileTest(unittest.TestCase):
         self.assertEqual(response.status_code, 403)
 
     def test_set_password(self):
-        d = {"username": "bruker_i_testene", "password": "test1234"}
+        d = {"username": "bruker_i_testene@test.com", "password": "test1234"}
         response = self.client.post("/api/user/login", d)
         token_dict = response.data
 

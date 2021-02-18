@@ -56,7 +56,6 @@ def edit_profile(request):
             return response
         request.user.first_name = data["user"]["first_name"]
         request.user.last_name = data["user"]["last_name"]
-        request.user.email = data["user"]["email"]
         request.user.username = data["user"]["username"]
         request.user.profile.birth_year = data["birth_year"]
         request.user.profile.city = data["city"]
