@@ -55,7 +55,7 @@ export default function Header(props) {
             variant="outlined"
             size="small"
             onClick={(e) => {
-              sessionStorage.removeItem("token");
+              localStorage.removeItem("token");
               changeLoggedIn(false);
               history.push("/");
             }}

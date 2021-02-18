@@ -8,7 +8,7 @@ import Footer from "./Footer";
 
 function App() {
   const [loggedIn, setLoggedIn] = useState(
-    sessionStorage.getItem("token") != null
+    localStorage.getItem("token") != null
   );
   function changeLoggedIn(value) {
     setLoggedIn(value);

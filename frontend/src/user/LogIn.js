@@ -35,7 +35,7 @@ export default function LogIn(props) {
     PostData("user/login", details)
       .then((result) => {
         if (result.token) {
-          sessionStorage.setItem("token", result.token);
+          localStorage.setItem("token", result.token);
           changeLoggedIn(true);
           history.push("/");
         } else {

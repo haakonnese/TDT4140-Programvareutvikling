@@ -56,7 +56,7 @@ export default function Registation(props) {
         .then((result) => {
           // console.log(result);
           if (result.token) {
-            sessionStorage.setItem("token", JSON.stringify(result.token));
+            localStorage.setItem("token", JSON.stringify(result.token));
             changeLoggedIn(true);
             history.push("/");
           } else {
