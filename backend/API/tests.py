@@ -83,7 +83,10 @@ class AdsTest(unittest.TestCase):
         self.assertEqual(ad1.category, d["1"]["category"])
         # Sjekker responsen som funker
         self.assertEqual(response.status_code, 200)
-        # Sjekker responsen som ikke funker
+        # Sjekker respons for en annonse
+        response2 = self.client.get("/api/ads/1", d["1"], format="json")
+        self.assertEqual(response2.status_code, 200)
         ad1.delete()
-        # response2 = self.client.get("/api/ads/1", 1)
-        # self.assertEqual(response2.status_code, 400)
+        # Sjekker respons som ikke er støttet
+        response2 = self.client.get("/api/ads/1", d["1"], format="json")
+        self.assertEqual(response2.status_code, 404)

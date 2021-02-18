@@ -1,5 +1,7 @@
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
+from django.db.models.base import ObjectDoesNotExist
+from django.http import Http404
 from .models import Ad
 from .serializers import AdSerializer
 
@@ -14,5 +16,8 @@ def view_ads(request):
 
 @api_view(["GET"])
 def view_single_ad(request, id):
-    response = AdSerializer(Ad.objects.get(id=id))
-    return Response(response.data)
+    try:
+        response = AdSerializer(Ad.objects.get(id=id))
+        return Response(response.data)
+    except ObjectDoesNotExist:
+        raise Http404
