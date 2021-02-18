@@ -10,8 +10,7 @@ class ProfileTest(unittest.TestCase):
     def setUpClass(cls):
         # Lager en bruker som skal brukes i testene
         test_user = User.objects.create_user(
-            username="bruker_i_testene",
-            email="lennon@thebeatles.com",
+            username="bruker_i_testene@test.com",
             password="test1234",
             last_name="Tester",
             first_name="Test",
@@ -21,7 +20,7 @@ class ProfileTest(unittest.TestCase):
     @classmethod
     def tearDownClass(cls):
         # Sletter brukern
-        user = User.objects.get(username="bruker_i_testene")
+        user = User.objects.get(username="bruker_i_testene@test.com")
         user.delete()
 
     def setUp(self):
@@ -32,11 +31,10 @@ class ProfileTest(unittest.TestCase):
         # Lager en post forespørsel
         d = {
             "user": {
-                "email": "t@gmail.com",
                 "password": "smith",
                 "first_name": "Test",
                 "last_name": "Tester",
-                "username": "testtestD",
+                "username": "t@gmail.com",
             },
             "birth_year": 2000,
             "city": "Trondheim",
@@ -48,12 +46,11 @@ class ProfileTest(unittest.TestCase):
         self.assertEqual(response.status_code, 201)
 
         # Henter brukeren
-        user = User.objects.get(username="testtestD")
+        user = User.objects.get(username="t@gmail.com")
 
         # Sjekk at attributtene er satt riktig
         self.assertEqual(user.first_name, d["user"]["first_name"])
         self.assertEqual(user.last_name, d["user"]["last_name"])
-        self.assertEqual(user.email, d["user"]["email"])
         self.assertEqual(user.profile.phone, str(d["phone"]))
         self.assertEqual(user.profile.city, d["city"])
         self.assertEqual(user.profile.birth_year, str(d["birth_year"]))
@@ -62,11 +59,10 @@ class ProfileTest(unittest.TestCase):
         # Tester ugyldig regsistrering av samme bruker
         d = {
             "user": {
-                "email": "t@gmail.com",
                 "password": "smith",
                 "first_name": "Test",
                 "last_name": "Tester",
-                "username": "testtestD",
+                "username": "t@gmail.com",
             },
             "birth_year": 2000,
             "city": "Trondheim",
@@ -85,7 +81,7 @@ class ProfileTest(unittest.TestCase):
         self.assertEqual(respons.status_code, 405)
 
     def test_login_logout(self):
-        d = {"username": "bruker_i_testene", "password": "test1234"}
+        d = {"username": "bruker_i_testene@test.com", "password": "test1234"}
         response = self.client.post("/api/user/login", d)
         token_dict = response.data
 
@@ -93,11 +89,10 @@ class ProfileTest(unittest.TestCase):
         self.client.credentials(HTTP_AUTHORIZATION="Token " + token_dict["token"])
 
         # Henter brukeren
-        user = User.objects.get(username="bruker_i_testene")
+        user = User.objects.get(username="bruker_i_testene@test.com")
 
         # Sjekker at brukeren er innlogget.
         d = self.client.get("/api/user/user").data
-        self.assertEqual(user.email, d["user"]["email"])
         self.assertEqual(user.profile.phone, d["phone"])
         self.assertEqual(user.profile.city, d["city"])
         self.assertEqual(user.profile.birth_year, d["birth_year"])
