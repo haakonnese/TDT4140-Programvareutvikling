@@ -21,6 +21,7 @@ class Ad(models.Model):
     pub_date = models.DateField()
     headline = models.CharField(max_length=100)
     description = models.CharField(max_length=250)
+    price = models.CharField(max_length=50)
     category = models.CharField(max_length=50)
 
     def __str__(self):
