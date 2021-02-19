@@ -2,11 +2,14 @@
 
 # Create your views here.
 from django.http import HttpResponse
+from django.template import loader
 from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from .models import Ad
 from .serializers import AdSerializer
+from .forms import ImageForm
+from django.shortcuts import render, redirect
 
 
 def index(request):
@@ -15,17 +18,33 @@ def index(request):
 def register_person(request):
     return ""
 
-@api_view(['POST'])
-def ad_list(request):
-    """
-    Create a new Ad.
-    """
+def image_upload_view(request):
+    template = loader.get_template('API/index.html')
+    """Process images uploaded by users"""
     if request.method == 'POST':
-        serializer = AdSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        form = ImageForm(request.POST, request.FILES)
+
+        if form.is_valid():
+            form.save()
+
+            #return redirect(ad_list)
+            return HttpResponse('Successfully uploaded')
+    else:
+        form = ImageForm()
+    return render(request, 'API/index.html', {'form' : form})
+
+
+# @api_view(['POST'])
+# def ad_list(request):
+#     """
+#     Create a new Ad.
+#     """
+#     if request.method == 'POST':
+#         serializer = AdSerializer(data=request.data)
+#         if serializer.is_valid():
+#             serializer.save()
+#             return Response(serializer.data, status=status.HTTP_201_CREATED)
+#         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 @api_view(['GET', 'PUT', 'DELETE'])
@@ -52,4 +71,5 @@ def ad_detail(request, pk):
     elif request.method == 'DELETE':
         ad.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+
 
