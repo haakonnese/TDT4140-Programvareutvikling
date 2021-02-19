@@ -22,6 +22,8 @@ class AdSerializer(serializers.ModelSerializer):
         instance.pub_date = validated_data.get("pub_date", instance.pub_date)
         instance.headline = validated_data.get("headline", instance.headline)
         instance.description = validated_data.get("description", instance.description)
+        instance.price = validated_data.get("price", instance.price)
+        instance.image = validated_data.__get("image", instance.image)
         instance.category = validated_data.get("category", instance.category)
         instance.save()
 
