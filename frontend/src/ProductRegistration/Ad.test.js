@@ -1,13 +1,11 @@
-import { screen } from "@testing-library/react";
 import React from "react";
 import ReactDOM from "react-dom";
 import "@testing-library/jest-dom/extend-expect";
 import { PostData } from "./PostData";
-import Annonse from "./annonse";
+import Ad from "./Ad";
 import { act } from "react-dom/test-utils";
 import userEvent from "@testing-library/user-event";
 import { BrowserRouter as Router } from "react-router-dom";
-import { ClickAwayListener } from "@material-ui/core";
 
 jest.mock("./PostData", () => ({
   PostData: jest.fn(),
@@ -20,7 +18,7 @@ beforeEach(async () => {
   act(() => {
     ReactDOM.render(
       <Router>
-        <Annonse />
+        <Ad />
       </Router>,
       container
     );

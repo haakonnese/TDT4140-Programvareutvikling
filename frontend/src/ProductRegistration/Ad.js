@@ -1,26 +1,19 @@
 import { React, useState } from "react";
 import { PostData } from "./PostData";
 
-import Avatar from "@material-ui/core/Avatar";
-import Button from "@material-ui/core/Button";
-import CssBaseline from "@material-ui/core/CssBaseline";
-// import Grid from "@material-ui/core/Grid";
-// import TextField from "@material-ui/core/TextField";
-import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
-import Typography from "@material-ui/core/Typography";
+import {
+  Avatar,
+  Button,
+  CssBaseline,
+  Typography,
+  Container,
+} from "@material-ui/core";
+import PostAdd from "@material-ui/icons/PostAdd";
 import useStyles from "./styles";
-import Container from "@material-ui/core/Container";
-import InputTextField from "./inputtext";
-
+import InputTextField from "./InputTextField";
 import { phoneError } from "./errorMessages";
-// import UploadComponent from "./uploadComponent";
-// import Axios from "axios";
 
-// import ImageUploader from "react-images-upload";
-
-// import PropTypes from "prop-types";
-
-export default function Annonse(props) {
+export default function Ad() {
   const classes = useStyles();
   const [details, setDetails] = useState({
     item: "",
@@ -30,12 +23,6 @@ export default function Annonse(props) {
     image: "",
   });
   const [preview, setPreview] = useState(false);
-  // const [progress, setProgress] = useState("getUpload");
-  // setImageURL = useState("");
-  // const [errorMessage, setErrorMessage] = useState("");
-
-  // const [error, setError] = useState({ errorMessage: "", errorType: "" });
-
   function previewImage(e) {
     const reader = new FileReader();
     setDetails({ ...details, image: e[0] });
@@ -57,9 +44,6 @@ export default function Annonse(props) {
 
       // send registration to database and then do something with the result
     } else {
-      console.log(details.item);
-      console.log(details.phone);
-      console.log(details.image);
       const formData = new FormData();
       formData.append("file", e[0]);
       formData.append("phone", details.phone);
@@ -80,7 +64,7 @@ export default function Annonse(props) {
       <CssBaseline />
       <div className={classes.paper}>
         <Avatar className={classes.avatar}>
-          <LockOutlinedIcon />
+          <PostAdd />
         </Avatar>
         <Typography component="h1" variant="h5">
           Registrer annonse
@@ -116,7 +100,7 @@ export default function Annonse(props) {
             user={false}
             type="textfield"
             id="city"
-            label="by"
+            label="By"
             autoComplete="off"
             val={details.city}
             details={details}
@@ -127,27 +111,33 @@ export default function Annonse(props) {
             type="textfield"
             id="description"
             label="Beskrivelse av vare"
+            multiline={true}
             val={details.description}
             details={details}
             setDetails={setDetails}
           />
-          <div>
-            <input
-              type="file"
-              id="imageUpload"
-              accept="image/*"
-              onChange={previewImage}
+          <input
+            type="file"
+            id="imageUpload"
+            accept="image/*"
+            onChange={previewImage}
+            style={{ display: "none" }}
+          />
+          <label htmlFor="imageUpload">
+            <Button variant="contained" color="secondary" component="span">
+              Last opp et bilde
+            </Button>
+          </label>
+          {preview && (
+            <img
+              src={preview}
+              width="100%"
+              style={{
+                objectFit: "cover",
+                marginTop: "5%",
+              }}
             />
-            {preview && (
-              <img
-                src={preview}
-                width="150px"
-                style={{
-                  objectFit: "cover",
-                }}
-              />
-            )}
-          </div>
+          )}
 
           <Button
             type="submit"

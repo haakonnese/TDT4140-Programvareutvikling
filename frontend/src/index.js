@@ -1,7 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom";
 
-import Annonse from "./ProductRegistration/annonse";
+import Ad from "./ProductRegistration/Ad";
 // import Header from "./Header";
 // import React from "react";
 // import "./App.css";
@@ -11,7 +11,7 @@ import Annonse from "./ProductRegistration/annonse";
 
 ReactDOM.render(
   <React.StrictMode>
-    <Annonse />
+    <Ad />
   </React.StrictMode>,
   document.getElementById("root")
 );
