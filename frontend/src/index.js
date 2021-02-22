@@ -1,7 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom";
 
-import Annonse from "./annonse";
+import Annonse from "./ProductRegistration/annonse";
 // import Header from "./Header";
 // import React from "react";
 // import "./App.css";
