@@ -49,13 +49,15 @@ export default function Ad() {
       formData.append("phone", details.phone);
       formData.append("description", details.description);
       formData.append("item", details.item);
-      PostData("user/register", formData).then((result) => {
-        if (result.token) {
-          localStorage.setItem("token", JSON.stringify(result.token));
+      PostData("user/register", formData)
+        .then((result) => {
+          if (result.token) {
+            localStorage.setItem("token", JSON.stringify(result.token));
 
-          history.push("/");
-        }
-      });
+            history.push("/");
+          }
+        })
+        .catch((e) => console.log(e));
     }
   };
 

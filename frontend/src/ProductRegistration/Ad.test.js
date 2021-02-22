@@ -11,9 +11,9 @@ jest.mock("./PostData", () => ({
   PostData: jest.fn(),
 }));
 
-let container, item, phone, city, description, image, button;
+let container, item, phone, city, description, button;
 
-beforeEach(async () => {
+beforeEach(() => {
   container = document.createElement("div");
   act(() => {
     ReactDOM.render(
@@ -28,15 +28,12 @@ beforeEach(async () => {
   item = container.querySelector("#item");
   userEvent.type(item, "kort");
 
-  phone = container.querySelector("#phone");
+  phone = container.querySelector("#tel");
   userEvent.type(phone, "99576480");
   city = container.querySelector("#city");
   userEvent.type(city, "Oslo");
   description = container.querySelector("#description");
   userEvent.type(description, "et fint kort");
-  phone = container.querySelector("#image");
-  userEvent.type(image, "");
-
   button = container.querySelector("button");
 });
 
@@ -46,11 +43,12 @@ afterEach(() => {
 });
 
 describe("Ad component", () => {
-  it("will say opload succeeded", () => {
+  test("upload", async () => {
     PostData.mockImplementation(() => Promise.resolve({ ok: "true" }));
 
-    act(() => {
+    await act(async () => {
       userEvent.click(button);
     });
+    expect(PostData.mock.calls.length).toBe(1);
   });
 });
