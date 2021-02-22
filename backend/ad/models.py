@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
-import datetime
+import token
 
 # Create your models here.
 
@@ -28,3 +28,8 @@ class Ad(models.Model):
 
     def __str__(self):
         return self.headline
+
+    # def __init__(self, token, *args, **kwargs):
+    #     super(Ad, self).__init__(*args, **kwargs)
+    #     self.fields['created_by_user'].queryset = Token.objects.filter(pk=token)
+

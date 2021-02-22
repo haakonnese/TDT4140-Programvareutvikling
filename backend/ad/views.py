@@ -8,7 +8,7 @@ from rest_framework.response import Response
 from .models import Ad
 from .serializers import AdSerializer
 from .forms import ImageForm
-
+from rest_framework.permissions import IsAuthenticated
 
 def index(request):
     return HttpResponse("Hello. You're at the Ad index.")
@@ -16,9 +16,14 @@ def index(request):
 def register_person(request):
     return ""
 
+@api_view(["POST"])
+#@permission_classes([IsAuthenticated])
 def image_upload_view(request):
     """Process images uploaded by users"""
+    permission_classes = [IsAuthenticated]
+
     if request.method == 'POST':
+
         form = ImageForm(request.POST, request.FILES)
 
         if form.is_valid():
