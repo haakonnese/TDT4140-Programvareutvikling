@@ -2,14 +2,12 @@
 
 # Create your views here.
 from django.http import HttpResponse
-from django.template import loader
 from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from .models import Ad
 from .serializers import AdSerializer
 from .forms import ImageForm
-from django.shortcuts import render, redirect
 
 
 def index(request):
@@ -19,7 +17,6 @@ def register_person(request):
     return ""
 
 def image_upload_view(request):
-    template = loader.get_template('API/index.html')
     """Process images uploaded by users"""
     if request.method == 'POST':
         form = ImageForm(request.POST, request.FILES)
@@ -29,9 +26,6 @@ def image_upload_view(request):
 
             #return redirect(ad_list)
             return HttpResponse('Successfully uploaded')
-    else:
-        form = ImageForm()
-    return render(request, 'API/index.html', {'form' : form})
 
 
 @api_view(['POST'])

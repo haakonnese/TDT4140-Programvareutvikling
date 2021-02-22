@@ -27,7 +27,7 @@ class Migration(migrations.Migration):
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('pub_date', models.DateField()),
                 ('headline', models.CharField(max_length=100)),
-                ('created_by_user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='API.person')),
+                ('created_by_user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='ad.person')),
             ],
         ),
     ]

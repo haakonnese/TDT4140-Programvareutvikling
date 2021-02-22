@@ -8,7 +8,7 @@ class Migration(migrations.Migration):
 
     dependencies = [
         ('auth', '0012_alter_user_first_name_max_length'),
-        ('API', '0007_auto_20210222_0827'),
+        ('ad', '0007_auto_20210222_0827'),
     ]
 
     operations = [
@@ -34,7 +34,7 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='ad',
             name='created_by_user',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='API.profile'),
+            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='ad.profile'),
         ),
         migrations.DeleteModel(
             name='Person',

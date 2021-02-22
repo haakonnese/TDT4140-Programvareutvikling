@@ -4,7 +4,6 @@ import datetime
 
 # Create your models here.
 
-
 class Profile(models.Model):
     user = models.OneToOneField(
         User,
@@ -24,7 +23,7 @@ class Ad(models.Model):
     name = models.CharField(max_length=100)
     description = models.CharField(max_length=250)
     price = models.CharField(max_length=50)
-    imgUrl = models.ImageField(upload_to="upload/")
+    imgUrl = models.ImageField(upload_to="ads/")
     category = models.CharField(max_length=50)
 
     def __str__(self):

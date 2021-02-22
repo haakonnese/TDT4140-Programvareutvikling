@@ -34,7 +34,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    "API.apps.ApiConfig",
+    "ad.apps.AdConfig",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -132,7 +132,7 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
 
 TEMPLATE_DIRS = (
-    os.path.join(os.path.dirname(__file__), '../API/templates'),
+    os.path.join(os.path.dirname(__file__), '../ad/templates'),
 )
 
 # Custom template context processor setting

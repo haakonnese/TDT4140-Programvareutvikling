@@ -7,7 +7,7 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('API', '0004_ad_image'),
+        ('ad', '0004_ad_image'),
     ]
 
     operations = [

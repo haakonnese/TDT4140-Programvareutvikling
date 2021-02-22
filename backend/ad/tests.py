@@ -71,9 +71,9 @@ class AdsTest(unittest.TestCase):
         self.assertEqual(ad1.category, d["1"]["category"])
 
         #Sjekker responsen som funker
-        # response = self.client.get("API/view/1", d, format="json")
+        # response = self.client.get("ad/view/1", d, format="json")
         # self.assertEqual(response.status_code, 200)
         #ad1.delete()
 
-        response2 = self.client.get("/API/view/1", d, format="json")
+        response2 = self.client.get("/ad/view/1", d, format="json")
         self.assertEqual(response2.status_code, 404)
