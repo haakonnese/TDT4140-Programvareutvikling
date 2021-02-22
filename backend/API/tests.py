@@ -16,19 +16,25 @@ class AdsTest(unittest.TestCase):
             email="test@thebeatles.com",
             password="test1234",
         )
+        user1.save()
         test_user1 = Profile(user=user1, city="Trondheim", birth_year="1960", phone="33312333")
+        test_user1.save()
         user2 = User.objects.create_user(
             username="user2",
             email="test@rolling.com",
             password="test4321",
         )
+        user2.save()
         test_user2 = Profile(user=user2, city="Oslo", birth_year="2001", phone="23657634")
+        test_user2.save()
         # Lager to annonser som kan brukes i testene
         Ad.objects.create(
             created_by_user=test_user1,
             pub_date="2021-01-01",
             headline="Testannonse1",
             description="Dette er en test-annonse",
+            price="200",
+            image="backend\\media\\images\\2021-02-19.png",
             category="test",
         )
         Ad.objects.create(
@@ -36,6 +42,8 @@ class AdsTest(unittest.TestCase):
             pub_date="1999-10-10",
             headline="Testannonse2",
             description="Dette er en annen test-annonse",
+            price="300",
+            image="backend\\media\\images\\bilde.png",
             category="test",
         )
 
@@ -60,6 +68,8 @@ class AdsTest(unittest.TestCase):
                 "pub_date": datetime.date(2021, 1, 1),
                 "headline": "Testannonse1",
                 "description": "Dette er en test-annonse",
+                "price": "200",
+                "image": "backend\\media\\images\\2021-02-19.png",
                 "category": "test",
             },
             "2": {
@@ -67,6 +77,8 @@ class AdsTest(unittest.TestCase):
                 "pub_date": datetime.date(1999, 10, 10),
                 "headline": "Testannonse2",
                 "description": "Dette er en annen test-annonse",
+                "price": "300",
+                "image": "backend\\media\\images\\bilde.png",
                 "category": "test",
             },
         }
@@ -81,6 +93,8 @@ class AdsTest(unittest.TestCase):
         self.assertEqual(ad1.headline, d["1"]["headline"])
         self.assertEqual(ad1.description, d["1"]["description"])
         self.assertEqual(ad1.category, d["1"]["category"])
+        self.assertEqual(ad1.price, d["1"]["price"])
+        self.assertEqual(ad1.image, d["1"]["image"])
         # Sjekker responsen som funker
         self.assertEqual(response.status_code, 200)
         # Sjekker respons for en annonse
