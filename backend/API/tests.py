@@ -17,7 +17,7 @@ class AdsTest(unittest.TestCase):
             password="test1234",
         )
         user1.save()
-        test_user1 = Profile(user=user1, city="Trondheim", birth_year="1960", phone="33312333")
+        test_user1 = Profile(user=user1, sellerTlf="33312333", city="Trondheim", birth_year="1960")
         test_user1.save()
         user2 = User.objects.create_user(
             username="user2",
@@ -25,25 +25,25 @@ class AdsTest(unittest.TestCase):
             password="test4321",
         )
         user2.save()
-        test_user2 = Profile(user=user2, city="Oslo", birth_year="2001", phone="23657634")
+        test_user2 = Profile(user=user2, sellerTlf="23657634", city="Oslo", birth_year="2001")
         test_user2.save()
         # Lager to annonser som kan brukes i testene
         Ad.objects.create(
             created_by_user=test_user1,
             pub_date="2021-01-01",
-            headline="Testannonse1",
+            name="Testannonse1",
             description="Dette er en test-annonse",
             price="200",
-            image="backend\\media\\images\\2021-02-19.png",
+            imgUrl="backend\\media\\images\\2021-02-19.png",
             category="test",
         )
         Ad.objects.create(
             created_by_user=test_user2,
             pub_date="1999-10-10",
-            headline="Testannonse2",
+            name="Testannonse2",
             description="Dette er en annen test-annonse",
             price="300",
-            image="backend\\media\\images\\bilde.png",
+            imgUrl="backend\\media\\images\\bilde.png",
             category="test",
         )
 
@@ -66,36 +66,36 @@ class AdsTest(unittest.TestCase):
             {
                 "created_by_user": 1,
                 "pub_date": datetime.date(2021, 1, 1),
-                "headline": "Testannonse1",
+                "name": "Testannonse1",
                 "description": "Dette er en test-annonse",
                 "price": "200",
-                "image": "backend\\media\\images\\2021-02-19.png",
+                "imgUrl": "backend\\media\\images\\2021-02-19.png",
                 "category": "test",
             },
             {
                 "created_by_user": 2,
                 "pub_date": datetime.date(1999, 10, 10),
-                "headline": "Testannonse2",
+                "name": "Testannonse2",
                 "description": "Dette er en annen test-annonse",
                 "price": "300",
-                "image": "backend\\media\\images\\bilde.png",
+                "imgUrl": "backend\\media\\images\\bilde.png",
                 "category": "test",
             },
         ]
         # response = self.client.get("/api/ads",
         # json.dumps(d), format = 'json')
         # henter brukere og annonser
-        ad1 = Ad.objects.get(headline="Testannonse1")
-        ad2 = Ad.objects.get(headline="Testannonse2")
+        ad1 = Ad.objects.get(name="Testannonse1")
+        ad2 = Ad.objects.get(name="Testannonse2")
         # Sjekk at attributtene er satt riktig
         self.assertEqual(ad1.created_by_user.user_id, d[0]["created_by_user"])
         self.assertEqual(ad2.created_by_user.user.id, d[1]["created_by_user"])
         self.assertEqual(ad1.pub_date, d[0]["pub_date"])
-        self.assertEqual(ad1.headline, d[0]["headline"])
+        self.assertEqual(ad1.name, d[0]["name"])
         self.assertEqual(ad1.description, d[0]["description"])
         self.assertEqual(ad1.category, d[0]["category"])
         self.assertEqual(ad1.price, d[0]["price"])
-        self.assertEqual(ad1.image, d[0]["image"])
+        self.assertEqual(ad1.imgUrl, d[0]["imgUrl"])
         # Sjekker responsen som funker
         # self.assertEqual(response.status_code, 200)
         # Sjekker respons for en annonse

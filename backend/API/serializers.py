@@ -5,7 +5,7 @@ from .models import Ad
 class AdSerializer(serializers.ModelSerializer):
     class Meta:
         model = Ad
-        fields = ["created_by_user", "pub_date", "headline", "description", "price", "image", "category"]
+        fields = ["created_by_user", "pub_date", "name", "description", "price", "imgUrl", "category"]
 
     def create(self, validated_data):
         """
@@ -20,10 +20,10 @@ class AdSerializer(serializers.ModelSerializer):
         """
         instance.created_by_user = validated_data.get("created_by_user", instance.created_by_user)
         instance.pub_date = validated_data.get("pub_date", instance.pub_date)
-        instance.headline = validated_data.get("headline", instance.headline)
+        instance.headline = validated_data.get("name", instance.headline)
         instance.description = validated_data.get("description", instance.description)
         instance.price = validated_data.get("price", instance.price)
-        instance.image = validated_data.__get("image", instance.image)
+        instance.image = validated_data.__get("imgUrl", instance.image)
         instance.category = validated_data.get("category", instance.category)
         instance.save()
 
