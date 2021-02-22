@@ -8,9 +8,9 @@ from .serializers import AdSerializer
 
 @api_view(["GET"])
 def view_ads(request):
-    context = {}
+    context = []
     for ad in Ad.objects.all().order_by("-pub_date"):
-        context[ad.id] = AdSerializer(ad).data
+        context.append(AdSerializer(ad).data)
     return Response(context)
 
 
