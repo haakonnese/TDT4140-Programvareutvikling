@@ -1,7 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom";
 
-import Ad from "./ProductRegistration/Ad";
+import App from "./App";
 // import Header from "./Header";
 // import React from "react";
 // import "./App.css";
@@ -11,7 +11,7 @@ import Ad from "./ProductRegistration/Ad";
 
 ReactDOM.render(
   <React.StrictMode>
-    <Ad />
+    <App />
   </React.StrictMode>,
   document.getElementById("root")
 );

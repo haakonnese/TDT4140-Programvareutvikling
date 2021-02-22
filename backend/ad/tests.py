@@ -22,17 +22,6 @@ class AdsTest(unittest.TestCase):
         test_user1 = Profile(user=user1, phone="3984503", city="Trondheim", birth_year="1990")
         test_user1.save()
 
-        # # Lager en annonse som kan brukes i testene
-        # Ad.objects.create(
-        #     created_by_user=test_user1,
-        #     # pub_date="2021-01-01",
-        #     name="Testannonse1",
-        #     description="Dette er en test-annonse",
-        #     price="4",
-        #     img="backend/media/upload/Skjermbilde_2021-01-11_kl._14.18.14.png",
-        #     category="test",
-        # )
-
     @classmethod
     def tearDownClass(cls):
         # Sletter brukerne og annonsene
