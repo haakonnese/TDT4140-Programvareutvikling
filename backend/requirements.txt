@@ -2,4 +2,5 @@ Django
 djangorestframework
 flake8
 python-dotenv
+django-cors-headers
 Pillow

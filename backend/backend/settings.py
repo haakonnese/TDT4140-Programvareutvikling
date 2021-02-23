@@ -29,19 +29,31 @@ SECRET_KEY = str(os.getenv("SECRET_KEY"))
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",
+]
 
+# Application definition
+REST_FRAMEWORK = {
+    "DEFAULT_AUTHENTICATION_CLASSES": [
+        "rest_framework.authentication.TokenAuthentication",
+    ]
+}
 
 # Application definition
 
 INSTALLED_APPS = [
-    "API.apps.ApiConfig",
+    "ad.apps.AdConfig",
+    "user.apps.UserConfig",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "rest_framework",
+    "corsheaders",
+    "rest_framework.authtoken",
 ]
 
 MIDDLEWARE = [
@@ -49,6 +61,8 @@ MIDDLEWARE = [
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
+    "corsheaders.middleware.CorsMiddleware",
+    "django.middleware.common.CommonMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
@@ -59,7 +73,7 @@ ROOT_URLCONF = "backend.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [],
+        "DIRS": ["/sellpoint/backend/"],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -131,7 +145,7 @@ MEDIA_URL = "/media/"
 # Path where media is stored
 MEDIA_ROOT = os.path.join(BASE_DIR, "media/")
 
-TEMPLATE_DIRS = (os.path.join(os.path.dirname(__file__), "../API/templates"),)
+TEMPLATE_DIRS = (os.path.join(os.path.dirname(__file__), "../ad/templates"),)
 
 # Custom template context processor setting
 TEMPLATE_CONTEXT_PROCESSORS = (
