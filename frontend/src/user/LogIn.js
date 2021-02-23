@@ -1,5 +1,5 @@
 import { React, useState, useEffect } from "react";
-import { PostData } from "../service/PostData";
+import { PostData } from "../service/FetchData";
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";

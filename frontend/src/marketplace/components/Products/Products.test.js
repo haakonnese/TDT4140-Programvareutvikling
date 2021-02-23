@@ -2,13 +2,13 @@ import { screen } from "@testing-library/react";
 import React from "react";
 import ReactDOM from "react-dom";
 import "@testing-library/jest-dom/extend-expect";
-import { PostData } from "../service/PostData";
+import { GetData } from "../../../service/FetchData";
 import { act } from "react-dom/test-utils";
 import Products from "./Products";
 import { BrowserRouter as Router } from "react-router-dom";
 
-jest.mock("../service/PostData", () => ({
-  PostData: jest.fn(),
+jest.mock("../../../service/FetchData", () => ({
+  GetData: jest.fn(),
 }));
 
 const products = [
@@ -17,10 +17,10 @@ const products = [
     name: "stol",
     description: "lite brukt stol til god pris",
     price: 200,
-    firstName: "Hans",
-    lastName: "Pettersen",
-    sellerTlf: 98765432,
-    imgUrl:
+    first_name: "Hans",
+    last_name: "Pettersen",
+    phone: 98765432,
+    img:
       "https://www.if.no/magasinet/imageshop/img_shp_img_ymq7qsg42u-780x450.jpeg",
   },
   {
@@ -28,10 +28,10 @@ const products = [
     name: "bord",
     description: "lite brukt bord til god pris",
     price: 900,
-    firstName: "Kari",
-    lastName: "Bakken",
-    sellerTlf: 12345678,
-    imgUrl:
+    first_name: "Kari",
+    last_name: "Bakken",
+    phone: 12345678,
+    img:
       "https://www.if.no/magasinet/imageshop/img_shp_img_ymq7qsg42u-780x450.jpeg",
   },
 ];
@@ -42,7 +42,7 @@ describe("Products component", () => {
   test("if prices is correct", async () => {
     const container = document.createElement("div");
     document.body.appendChild(container);
-    PostData.mockImplementation(() => Promise.resolve(products));
+    GetData.mockImplementation(() => Promise.resolve(products));
     await act(async () => {
       ReactDOM.render(
         <Router>

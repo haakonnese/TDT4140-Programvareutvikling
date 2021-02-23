@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import {
   Card,
@@ -12,7 +12,7 @@ import PropTypes from "prop-types";
 // favourite-button to add product to favourite-list
 // import FavoriteBorderIcon from "@material-ui/icons/FavoriteBorder";
 import useStyles from "./styles";
-import { PostData } from "../service/PostData";
+import { GetData } from "../../../service/FetchData";
 
 // define which type the product info will be
 ProductInfo.propTypes = {
@@ -39,18 +39,21 @@ function ProductInfo({ match }) {
   const [products, setProducts] = useState();
 
   // "match" matches given id with id from url
-  PostData("product", { id: match.params.id })
-    .then((result) => {
-      if (result.id) {
-        setProducts(result);
-        // console.log(products);
-      } else {
-        console.log("Feil");
-      }
-    })
-    .catch(() => {
-      history.push("/404");
-    });
+  useEffect(() => {
+    GetData("listing/listing", match.params.id)
+      .then((result) => {
+        if (result.id) {
+          result.img = "http://127.0.0.1:8000" + result.img;
+          setProducts(result);
+          // console.log(products);
+        } else {
+          console.log("Feil");
+        }
+      })
+      .catch(() => {
+        history.push("/404");
+      });
+  }, []);
 
   // css for jsx
   const classes = useStyles();
@@ -58,10 +61,10 @@ function ProductInfo({ match }) {
     <main className={classes.main}>
       {products ? (
         <Card key={products.id} className={classes.root} justify="center">
-          {products.imgUrl ? (
+          {products.img ? (
             <CardMedia
               className={classes.media}
-              image={products.imgUrl}
+              image={products.img}
               title={products.name}
             />
           ) : (
@@ -79,9 +82,9 @@ function ProductInfo({ match }) {
             </Typography>
             <div className={classes.sellerInfo}>
               <Typography varient="h2">
-                Selger: {products.firstName} {products.lastName}
+                Selger: {products.first_name} {products.last_name}
               </Typography>
-              <Typography varient="h2">Tlf: {products.sellerTlf}</Typography>
+              <Typography varient="h2">Tlf: {products.phone}</Typography>
               {/* Favorite-button for adding product to favorite-list */}
               {/* <IconButton className={classes.iconButton} aria-label="Favoriser">
                     <FavoriteBorderIcon />

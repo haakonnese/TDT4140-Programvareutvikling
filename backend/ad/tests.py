@@ -27,7 +27,7 @@ class AdsTest(unittest.TestCase):
         # Sletter brukerne og annonsene
         user1 = User.objects.get(username="user1")
         user1.delete()
-        os.remove(os.path.dirname(__file__) + "/../media/ads/test.jpg")
+        os.remove(os.path.dirname(__file__) + "/../media/product/test.jpg")
 
     def setUp(self):
         # Hver test trenger en klient

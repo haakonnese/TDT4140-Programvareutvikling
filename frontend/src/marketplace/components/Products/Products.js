@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Grid } from "@material-ui/core";
-import { PostData } from "../service/PostData";
+import { GetData } from "../../../service/FetchData";
 import Product from "./Product/Product";
 
 function Products() {
@@ -32,18 +32,22 @@ function Products() {
 
   // hooks
   const [products, setProducts] = useState([]);
-
-  PostData("product", "")
-    .then((result) => {
-      if (result.length > 0) {
-        setProducts(result);
-      } else {
-        console.log("Feil");
-      }
-    })
-    .catch((error) => {
-      console.log("Feil", error);
-    });
+  useEffect(() => {
+    GetData("listing/listings")
+      .then((result) => {
+        if (result.length > 0) {
+          result.forEach((res) => {
+            res.img = "http://127.0.0.1:8000" + res.img;
+          });
+          setProducts(result);
+        } else {
+          console.log("Feil");
+        }
+      })
+      .catch((error) => {
+        console.log("Feil", error);
+      });
+  }, []);
 
   return (
     <main>

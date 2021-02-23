@@ -2,12 +2,12 @@ import { screen } from "@testing-library/react";
 import React from "react";
 import ReactDOM from "react-dom";
 import "@testing-library/jest-dom/extend-expect";
-import { PostData } from "../service/PostData";
+import { GetData } from "../../../service/FetchData";
 import { act } from "react-dom/test-utils";
 import ProductInfo from "./ProductInfo";
 
-jest.mock("../service/PostData", () => ({
-  PostData: jest.fn(),
+jest.mock("../../../service/FetchData", () => ({
+  GetData: jest.fn(),
 }));
 
 const products = {
@@ -26,7 +26,7 @@ describe("ProductInfo component", () => {
   test("if price is correct", async () => {
     const container = document.createElement("div");
     document.body.appendChild(container);
-    PostData.mockImplementation(() => Promise.resolve(products));
+    GetData.mockImplementation(() => Promise.resolve(products));
     await act(async () => {
       ReactDOM.render(<ProductInfo match={{ params: { id: 1 } }} />, container);
     });

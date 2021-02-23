@@ -26,10 +26,10 @@ function Product(props) {
 
   return (
     <Card className={classes.root}>
-      {props.product.imgUrl ? (
+      {props.product.img ? (
         <CardMedia
           className={classes.media}
-          image={props.product.imgUrl}
+          image={props.product.img}
           title={props.product.name}
         />
       ) : (

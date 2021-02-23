@@ -11,6 +11,7 @@ from .serializers import AdSerializer
 from .forms import ImageForm
 from rest_framework.permissions import IsAuthenticated
 from user.models import Profile
+from django.contrib.auth.models import User
 
 
 def index(request):
@@ -29,7 +30,11 @@ def view_ads(request):
 def view_single_ad(request, id):
     try:
         response = AdSerializer(Ad.objects.get(id=id))
-        return Response(response.data)
+        user = User.objects.get(username=Ad.objects.get(id=id).created_by_user)
+        profile = Profile.objects.get(user=user)
+        d = {"phone": profile.phone, "first_name": user.first_name, "last_name": user.last_name}
+        d.update(response.data)
+        return Response(d)
     except ObjectDoesNotExist:
         raise Http404
 

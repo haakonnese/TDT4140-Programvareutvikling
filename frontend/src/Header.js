@@ -67,7 +67,7 @@ export default function Header(props) {
             >
               Logg ut
             </Button>
-            <Link to="opprett" className={classes.ad}>
+            <Link to="/opprett" className={classes.ad}>
               <Avatar className={classes.avatar}>
                 <PostAdd />
               </Avatar>
