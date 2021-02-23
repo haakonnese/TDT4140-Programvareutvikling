@@ -12,7 +12,7 @@ import PropTypes from "prop-types";
 // favourite-button to add product to favourite-list
 // import FavoriteBorderIcon from "@material-ui/icons/FavoriteBorder";
 import useStyles from "./styles";
-import { GetData } from "../service/PostData";
+import { PostData } from "../service/PostData";
 
 // define which type the product info will be
 ProductInfo.propTypes = {
@@ -39,7 +39,7 @@ function ProductInfo({ match }) {
   const [products, setProducts] = useState();
 
   // "match" matches given id with id from url
-  GetData("product", { id: match.params.id })
+  PostData("product", { id: match.params.id })
     .then((result) => {
       if (result.id) {
         setProducts(result);
