@@ -70,6 +70,7 @@ export default function RegisterAd(props) {
       formData.append("description", details.description);
       formData.append("name", details.name);
       formData.append("price", details.price);
+      formData.append("city", details.city);
       formData.append("created_by_user", "");
       PostData("ad/register", formData, "multipart/form-data")
         .then((result) => {
