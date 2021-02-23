@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Grid } from "@material-ui/core";
-import { PostData } from "../service/PostData";
+import { GetData } from "../service/PostData";
 import Product from "./Product/Product";
 
 function Products() {
@@ -33,7 +33,7 @@ function Products() {
   // hooks
   const [products, setProducts] = useState([]);
 
-  PostData("product", "")
+  GetData("product", "")
     .then((result) => {
       if (result.length > 0) {
         setProducts(result);
