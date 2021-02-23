@@ -25,7 +25,7 @@ const useStyles = makeStyles((theme) => ({
   },
   ad: {
     float: "right",
-    marginRight: "3em",
+    marginRight: "1em",
   },
   avatar: { backgroundColor: theme.palette.secondary.main },
 }));

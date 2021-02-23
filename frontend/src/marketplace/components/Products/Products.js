@@ -51,7 +51,16 @@ function Products() {
 
   return (
     <main>
-      <Grid container justify="center" spacing={4}>
+      <Grid
+        container
+        justify="center"
+        spacing={4}
+        style={{
+          width: "100%",
+          margin: 0,
+          marginTop: 20,
+        }}
+      >
         {products.map((product) => (
           <Grid item key={product.id} xs={12} sm={6} md={4} lg={3}>
             <Product product={product} />
