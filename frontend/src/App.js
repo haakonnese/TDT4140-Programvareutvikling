@@ -1,10 +1,11 @@
 import Header from "./Header";
 import React, { useState } from "react";
-import "./App.css";
 import Registation from "./user/Registration";
 import SignIn from "./user/LogIn";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import Footer from "./Footer";
+import RegisterAd from "./ProductRegistration/RegisterAd";
+import "./index.css";
 
 function App() {
   const [loggedIn, setLoggedIn] = useState(
@@ -42,6 +43,11 @@ function App() {
             // component={SignIn}
             // loggedIn={loggedIn}
             // changeLoggedIn={changeLoggedIn}
+          />
+          <Route
+            exact
+            path="/opprett"
+            render={() => <RegisterAd loggedIn={loggedIn} />}
           />
           <Route exact path="/"></Route>
         </Switch>

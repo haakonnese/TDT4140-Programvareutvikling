@@ -7,9 +7,9 @@ import Grid from "@material-ui/core/Grid";
 import TextField from "@material-ui/core/TextField";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Typography from "@material-ui/core/Typography";
-import useStyles from "./styles";
+import useStyles from "../standardComponents/styles";
 import Container from "@material-ui/core/Container";
-import InputTextField from "./InputTextField";
+import InputTextField from "../standardComponents/InputTextField";
 import { Link, useHistory } from "react-router-dom";
 import PropTypes from "prop-types";
 

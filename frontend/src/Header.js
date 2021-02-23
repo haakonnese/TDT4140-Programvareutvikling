@@ -1,13 +1,11 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { makeStyles } from "@material-ui/core/styles";
-import Toolbar from "@material-ui/core/Toolbar";
-import Button from "@material-ui/core/Button";
+import { Toolbar, Button, Avatar, Typography } from "@material-ui/core";
 // import IconButton from "@material-ui/core/IconButton";
 // import SearchIcon from "@material-ui/icons/Search";
-import Typography from "@material-ui/core/Typography";
 import { Link, useHistory } from "react-router-dom";
-
+import PostAdd from "@material-ui/icons/PostAdd";
 // import Link from "@material-ui/core/Link";
 
 const useStyles = makeStyles((theme) => ({
@@ -25,6 +23,11 @@ const useStyles = makeStyles((theme) => ({
   logIn: {
     float: "right",
   },
+  ad: {
+    float: "right",
+    marginRight: "3em",
+  },
+  avatar: { backgroundColor: theme.palette.secondary.main },
 }));
 
 export default function Header(props) {
@@ -51,18 +54,25 @@ export default function Header(props) {
           <SearchIcon />
         </IconButton> */}
         {loggedIn ? (
-          <Button
-            variant="outlined"
-            size="small"
-            onClick={(e) => {
-              localStorage.removeItem("token");
-              changeLoggedIn(false);
-              history.push("/");
-            }}
-            className={classes.logIn}
-          >
-            Logg ut
-          </Button>
+          <div>
+            <Button
+              variant="outlined"
+              size="small"
+              onClick={(e) => {
+                localStorage.removeItem("token");
+                changeLoggedIn(false);
+                history.push("/");
+              }}
+              className={classes.logIn}
+            >
+              Logg ut
+            </Button>
+            <Link to="opprett" className={classes.ad}>
+              <Avatar className={classes.avatar}>
+                <PostAdd />
+              </Avatar>
+            </Link>
+          </div>
         ) : (
           <Link to="/logginn">
             <Button variant="outlined" size="small" className={classes.logIn}>
