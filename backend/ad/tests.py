@@ -47,7 +47,7 @@ class AdsTest(unittest.TestCase):
             "category": "test",
         }
         self.client.credentials(HTTP_AUTHORIZATION="Token " + str(Token.objects.get(user=user1)))
-        response = self.client.post("/api/ad/register", d)
+        response = self.client.post("/api/listing/register", d)
         # Sjekk at responsen er 201 user_created.
         self.assertEqual(response.status_code, 201)
         # henter brukere og annonser
