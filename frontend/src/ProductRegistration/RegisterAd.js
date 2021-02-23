@@ -72,7 +72,7 @@ export default function RegisterAd(props) {
       formData.append("price", details.price);
       formData.append("city", details.city);
       formData.append("created_by_user", "");
-      PostData("ad/register", formData, "multipart/form-data")
+      PostData("listing/register", formData, "multipart/form-data")
         .then((result) => {
           if (result) {
             history.push("/");
