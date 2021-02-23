@@ -42,6 +42,7 @@ class AdsTest(unittest.TestCase):
             "name": "Testannonse1",
             "description": "Dette er en test-annonse",
             "price": 4,
+            "city": "Trondheim",
             "img": open(os.path.dirname(__file__) + "/../media/test/test.jpg", "rb"),
             "category": "test",
         }
