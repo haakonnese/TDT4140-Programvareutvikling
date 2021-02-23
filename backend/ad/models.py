@@ -12,6 +12,7 @@ class Ad(models.Model):
     price = models.PositiveIntegerField()
     img = models.ImageField(upload_to="ads/")
     category = models.CharField(max_length=50)
+    city = models.CharField(max_length=100, default="Ikke oppgitt")
 
     def __str__(self):
         return self.name

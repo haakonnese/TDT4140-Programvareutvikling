@@ -25,6 +25,7 @@ class AdSerializer(serializers.ModelSerializer):
         instance.price = validated_data.get("price", instance.price)
         instance.img = validated_data.__get("img", instance.img)
         instance.category = validated_data.get("category", instance.category)
+        instance.city = validated_data.get("city", instance.city)
         instance.save()
 
         return instance
