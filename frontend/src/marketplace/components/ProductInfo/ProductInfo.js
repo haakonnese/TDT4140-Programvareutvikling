@@ -56,7 +56,7 @@ function ProductInfo({ match }) {
   }, []);
 
   // css for jsx
-  // console.log(products);
+  console.log(products);
   const classes = useStyles();
   return (
     <main className={classes.main}>
@@ -91,7 +91,11 @@ function ProductInfo({ match }) {
                   </IconButton> */}
             </div>
             <br />
-            <Typography varient="h2" color="textSecondary">
+            <Typography
+              varient="h2"
+              color="textSecondary"
+              style={{ whiteSpace: "pre-wrap" }}
+            >
               {products.description}
             </Typography>
           </CardContent>
