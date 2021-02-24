@@ -56,7 +56,7 @@ function ProductInfo({ match }) {
   }, []);
 
   // css for jsx
-  console.log(products);
+  // console.log(products);
   const classes = useStyles();
   return (
     <main className={classes.main}>
@@ -78,9 +78,7 @@ function ProductInfo({ match }) {
               </Typography>
               <Typography varient="h5">{products.price}kr</Typography>
             </div>
-            <Typography varient="h2" color="textSecondary">
-              {products.description}
-            </Typography>
+
             <div className={classes.sellerInfo}>
               <Typography varient="h2">By: {products.city}</Typography>
               <Typography varient="h2">
@@ -92,6 +90,10 @@ function ProductInfo({ match }) {
                     <FavoriteBorderIcon />
                   </IconButton> */}
             </div>
+            <br />
+            <Typography varient="h2" color="textSecondary">
+              {products.description}
+            </Typography>
           </CardContent>
         </Card>
       ) : (

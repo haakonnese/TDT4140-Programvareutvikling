@@ -42,16 +42,18 @@ function Product(props) {
           </Typography>
           <Typography varient="h5">{props.product.price}kr</Typography>
         </div>
-        <Typography varient="h2" color="textSecondary">
-          {props.product.city}
-        </Typography>
-        <Typography varient="h2" color="textSecondary">
-          {props.product.category}
-        </Typography>
-        <br />
+        <div className={classes.cardContent}>
+          <Typography varient="h2" color="textSecondary">
+            {props.product.city}
+          </Typography>
+          <Typography varient="h2" color="textSecondary">
+            {props.product.category}
+          </Typography>
+        </div>
+        {/* <br />
         <Typography varient="h2" color="textSecondary">
           {props.product.description}
-        </Typography>
+        </Typography> */}
       </CardContent>
       <CardActions disableSpacing className={classes.cardActions}>
         <Link to={`/products/${props.product.id}`}>
