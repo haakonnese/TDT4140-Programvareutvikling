@@ -43,6 +43,13 @@ function Product(props) {
           <Typography varient="h5">{props.product.price}kr</Typography>
         </div>
         <Typography varient="h2" color="textSecondary">
+          {props.product.city}
+        </Typography>
+        <Typography varient="h2" color="textSecondary">
+          {props.product.category}
+        </Typography>
+        <br />
+        <Typography varient="h2" color="textSecondary">
           {props.product.description}
         </Typography>
       </CardContent>

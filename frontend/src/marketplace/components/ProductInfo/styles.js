@@ -12,7 +12,7 @@ export default makeStyles((theme) => ({
   },
   media: {
     height: "50px",
-    paddingTop: "300px",
+    paddingTop: "50%",
   },
   cardContent: {
     display: "flex",
