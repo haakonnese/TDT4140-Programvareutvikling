@@ -13,8 +13,6 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path("api/user/", include("user.urls")),
     path("api/listing/", include("ad.urls")),
-    # path("api/ads", view_ads),
-    # path("api/ads/<id>", view_single_ad),
 ]
 urlpatterns += staticfiles_urlpatterns()
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
