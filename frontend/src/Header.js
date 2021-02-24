@@ -25,7 +25,7 @@ const useStyles = makeStyles((theme) => ({
   },
   ad: {
     float: "right",
-    marginRight: "3em",
+    marginRight: "1em",
   },
   avatar: { backgroundColor: theme.palette.secondary.main },
 }));
@@ -67,7 +67,7 @@ export default function Header(props) {
             >
               Logg ut
             </Button>
-            <Link to="opprett" className={classes.ad}>
+            <Link to="/opprett" className={classes.ad}>
               <Avatar className={classes.avatar}>
                 <PostAdd />
               </Avatar>

@@ -27,6 +27,7 @@ export default function InputTextField(props) {
       margin="normal"
       required
       fullWidth
+      inputProps={props.id === "price" ? { min: 0 } : {}}
       value={props.val}
       multiline={props.multiline}
       onChange={(e) => {

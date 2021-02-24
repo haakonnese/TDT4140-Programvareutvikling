@@ -59,3 +59,4 @@ test-django:
     - python manage.py test
   variables:
     SECRET_KEY: SECRET_KEY
+

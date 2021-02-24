@@ -33,3 +33,21 @@ export function PostData(type, userData, contentType = "application/json") {
       .catch((error) => reject(error));
   });
 }
+
+export function GetData(type, userData = null) {
+  // fetches data from the given endpoint and returns the promise (responseJson)
+  let text;
+  if (userData != null) {
+    text = type + "/" + userData;
+  } else {
+    text = type;
+  }
+  return new Promise((resolve, reject) => {
+    fetch(BASE_URL + text, {
+      method: "GET",
+    })
+      .then((response) => response.json())
+      .then((responseJson) => resolve(responseJson))
+      .catch((error) => reject(error));
+  });
+}

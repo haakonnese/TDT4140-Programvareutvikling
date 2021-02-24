@@ -1,7 +1,8 @@
 # from django.shortcuts import render
 
 # Create your views here.
-from django.http import HttpResponse
+from django.core.exceptions import ObjectDoesNotExist
+from django.http import HttpResponse, Http404
 from rest_framework import status
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
@@ -10,10 +11,32 @@ from .serializers import AdSerializer
 from .forms import ImageForm
 from rest_framework.permissions import IsAuthenticated
 from user.models import Profile
+from django.contrib.auth.models import User
 
 
 def index(request):
     return HttpResponse("Hello. You're at the Ad index.")
+
+
+@api_view(["GET"])
+def view_ads(request):
+    context = []
+    for ad in Ad.objects.all().order_by("-pub_date"):
+        context.append(AdSerializer(ad).data)
+    return Response(context)
+
+
+@api_view(["GET"])
+def view_single_ad(request, id):
+    try:
+        response = AdSerializer(Ad.objects.get(id=id))
+        user = User.objects.get(username=Ad.objects.get(id=id).created_by_user)
+        profile = Profile.objects.get(user=user)
+        d = {"phone": profile.phone, "first_name": user.first_name, "last_name": user.last_name}
+        d.update(response.data)
+        return Response(d)
+    except ObjectDoesNotExist:
+        raise Http404
 
 
 @api_view(["POST"])

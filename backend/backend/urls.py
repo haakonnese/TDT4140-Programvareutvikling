@@ -1,8 +1,13 @@
 from django.contrib import admin
-from django.urls import path, include
-from . import settings
-from django.contrib.staticfiles.urls import static
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
+from django.urls import path, include
+
+# from . import settings
+# from django.contrib.staticfiles.urls import static
+
+# from ad.views import view_ads, view_single_ad
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
     path("admin/", admin.site.urls),
