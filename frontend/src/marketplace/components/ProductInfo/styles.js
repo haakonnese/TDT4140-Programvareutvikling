@@ -3,7 +3,7 @@ import { makeStyles } from "@material-ui/core/styles";
 export default makeStyles((theme) => ({
   main: {
     margin: "auto",
-    paddingTop: "100px",
+    paddingTop: "30px",
     maxWidth: "60%",
     justify: "center",
   },
