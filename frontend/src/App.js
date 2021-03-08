@@ -1,10 +1,13 @@
 import Header from "./Header";
 import React, { useState } from "react";
-import "./App.css";
 import Registation from "./user/Registration";
 import SignIn from "./user/LogIn";
+import Products from "./marketplace/components/Products/Products";
+import ProductInfo from "./marketplace/components/ProductInfo/ProductInfo";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import Footer from "./Footer";
+import RegisterAd from "./ProductRegistration/RegisterAd";
+import "./index.css";
 
 function App() {
   const [loggedIn, setLoggedIn] = useState(
@@ -43,7 +46,13 @@ function App() {
             // loggedIn={loggedIn}
             // changeLoggedIn={changeLoggedIn}
           />
-          <Route exact path="/"></Route>
+          <Route
+            exact
+            path="/opprett"
+            render={() => <RegisterAd loggedIn={loggedIn} />}
+          />
+          <Route exact path="/" component={Products}></Route>
+          <Route exact path="/products/:id" component={ProductInfo} />
         </Switch>
       </div>
       <Footer title="SellPoint" description="" />

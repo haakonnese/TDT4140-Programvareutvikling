@@ -2,13 +2,13 @@ import { screen } from "@testing-library/react";
 import React from "react";
 import ReactDOM from "react-dom";
 import "@testing-library/jest-dom/extend-expect";
-import { PostData } from "../service/PostData";
+import { PostData } from "../service/FetchData";
 import LogIn from "./LogIn";
 import { act } from "react-dom/test-utils";
 import userEvent from "@testing-library/user-event";
 import { BrowserRouter as Router } from "react-router-dom";
 
-jest.mock("../service/PostData", () => ({
+jest.mock("../service/FetchData", () => ({
   PostData: jest.fn(),
 }));
 

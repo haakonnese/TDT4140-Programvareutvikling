@@ -1,5 +1,5 @@
 import { React, useState, useEffect } from "react";
-import { PostData } from "../service/PostData";
+import { PostData } from "../service/FetchData";
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
@@ -7,9 +7,9 @@ import Grid from "@material-ui/core/Grid";
 import TextField from "@material-ui/core/TextField";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Typography from "@material-ui/core/Typography";
-import useStyles from "./styles";
+import useStyles from "../standardComponents/styles";
 import Container from "@material-ui/core/Container";
-import InputTextField from "./InputTextField";
+import InputTextField from "../standardComponents/InputTextField";
 import { Link, useHistory } from "react-router-dom";
 import PropTypes from "prop-types";
 
@@ -56,7 +56,7 @@ export default function Registation(props) {
         .then((result) => {
           // console.log(result);
           if (result.token) {
-            localStorage.setItem("token", JSON.stringify(result.token));
+            localStorage.setItem("token", result.token);
             changeLoggedIn(true);
             history.push("/");
           } else {

@@ -17,6 +17,7 @@ InputTextField.propTypes = {
   errorType: PropTypes.string,
   val: PropTypes.string,
   user: PropTypes.bool,
+  multiline: PropTypes.bool,
 };
 
 export default function InputTextField(props) {
@@ -26,7 +27,9 @@ export default function InputTextField(props) {
       margin="normal"
       required
       fullWidth
+      inputProps={props.id === "price" ? { min: 0 } : {}}
       value={props.val}
+      multiline={props.multiline}
       onChange={(e) => {
         if (props.user) {
           props.setDetails({

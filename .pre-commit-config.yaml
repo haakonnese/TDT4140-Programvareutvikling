@@ -32,11 +32,11 @@ repos:
   #       language: system
   #       types: [python]
   #       pass_filenames: false
-  - repo: local
-    hooks:
-      - id: pre-commit-react-test
-        name: React test
-        entry: npm run test --prefix frontend/
-        language: system
-        types: [javascript]
-        pass_filenames: false
+#  - repo: local
+#    hooks:
+#      - id: pre-commit-react-test
+#        name: React test
+#        entry: npm run test --prefix frontend/
+#        language: system
+#        types: [javascript]
+#        pass_filenames: false
