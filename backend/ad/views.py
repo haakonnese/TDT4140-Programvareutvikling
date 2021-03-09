@@ -12,6 +12,8 @@ from .forms import ImageForm
 from rest_framework.permissions import IsAuthenticated
 from user.models import Profile
 from django.contrib.auth.models import User
+from django.core.serializers import serialize
+import json
 
 
 def index(request):
@@ -76,3 +78,16 @@ def ad_detail(request, pk):
     elif request.method == "DELETE":
         ad.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+@api_view(["GET"])
+def ad_filter_category(request, category):
+    response = Response()
+    ads = Ad.objects.filter(category=category)
+    if not ads.exists():
+        response.status = status.HTTP_400_BAD_REQUEST
+        response.data = "There are no ads of this category!"
+        return response
+    response.data = json.loads(serialize("json", ads))
+    response.status = status.HTTP_200_OK
+    return response
