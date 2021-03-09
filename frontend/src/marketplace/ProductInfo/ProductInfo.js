@@ -12,7 +12,7 @@ import PropTypes from "prop-types";
 // favourite-button to add product to favourite-list
 // import FavoriteBorderIcon from "@material-ui/icons/FavoriteBorder";
 import useStyles from "./styles";
-import { GetData } from "../../../service/FetchData";
+import { GetData } from "../../service/FetchData";
 
 // define which type the product info will be
 ProductInfo.propTypes = {
