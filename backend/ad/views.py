@@ -12,8 +12,6 @@ from .forms import ImageForm
 from rest_framework.permissions import IsAuthenticated
 from user.models import Profile
 from django.contrib.auth.models import User
-from django.core.serializers import serialize
-import json
 
 
 def index(request):
@@ -92,11 +90,18 @@ def ad_detail(request, pk):
 @api_view(["GET"])
 def ad_filter_category(request, category):
     response = Response()
+    categories = Category.objects.filter(category=category)
+    if not categories.exists():
+        response.status = status.HTTP_404_NOT_FOUND
+        response.data = "There are no such category!"
+        return response
     ads = Ad.objects.filter(category=category)
     if not ads.exists():
-        response.status = status.HTTP_400_BAD_REQUEST
-        response.data = "There are no ads of this category!"
+        response.status = status.HTTP_204_NO_CONTENT
+        response.data = "There are no ads for this category yet!"
         return response
-    response.data = json.loads(serialize("json", ads))
+    context = []
+    for ad in ads:
+        context.append(AdSerializer(ad).data)
     response.status = status.HTTP_200_OK
     return response
