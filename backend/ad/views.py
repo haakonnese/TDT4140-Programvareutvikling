@@ -104,4 +104,5 @@ def ad_filter_category(request, category):
     for ad in ads:
         context.append(AdSerializer(ad).data)
     response.status = status.HTTP_200_OK
+    response.data = context
     return response
