@@ -14,18 +14,19 @@ import PostAdd from "@material-ui/icons/PostAdd";
 import useStyles from "../standardComponents/styles";
 import InputTextField from "../standardComponents/InputTextField";
 import { useHistory } from "react-router-dom";
+import { connect } from "react-redux";
 // import { phoneError } from "./errorMessages";
 
-const categories = [
-  { type: "Kjøretøy" },
-  { type: "Sportsutsyr" },
-  { type: "Bøker" },
-  { type: "Elektronikk" },
-  { type: "Leker" },
-  { type: "Annet" },
-];
+// const categories = [
+//   { type: "Kjøretøy" },
+//   { type: "Sportsutsyr" },
+//   { type: "Bøker" },
+//   { type: "Elektronikk" },
+//   { type: "Leker" },
+//   { type: "Annet" },
+// ];
 
-export default function RegisterAd(props) {
+function RegisterAd(props) {
   const classes = useStyles();
   const history = useHistory();
   const [details, setDetails] = useState({
@@ -130,7 +131,7 @@ export default function RegisterAd(props) {
 
             <Autocomplete
               id="category"
-              options={categories.map((option) => option.type)}
+              options={props.categories.map((option) => option.category)}
               onChange={(e, value) => {
                 setDetails({ ...details, category: value });
               }}
@@ -214,4 +215,10 @@ export default function RegisterAd(props) {
 }
 RegisterAd.propTypes = {
   loggedIn: PropTypes.bool,
+  categories: PropTypes.array,
 };
+
+const mapStateToProps = (state) => {
+  return { categories: state.categories };
+};
+export default connect(mapStateToProps)(RegisterAd);

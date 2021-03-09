@@ -26,3 +26,10 @@ class Ad(models.Model):
             size = 1000, image.width * ratio
             image.thumbnail(size)
         image.save(self.img.path, quality=80, optimize=True)
+
+
+class Category(models.Model):
+    category = models.CharField(max_length=40)
+
+    def __str__(self):
+        return self.category

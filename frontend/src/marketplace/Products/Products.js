@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { Grid } from "@material-ui/core";
-import { GetData } from "../../../service/FetchData";
+import { GetData } from "../../service/FetchData";
 import Product from "./Product/Product";
+import Filter from "./Filter";
 
 function Products() {
   // Product test
@@ -51,9 +52,10 @@ function Products() {
 
   return (
     <main>
+      <Filter />
       <Grid
         container
-        justify="center"
+        justify="flex-start"
         spacing={4}
         style={{
           width: "100%",
