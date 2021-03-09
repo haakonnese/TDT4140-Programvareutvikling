@@ -3,6 +3,7 @@ import { Grid } from "@material-ui/core";
 import { GetData } from "../../service/FetchData";
 import Product from "./Product/Product";
 import Filter from "./Filter";
+import { connect } from "react-redux";
 
 function Products() {
   // Product test
@@ -72,5 +73,8 @@ function Products() {
     </main>
   );
 }
+const mapStateToProps = (state) => {
+  return { filter: state.filter };
+};
 
-export default Products;
+export default connect(mapStateToProps)(Products);
