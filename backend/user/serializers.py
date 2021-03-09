@@ -14,6 +14,13 @@ class UserSerializer(serializers.ModelSerializer):
         user = User.objects.create_user(**validated_data)
         return user
 
+    def update(self, instance, validated_data):
+        instance.username = validated_data.pop("username")
+        instance.first_name = validated_data.pop("first_name")
+        instance.last_name = validated_data.pop("last_name")
+        instance.save()
+        return instance
+
 
 class ProfileSerializer(serializers.ModelSerializer):
     user = UserSerializer(required=True)
@@ -37,3 +44,12 @@ class ProfileSerializer(serializers.ModelSerializer):
             birth_year=validated_data.pop("birth_year"),
         )
         return profile
+
+    def update(self, instance, validated_data):
+        user_data = validated_data.pop("user")
+        UserSerializer.update(UserSerializer(), instance=instance.user, validated_data=user_data)
+        instance.city = validated_data.pop("city")
+        instance.phone = validated_data.pop("phone")
+        instance.birth_year = validated_data.pop("birth_year")
+        instance.save()
+        return instance

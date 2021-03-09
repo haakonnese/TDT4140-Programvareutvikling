@@ -163,7 +163,3 @@ class ProfileTest(unittest.TestCase):
         # Sjekker at man kan endre passord
         response = self.client.put("/api/user/edit_password", {"password": "test12345"}, format="json")
         self.assertEqual(response.status_code, 200)
-
-        # sjekker at passordet må være langt nok
-        response = self.client.put("/api/user/edit_password", {"password": "test"}, format="json")
-        self.assertEqual(response.status_code, 403)
