@@ -174,6 +174,6 @@ Filter.propTypes = {
 };
 
 const mapStateToProps = (state) => {
-  return { categories: state.category };
+  return { categories: state.categories };
 };
 export default connect(mapStateToProps)(Filter);

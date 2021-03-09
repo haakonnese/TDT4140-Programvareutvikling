@@ -27,7 +27,7 @@ function filterReducer(state = filter, action = "DEFAULT_FILTER") {
   }
 }
 const rootReducer = combineReducers({
-  category: categoryReducer,
+  categories: categoryReducer,
   filter: filterReducer,
 });
 export default createStore(rootReducer);

@@ -6,6 +6,8 @@ import { GetData } from "../../service/FetchData";
 import { act } from "react-dom/test-utils";
 import Products from "./Products";
 import { BrowserRouter as Router } from "react-router-dom";
+import store from "./../../reducers";
+import { Provider } from "react-redux";
 
 jest.mock("../../service/FetchData", () => ({
   GetData: jest.fn(),
@@ -43,11 +45,17 @@ describe("Products component", () => {
     const container = document.createElement("div");
     document.body.appendChild(container);
     GetData.mockImplementation(() => Promise.resolve(products));
+    store.dispatch({
+      type: "UPDATE_CATEGORY",
+      payload: [{ category: "Annet" }],
+    });
     await act(async () => {
       ReactDOM.render(
-        <Router>
-          <Products />
-        </Router>,
+        <Provider store={store}>
+          <Router>
+            <Products />
+          </Router>
+        </Provider>,
         container
       );
     });

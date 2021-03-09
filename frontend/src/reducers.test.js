@@ -2,7 +2,7 @@ import store, { filter } from "./reducers";
 
 describe("category reducer", () => {
   it("should return the initial state", () => {
-    expect(store.getState().category).toEqual([
+    expect(store.getState().categories).toEqual([
       {
         category: "",
       },
@@ -14,7 +14,7 @@ describe("category reducer", () => {
       type: "UPDATE_CATEGORY",
       payload: [{ category: "Leker" }],
     });
-    expect(store.getState().category).toEqual([
+    expect(store.getState().categories).toEqual([
       {
         category: "Leker",
       },
