@@ -20,7 +20,25 @@ function reducer(state, action = "default") {
       return state;
   }
 }
-const store = createStore(reducer, { categories: [{ category: "" }] });
+const store = createStore(reducer, {
+  categories: [
+    {
+      category: "Møbler",
+    },
+    {
+      category: "Sportsutstyr",
+    },
+    {
+      category: "Elektronikk",
+    },
+    {
+      category: "Bøker",
+    },
+    {
+      category: "Annet",
+    },
+  ],
+});
 function App() {
   const [loggedIn, setLoggedIn] = useState(
     localStorage.getItem("token") != null
@@ -30,7 +48,9 @@ function App() {
   }
   useEffect(() => {
     GetData("listing/categories").then((data) => {
-      store.dispatch({ type: "update", payload: { categories: data } });
+      if (data.length > 0) {
+        store.dispatch({ type: "update", payload: { categories: data } });
+      }
     });
   }, []);
   return (
