@@ -42,45 +42,45 @@ def create_auth_token(sender, instance=None, created=False, **kwargs):
 
 @api_view(["PUT"])
 def edit_profile(request):
+    """Edits the profile currently logged on."""
     response = Response()
     if request.user.is_anonymous:
-        response.status_code = 403
+        response.status_code = status.HTTP_403_FORBIDDEN
         return response
-    else:
-        data = request.data
-        if (
-            User.objects.filter(username=data["user"]["username"]).exists()
-            and data["user"]["username"] != request.user.username
-        ):
-            response.status_code = 403
-            return response
-        request.user.first_name = data["user"]["first_name"]
-        request.user.last_name = data["user"]["last_name"]
-        request.user.username = data["user"]["username"]
-        request.user.profile.birth_year = data["birth_year"]
-        request.user.profile.city = data["city"]
-        request.user.profile.phone = data["phone"]
-        request.user.save()
-        response.status_code = 200
-        response.data = ProfileSerializer(request.user.profile).data
+    data = request.data
+    if (
+        User.objects.filter(username=data["user"]["username"]).exists()
+        and data["user"]["username"] != request.user.username
+    ):
+        response.status_code = status.HTTP_403_FORBIDDEN
+        response.data = "The username is already in use!"
         return response
+    request.user.first_name = data["user"]["first_name"]
+    request.user.last_name = data["user"]["last_name"]
+    request.user.username = data["user"]["username"]
+    request.user.profile.birth_year = data["birth_year"]
+    request.user.profile.city = data["city"]
+    request.user.profile.phone = data["phone"]
+    request.user.save()
+    response.status_code = status.HTTP_200_OK
+    response.data = ProfileSerializer(request.user.profile).data
+    return response
 
 
-# Kan legge inn ytligere validering av passord.
 @api_view(["PUT"])
 def edit_password(request):
+    """Changes the password of the user currently logged on."""
     response = Response()
     if request.user.is_anonymous:
-        response.status_code = 403
+        response.status_code = status.HTTP_403_FORBIDDEN
         return response
-    else:
-        password = request.data["password"]
-        if len(password) > 4:
-            request.user.set_password(password)
-            request.user.save()
-            response.status_code = 200
-            response.data = "Password changed successfully"
-            return response
-        response.data = "Not a valid password"
-        response.status_code = 403
+    password = request.data["password"]
+    if len(password) > 4:
+        request.user.set_password(password)
+        request.user.save()
+        response.status_code = status.HTTP_200_OK
+        response.data = "Password changed successfully"
         return response
+    response.data = "Not a valid password"
+    response.status_code = status.HTTP_403_FORBIDDEN
+    return response
