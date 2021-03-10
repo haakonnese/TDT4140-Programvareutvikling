@@ -23,19 +23,7 @@ function reducer(state, action = "default") {
 const store = createStore(reducer, {
   categories: [
     {
-      category: "Møbler",
-    },
-    {
-      category: "Sportsutstyr",
-    },
-    {
-      category: "Elektronikk",
-    },
-    {
-      category: "Bøker",
-    },
-    {
-      category: "Annet",
+      category: "",
     },
   ],
 });
