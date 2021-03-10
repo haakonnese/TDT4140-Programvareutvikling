@@ -1,11 +1,18 @@
-import React from "react";
+import React, { useState } from "react";
 import PropTypes from "prop-types";
 import { makeStyles } from "@material-ui/core/styles";
-import { Toolbar, Button, Avatar, Typography } from "@material-ui/core";
+import {
+  Toolbar,
+  Button,
+  Typography,
+  IconButton,
+  Menu,
+  MenuItem,
+} from "@material-ui/core";
+import { AccountCircle } from "@material-ui/icons";
 // import IconButton from "@material-ui/core/IconButton";
 // import SearchIcon from "@material-ui/icons/Search";
 import { Link, useHistory } from "react-router-dom";
-import PostAdd from "@material-ui/icons/PostAdd";
 // import Link from "@material-ui/core/Link";
 
 const useStyles = makeStyles((theme) => ({
@@ -23,10 +30,6 @@ const useStyles = makeStyles((theme) => ({
   logIn: {
     float: "right",
   },
-  ad: {
-    float: "right",
-    marginRight: "1em",
-  },
   avatar: { backgroundColor: theme.palette.secondary.main },
 }));
 
@@ -35,6 +38,17 @@ export default function Header(props) {
   const classes = useStyles();
   const { title, loggedIn, changeLoggedIn } = props;
   const history = useHistory();
+  const [anchorEl, setAnchorEl] = useState(null);
+  const open = Boolean(anchorEl);
+
+  const handleMenu = (event) => {
+    console.log();
+    setAnchorEl(event.target);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
 
   return (
     <React.Fragment>
@@ -55,23 +69,46 @@ export default function Header(props) {
         </IconButton> */}
         {loggedIn ? (
           <div>
-            <Button
-              variant="outlined"
-              size="small"
-              onClick={(e) => {
-                localStorage.removeItem("token");
-                changeLoggedIn(false);
-                history.push("/");
-              }}
-              className={classes.logIn}
+            <IconButton
+              aria-label="account of current user"
+              aria-controls="menu-appbar"
+              aria-haspopup="true"
+              onClick={handleMenu}
+              color="inherit"
             >
-              Logg ut
-            </Button>
-            <Link to="/opprett" className={classes.ad}>
-              <Avatar className={classes.avatar}>
-                <PostAdd />
-              </Avatar>
-            </Link>
+              <AccountCircle />
+            </IconButton>
+            <Menu
+              id="menu-appbar"
+              anchorEl={anchorEl}
+              anchorOrigin={{
+                vertical: "top",
+                horizontal: "right",
+              }}
+              keepMounted
+              transformOrigin={{
+                vertical: "top",
+                horizontal: "right",
+              }}
+              open={open}
+              onClose={handleClose}
+            >
+              <MenuItem onClick={handleClose}>Min profil</MenuItem>
+              <MenuItem onClick={handleClose}>Mine annonser</MenuItem>
+              <MenuItem component={Link} to="/opprett" onClick={handleClose}>
+                Opprett annonse
+              </MenuItem>
+              <MenuItem
+                onClick={(e) => {
+                  localStorage.removeItem("token");
+                  handleClose();
+                  changeLoggedIn(false);
+                  history.push("/");
+                }}
+              >
+                Logg ut
+              </MenuItem>
+            </Menu>
           </div>
         ) : (
           <Link to="/logginn">
