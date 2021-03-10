@@ -8,6 +8,9 @@ import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import Footer from "./Footer";
 import RegisterAd from "./ProductRegistration/RegisterAd";
 import "./index.css";
+import UserAds from "./user/UserInfo/UserAds";
+import UserProfile from "./user/UserInfo/UserProfile";
+import EditUser from "./user/UserInfo/EditUser";
 
 function App() {
   const [loggedIn, setLoggedIn] = useState(
@@ -50,6 +53,21 @@ function App() {
             exact
             path="/opprett"
             render={() => <RegisterAd loggedIn={loggedIn} />}
+          />
+          <Route
+            exact
+            path="/brukerannonser"
+            render={() => <UserAds loggedIn={loggedIn} />}
+          />
+          <Route
+            exact
+            path="/brukerprofil"
+            render={() => <UserProfile loggedIn={loggedIn} />}
+          />
+          <Route
+            exact
+            path="/profilredigering"
+            render={() => <EditUser loggedIn={loggedIn} />}
           />
           <Route exact path="/" component={Products}></Route>
           <Route exact path="/products/:id" component={ProductInfo} />
