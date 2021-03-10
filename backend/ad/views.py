@@ -48,7 +48,6 @@ def register_ad(request):
     category = Category.objects.get(category=updated_request["category"])
     updated_request.pop("category")
     updated_request.update({"category": category})
-    print(updated_request)
     form = ImageForm(updated_request, request.FILES)
     if form.is_valid():
         form.save()
