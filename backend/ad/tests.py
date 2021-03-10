@@ -31,12 +31,11 @@ class AdsTest(unittest.TestCase):
         user1 = User.objects.get(username="user1")
         user1.delete()
         os.remove(os.path.dirname(__file__) + "/../media/product/test.jpg")
+        os.remove(os.path.dirname(__file__) + "/../media/product/test1.jpg")
+        os.remove(os.path.dirname(__file__) + "/../media/product/test2.jpg")
         # Sletter kategorien brukt i testene
         category1 = Category.objects.get(category="test")
         category1.delete()
-        # Sletter annonsene brukt i testene
-        # Ad.objects.get(name="Test").delete()
-        # Ad.objects.get(name="Test1").delete()
 
     def setUp(self):
         # Hver test trenger en klient
@@ -82,7 +81,7 @@ class AdsTest(unittest.TestCase):
             "name": "Test",
             "description": "Dette er en test-annonse",
             "price": 4,
-            "img": open(os.path.dirname(__file__) + "/../media/test/test.jpg", "rb"),
+            "img": open(os.path.dirname(__file__) + "/../media/test/test1.jpg", "rb"),
             "category": "test",
             "city": "Trondheim",
         }
@@ -91,7 +90,7 @@ class AdsTest(unittest.TestCase):
             "name": "Test1",
             "description": "Dette er en test-annonse",
             "price": 4,
-            "img": open(os.path.dirname(__file__) + "/../media/test/test.jpg", "rb"),
+            "img": open(os.path.dirname(__file__) + "/../media/test/test2.jpg", "rb"),
             "category": "test",
             "city": "Trondheim",
         }
