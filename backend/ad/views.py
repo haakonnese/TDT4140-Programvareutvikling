@@ -64,27 +64,37 @@ def view_categories(request):
     return Response(context)
 
 
-@api_view(["GET", "PUT", "DELETE"])
-def ad_detail(request, pk):
+@api_view(["PUT"])
+@permission_classes([IsAuthenticated])
+def change_ad(request, id):
     """
-    Retrieve, update or delete an ad.
+    Update or delete an ad.
     """
     try:
-        ad = Ad.objects.get(pk=pk)
+        ad = Ad.objects.get(id=id)
     except Ad.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
 
-    if request.method == "GET":
-        serializer = AdSerializer(ad)
-        return Response(serializer.data)
-
-    elif request.method == "PUT":
+    if request.method == 'PUT':
         serializer = AdSerializer(ad, data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    elif request.method == "DELETE":
+    #if request.method == "PUT":
+
+@api_view(["DELETE"])
+#@permission_classes([IsAuthenticated])
+def delete_ad(request, id):
+    """
+    Delete an ad.
+    """
+    try:
+        ad = Ad.objects.get(id=id)
+    except Ad.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+    if request.method == "DELETE":
         ad.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
