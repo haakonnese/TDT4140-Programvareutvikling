@@ -51,7 +51,7 @@ def register_ad(request):
     form = ImageForm(updated_request, request.FILES)
     if form.is_valid():
         form.save()
-        return Response("Sucessfully uploaded", status=status.HTTP_201_CREATED)
+        return Response("Successfully uploaded", status=status.HTTP_201_CREATED)
     return Response("Error on uploaded", status=status.HTTP_400_BAD_REQUEST)
 
 
@@ -68,24 +68,24 @@ def view_categories(request):
 @permission_classes([IsAuthenticated])
 def change_ad(request, id):
     """
-    Update or delete an ad.
+    Update an ad.
     """
     try:
         ad = Ad.objects.get(id=id)
     except Ad.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
 
-    if request.method == 'PUT':
+    if request.method == "PUT" and (ad.created_by_user == Profile.objects.get(user=request.user)):
         serializer = AdSerializer(ad, data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    return Response("Currently logged in user did not create this ad", status=status.HTTP_400_BAD_REQUEST)
 
-    #if request.method == "PUT":
 
 @api_view(["DELETE"])
-#@permission_classes([IsAuthenticated])
+@permission_classes([IsAuthenticated])
 def delete_ad(request, id):
     """
     Delete an ad.
@@ -95,6 +95,7 @@ def delete_ad(request, id):
     except Ad.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
 
-    if request.method == "DELETE":
+    if request.method == "DELETE" and (ad.created_by_user == Profile.objects.get(user=request.user)):
         ad.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
+        return Response("Successfully deleted the ad", status=status.HTTP_204_NO_CONTENT)
+    return Response("Currently logged in user did not create this ad", status=status.HTTP_400_BAD_REQUEST)
