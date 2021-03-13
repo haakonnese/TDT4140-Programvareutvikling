@@ -6,8 +6,8 @@ from django.http import HttpResponse, Http404
 from rest_framework import status
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
-from .models import Ad
-from .serializers import AdSerializer
+from .models import Ad, Category
+from .serializers import AdSerializer, CategorySerializer
 from .forms import ImageForm
 from rest_framework.permissions import IsAuthenticated
 from user.models import Profile
@@ -45,11 +45,23 @@ def register_ad(request):
     """Create a new Ad."""
     updated_request = request.POST.copy()
     updated_request.update({"created_by_user": Profile.objects.get(user=request.user)})
+    category = Category.objects.get(category=updated_request["category"])
+    updated_request.pop("category")
+    updated_request.update({"category": category})
     form = ImageForm(updated_request, request.FILES)
     if form.is_valid():
         form.save()
         return Response("Sucessfully uploaded", status=status.HTTP_201_CREATED)
     return Response("Error on uploaded", status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(["GET"])
+def view_categories(request):
+    """view all categories from Category-model"""
+    context = []
+    for category in Category.objects.all().order_by("category"):
+        context.append(CategorySerializer(category).data)
+    return Response(context)
 
 
 @api_view(["GET", "PUT", "DELETE"])
@@ -76,3 +88,24 @@ def ad_detail(request, pk):
     elif request.method == "DELETE":
         ad.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+@api_view(["GET"])
+def ad_filter_category(request, category):
+    response = Response()
+    categories = Category.objects.filter(category=category)
+    if not categories.exists():
+        response.status = status.HTTP_404_NOT_FOUND
+        response.data = "There are no such category!"
+        return response
+    ads = Ad.objects.filter(category=category)
+    if not ads.exists():
+        response.status = status.HTTP_204_NO_CONTENT
+        response.data = "There are no ads for this category yet!"
+        return response
+    context = []
+    for ad in ads:
+        context.append(AdSerializer(ad).data)
+    response.status = status.HTTP_200_OK
+    response.data = context
+    return response
