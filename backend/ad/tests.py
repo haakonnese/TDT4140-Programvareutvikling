@@ -30,6 +30,8 @@ class AdsTest(unittest.TestCase):
         # Sletter brukerne
         user1 = User.objects.get(username="user1")
         user1.delete()
+        category = Category.objects.get(category="Test")
+        category.delete()
         os.remove(os.path.dirname(__file__) + "/../media/product/test.jpg")
         os.remove(os.path.dirname(__file__) + "/../media/product/test1.jpg")
         os.remove(os.path.dirname(__file__) + "/../media/product/test2.jpg")
@@ -40,6 +42,8 @@ class AdsTest(unittest.TestCase):
     def setUp(self):
         # Hver test trenger en klient
         self.client = APIClient()
+        category = Category("Test")
+        category.save()
 
     def test_show_ad(self):
         # lager en get request
@@ -52,7 +56,7 @@ class AdsTest(unittest.TestCase):
             "price": 4,
             "city": "Trondheim",
             "img": open(os.path.dirname(__file__) + "/../media/test/test.jpg", "rb"),
-            "category": "test",
+            "category": "Test",
         }
         self.client.credentials(HTTP_AUTHORIZATION="Token " + str(Token.objects.get(user=user1)))
         response = self.client.post("/api/listing/register", d)
@@ -64,7 +68,7 @@ class AdsTest(unittest.TestCase):
         self.assertEqual(ad1.name, d["name"])
         self.assertEqual(ad1.description, d["description"])
         self.assertEqual(ad1.price, d["price"]),
-        self.assertEqual(ad1.category, d["category"])
+        self.assertEqual(ad1.category, Category.objects.get(category=d["category"]))
 
         # Sjekker responsen som funker
         # response = self.client.get("ad/view/1", d, format="json")

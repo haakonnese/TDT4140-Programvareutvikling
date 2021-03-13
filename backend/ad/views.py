@@ -45,6 +45,9 @@ def register_ad(request):
     """Create a new Ad."""
     updated_request = request.POST.copy()
     updated_request.update({"created_by_user": Profile.objects.get(user=request.user)})
+    category = Category.objects.get(category=updated_request["category"])
+    updated_request.pop("category")
+    updated_request.update({"category": category})
     form = ImageForm(updated_request, request.FILES)
     if form.is_valid():
         form.save()
