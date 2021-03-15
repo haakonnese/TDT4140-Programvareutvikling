@@ -15,9 +15,9 @@ class UserSerializer(serializers.ModelSerializer):
         return user
 
     def update(self, instance, validated_data):
-        instance.username = validated_data.pop("username")
-        instance.first_name = validated_data.pop("first_name")
-        instance.last_name = validated_data.pop("last_name")
+        instance.username = validated_data.get("username", instance.username)
+        instance.first_name = validated_data.get("first_name", instance.first_name)
+        instance.last_name = validated_data.get("last_name", instance.last_name)
         instance.save()
         return instance
 
@@ -46,10 +46,11 @@ class ProfileSerializer(serializers.ModelSerializer):
         return profile
 
     def update(self, instance, validated_data):
-        user_data = validated_data.pop("user")
-        UserSerializer.update(UserSerializer(), instance=instance.user, validated_data=user_data)
-        instance.city = validated_data.pop("city")
-        instance.phone = validated_data.pop("phone")
-        instance.birth_year = validated_data.pop("birth_year")
+        user_data = validated_data.get("user")
+        if user_data is not None:
+            UserSerializer.update(UserSerializer(), instance=instance.user, validated_data=user_data)
+        instance.city = validated_data.get("city", instance.city)
+        instance.phone = validated_data.get("phone", instance.phone)
+        instance.birth_year = validated_data.get("birth_year", instance.birth_year)
         instance.save()
         return instance

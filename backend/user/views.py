@@ -44,12 +44,14 @@ def create_auth_token(sender, instance=None, created=False, **kwargs):
 def edit_profile(request):
     """Edits the profile currently logged on."""
     response = Response()
+    data = request.data
     if request.user.is_anonymous:
         response.status_code = status.HTTP_403_FORBIDDEN
+        response.data = "No valid token detected!"
         return response
-    data = request.data
     if (
-        User.objects.filter(username=data["user"]["username"]).exists()
+        data.get("user") is not None
+        and User.objects.filter(username=data["user"].get("username")).exists()
         and data["user"]["username"] != request.user.username
     ):
         response.status_code = status.HTTP_403_FORBIDDEN
