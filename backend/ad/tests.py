@@ -78,13 +78,13 @@ class AdsTest(unittest.TestCase):
         # response2 = self.client.get("/ad/view/1", d, format="json")
         # self.assertEqual(response2.status_code, 404)
 
-    def test_filter_category(self):
+    def test_filter_ads(self):
         user1 = User.objects.get(username="user1")
         d1 = {
             "created_by_user": "",
             "name": "Test",
             "description": "Dette er en test-annonse",
-            "price": 4,
+            "price": 200,
             "img": open(os.path.dirname(__file__) + "/../media/test/test1.jpg", "rb"),
             "category": "test",
             "city": "Trondheim",
@@ -93,7 +93,7 @@ class AdsTest(unittest.TestCase):
             "created_by_user": "",
             "name": "Test1",
             "description": "Dette er en test-annonse",
-            "price": 4,
+            "price": 150,
             "img": open(os.path.dirname(__file__) + "/../media/test/test2.jpg", "rb"),
             "category": "test",
             "city": "Trondheim",
@@ -101,8 +101,10 @@ class AdsTest(unittest.TestCase):
         self.client.credentials(HTTP_AUTHORIZATION="Token " + str(Token.objects.get(user=user1)))
         self.client.post("/api/listing/register", d1)
         self.client.post("/api/listing/register", d2)
-        # Sjekker at vi for en filtrert liste
-        ads = self.client.get("/api/listing/filter/test").data
+        # Sjekker at vi får en filtrert liste tilbake
+        data = {"category": "test", "price": 200, "city": "Trondheim", "min": 140, "max": 200}
+        response = self.client.post("/api/listing/listings", data)
+        ads = response.data
         for ad in ads:
-            if ad["category"] != "test":
+            if ad["category"] != "test" or ad["city"] != "Trondheim" or ad["price"] > 200 or ad["price"] < 140:
                 raise Error()

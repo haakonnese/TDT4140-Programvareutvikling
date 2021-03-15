@@ -2,10 +2,10 @@
 
 # Create your views here.
 from django.core.exceptions import ObjectDoesNotExist
+from rest_framework.response import Response
 from django.http import HttpResponse, Http404
 from rest_framework import status
 from rest_framework.decorators import api_view, permission_classes
-from rest_framework.response import Response
 from .models import Ad, Category
 from .serializers import AdSerializer, CategorySerializer
 from .forms import ImageForm
@@ -25,11 +25,13 @@ def view_ads(request):
     arguments = {}
     if data.get("category") is not None:
         arguments["category"] = data["category"]
-    if data.get("price") is not None:
-        arguments["price"] = data["price"]
     if data.get("city") is not None:
         arguments["city"] = data["city"]
-    ads = Ad.objects.filter(**arguments)
+    if data["min"] is None:
+        data["min"] = 0
+    if data["max"] is None:
+        data["max"] = 10 ** 5
+    ads = Ad.objects.filter(price__lte=data["max"], price__gte=data["min"], **arguments)
     for ad in ads:
         context.append(AdSerializer(ad).data)
     return Response(context)
@@ -97,24 +99,3 @@ def ad_detail(request, pk):
     elif request.method == "DELETE":
         ad.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
-
-
-@api_view(["GET"])
-def ad_filter_category(request, category):
-    response = Response()
-    categories = Category.objects.filter(category=category)
-    if not categories.exists():
-        response.status = status.HTTP_404_NOT_FOUND
-        response.data = "There are no such category!"
-        return response
-    ads = Ad.objects.filter(category=category)
-    if not ads.exists():
-        response.status = status.HTTP_204_NO_CONTENT
-        response.data = "There are no ads for this category yet!"
-        return response
-    context = []
-    for ad in ads:
-        context.append(AdSerializer(ad).data)
-    response.status = status.HTTP_200_OK
-    response.data = context
-    return response
