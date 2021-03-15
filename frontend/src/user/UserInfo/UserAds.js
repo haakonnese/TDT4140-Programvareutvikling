@@ -4,35 +4,11 @@ import { GetData } from "../../service/FetchData";
 import UserAd from "./UserAd";
 
 function UserAds() {
-  // Product test
-  // const product = [
-  //   {
-  //     id: 1,
-  //     name: "stol",
-  //     description: "lite brukt stol til god pris",
-  //     price: 200,
-  //     firstName: "Hans",
-  //     lastName: "Pettersen",
-  //     sellerTlf: 98765432,
-  //     imgUrl:
-  //       "https://www.if.no/magasinet/imageshop/img_shp_img_ymq7qsg42u-780x450.jpeg",
-  //   },
-  //   {
-  //     id: 2,
-  //     name: "bord",
-  //     description: "lite brukt bord til god pris",
-  //     price: 900,
-  //     firstName: "Kari",
-  //     lastName: "Bakken",
-  //     sellerTlf: 12345678,
-  //     imgUrl:
-  //       "https://www.if.no/magasinet/imageshop/img_shp_img_ymq7qsg42u-780x450.jpeg",
-  //   },
-  // ];
-
   // hooks
   const [products, setProducts] = useState([]);
+
   useEffect(() => {
+    // { token: localStorage.getItem("token") }
     GetData("listing/listings")
       .then((result) => {
         if (result.length > 0) {
@@ -40,6 +16,7 @@ function UserAds() {
             res.img = "http://127.0.0.1:8000" + res.img;
           });
           setProducts(result);
+          console.log(result);
         } else {
           console.log("Feil");
         }
@@ -47,8 +24,22 @@ function UserAds() {
       .catch((error) => {
         console.log("Feil", error);
       });
+    // GetData("user/user")
+    //   .then((result) => {
+    //     console.log(result);
+    //     setUser(result);
+    //     console.log({ user });
+    //     // if (result) {
+    //     //   localStorage.getItem("token", result.token);
+    //     //   setUser(result);
+    //     // } else {
+    //     //   console.log("Feil");
+    //     // }
+    //   })
+    //   .catch((error) => {
+    //     console.log("Feil", error);
+    //   });
   }, []);
-
   return (
     <main>
       <Grid
@@ -61,11 +52,13 @@ function UserAds() {
           marginTop: 20,
         }}
       >
-        {products.map((product) => (
-          <Grid item key={product.id} xs={12} sm={6} md={4} lg={3}>
-            <UserAd product={product} />
-          </Grid>
-        ))}
+        {products
+          // .filter((product) => product.created_by_user === user.user)
+          .map((product) => (
+            <Grid item key={product.id} xs={12} sm={6} md={4} lg={3}>
+              <UserAd product={product} />
+            </Grid>
+          ))}
       </Grid>
     </main>
   );

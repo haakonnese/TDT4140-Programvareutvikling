@@ -9,15 +9,15 @@ import {
   //   IconButton,
   Grid,
 } from "@material-ui/core";
-import PropTypes from "prop-types";
+// import PropTypes from "prop-types";
 import useStyles from "./styles";
 // import { GetData } from "../../../service/FetchData";
 
 // define which type the product info will be
-UserProfile.propTypes = {
-  match: PropTypes.object.isRequired,
-  errorType: PropTypes.string,
-};
+// UserProfile.propTypes = {
+//   match: PropTypes.object.isRequired,
+//   errorType: PropTypes.string,
+// };
 
 function UserProfile() {
   // hooks

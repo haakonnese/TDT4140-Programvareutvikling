@@ -1,4 +1,4 @@
-import { React, useState } from "react";
+import { React, useState, useEffect } from "react";
 import { PostData } from "../service/FetchData";
 import PropTypes from "prop-types";
 import {
@@ -26,6 +26,7 @@ const categories = [
 ];
 
 export default function RegisterAd(props) {
+  console.log(props);
   const classes = useStyles();
   const history = useHistory();
   const [details, setDetails] = useState({
@@ -36,7 +37,13 @@ export default function RegisterAd(props) {
     description: "",
     img: "",
   });
-
+  useEffect(() => {
+    console.log(props.details);
+    if (props.details) {
+      setDetails(props.details);
+      setPreview(props.details.img);
+    }
+  }, []);
   const [preview, setPreview] = useState(false);
   function previewImage(e) {
     if (e.target.files[0]) {
@@ -65,14 +72,22 @@ export default function RegisterAd(props) {
     }
     if (allow) {
       const formData = new FormData();
-      formData.append("img", details.img);
+      if (!details.img.includes("http")) {
+        formData.append("img", details.img);
+      }
       formData.append("category", details.category);
       formData.append("description", details.description);
       formData.append("name", details.name);
       formData.append("price", details.price);
       formData.append("city", details.city);
       formData.append("created_by_user", "");
-      PostData("listing/register", formData, "multipart/form-data")
+      let method = "POST";
+      if (props.edit) {
+        formData.append("id", details.id);
+        method = "PUT";
+      }
+
+      PostData("listing/register", formData, "multipart/form-data", method)
         .then((result) => {
           if (result) {
             history.push("/");
@@ -91,7 +106,7 @@ export default function RegisterAd(props) {
             <PostAdd />
           </Avatar>
           <Typography component="h1" variant="h5">
-            Registrer annonse
+            {props.edit ? "Endre" : "Registrer"} annonse
           </Typography>
           <form className={classes.form} onSubmit={handleSubmit}>
             <InputTextField
@@ -163,7 +178,7 @@ export default function RegisterAd(props) {
                 style={{ width: "100%" }}
                 component="span"
               >
-                Last opp et bilde
+                {props.edit ? "Endre" : "Last opp ett"} bilde
               </Button>
             </label>
             <input
@@ -181,7 +196,7 @@ export default function RegisterAd(props) {
                 position: "relative",
                 zIndex: -1,
               }}
-              required
+              required={!props.edit}
             />
             {preview && (
               <img
@@ -202,7 +217,7 @@ export default function RegisterAd(props) {
               color="primary"
               className={classes.submit}
             >
-              Registrer
+              {props.edit ? "Endre" : "Registrer"}
             </Button>
           </form>
         </div>
@@ -214,4 +229,6 @@ export default function RegisterAd(props) {
 }
 RegisterAd.propTypes = {
   loggedIn: PropTypes.bool,
+  details: PropTypes.object,
+  edit: PropTypes.bool,
 };

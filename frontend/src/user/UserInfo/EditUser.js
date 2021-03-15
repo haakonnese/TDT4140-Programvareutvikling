@@ -1,5 +1,5 @@
 import { React, useState, useEffect } from "react";
-import { PutData, GetData } from "../../service/FetchData";
+import { PostData, GetData } from "../../service/FetchData";
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
@@ -19,6 +19,12 @@ import {
   toYoungError,
   toOldError,
 } from "../errorMessages";
+
+EditUser.propTypes = {
+  changeLoggedIn: PropTypes.func,
+  loggedIn: PropTypes.bool,
+};
+
 export default function EditUser(props) {
   // css for jsx
   const classes = useStyles();
@@ -62,7 +68,7 @@ export default function EditUser(props) {
       // setError({ errorMessage: passwordError, errorType: "password" });
     } else {
       // send registration to database and then do something with the result
-      PutData("user/register", details)
+      PostData("user/register", details)
         .then((result) => {
           // console.log(result);
           if (result.token) {
@@ -174,8 +180,3 @@ export default function EditUser(props) {
     </Container>
   );
 }
-
-EditUser.propTypes = {
-  changeLoggedIn: PropTypes.func,
-  loggedIn: PropTypes.bool,
-};
