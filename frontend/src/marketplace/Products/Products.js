@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { Grid } from "@material-ui/core";
-import { GetData } from "../../service/FetchData";
+import { PostData } from "../../service/FetchData";
 import Product from "./Product/Product";
 import Filter from "./Filter";
 import { connect } from "react-redux";
+import PropTypes from "prop-types";
 
-function Products() {
+function Products(props) {
   // Product test
   // const product = [
   //   {
@@ -35,7 +36,7 @@ function Products() {
   // hooks
   const [products, setProducts] = useState([]);
   useEffect(() => {
-    GetData("listing/listings")
+    PostData("listing/listings", props.filter)
       .then((result) => {
         if (result.length > 0) {
           result.forEach((res) => {
@@ -73,6 +74,9 @@ function Products() {
     </main>
   );
 }
+Products.propTypes = {
+  filter: PropTypes.object,
+};
 const mapStateToProps = (state) => {
   return { filter: state.filter };
 };

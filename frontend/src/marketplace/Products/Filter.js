@@ -9,7 +9,7 @@ import { priceError } from "./errorMessages";
 function Filter(props) {
   const [error, setError] = useState({ error: false, errorMessage: "" });
   const [details, setDetails] = useState(filter);
-
+  console.log(details);
   function search() {
     if (
       details.minimum &&
@@ -126,9 +126,13 @@ function Filter(props) {
               label="By"
               fullWidth
               onChange={(e) => {
-                setDetails({ ...details, city: e.target.value });
+                if (e.target.value === "") {
+                  setDetails({ ...details, city: null });
+                } else {
+                  setDetails({ ...details, city: e.target.value });
+                }
               }}
-              value={details.city}
+              value={details.city == null ? "" : details.city}
             />
           </Grid>
           <Grid item xs={3}>
@@ -151,7 +155,11 @@ function Filter(props) {
             id="category"
             options={props.categories.map((option) => option.category)}
             onChange={(e, value) => {
-              setDetails({ ...details, category: value });
+              if (value === "") {
+                setDetails({ ...details, category: null });
+              } else {
+                setDetails({ ...details, category: value });
+              }
             }}
             value={details.category}
             renderInput={(params) => (

@@ -15,8 +15,7 @@ export const filter = {
   minimum: false,
   maximum: false,
   category: null,
-  city: "",
-  description: "",
+  city: null,
 };
 function filterReducer(state = filter, action = "DEFAULT_FILTER") {
   switch (action.type) {
