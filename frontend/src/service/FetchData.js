@@ -72,24 +72,24 @@ export function PostData(
 //   });
 // }
 
-// export function GetUserData(type) {
-//   // fetches data from the given endpoint and returns the promise (responseJson)
-//   return new Promise((resolve, reject) => {
-//     const headers = {
-//       Accept: "application/json",
-//     };
-//     if (localStorage.getItem("token") != null) {
-//       headers.Authorization = "Token " + localStorage.getItem("token");
-//     }
-//     fetch(BASE_URL + type, {
-//       method: "GET",
-//       headers: headers,
-//     })
-//       .then((response) => response.json())
-//       .then((responseJson) => resolve(responseJson))
-//       .catch((error) => reject(error));
-//   });
-// }
+export function GetUserData(type) {
+  // fetches data from the given endpoint and returns the promise (responseJson)
+  return new Promise((resolve, reject) => {
+    const headers = {
+      Accept: "application/json",
+    };
+    if (localStorage.getItem("token") != null) {
+      headers.Authorization = "Token " + localStorage.getItem("token");
+    }
+    fetch(BASE_URL + type, {
+      method: "GET",
+      headers: headers,
+    })
+      .then((response) => response.json())
+      .then((responseJson) => resolve(responseJson))
+      .catch((error) => reject(error));
+  });
+}
 
 export function GetData(type, userData = null) {
   // fetches data from the given endpoint and returns the promise (responseJson)

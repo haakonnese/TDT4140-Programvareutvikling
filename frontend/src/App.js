@@ -12,6 +12,7 @@ import UserAds from "./user/UserInfo/UserAds";
 import UserProfile from "./user/UserInfo/UserProfile";
 import EditUser from "./user/UserInfo/EditUser";
 import EditAd from "./user/UserInfo/EditAd";
+import EditPassword from "./user/UserInfo/EditPassword";
 
 function App() {
   const [loggedIn, setLoggedIn] = useState(
@@ -69,6 +70,11 @@ function App() {
             exact
             path="/profilredigering"
             render={() => <EditUser loggedIn={loggedIn} />}
+          />
+          <Route
+            exact
+            path="/passordredigering"
+            render={() => <EditPassword loggedIn={loggedIn} />}
           />
           <Route exact path="/endreannonse/:id" component={EditAd} />
           <Route exact path="/" component={Products}></Route>
