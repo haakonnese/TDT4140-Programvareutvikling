@@ -81,7 +81,7 @@ def change_ad(request, id):
             serializer.save()
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    return Response("Currently logged in user did not create this ad", status=status.HTTP_400_BAD_REQUEST)
+    return Response("Currently logged in user did not create this ad", status=status.HTTP_401_UNAUTHORIZED)
 
 
 @api_view(["DELETE"])
@@ -98,4 +98,4 @@ def delete_ad(request, id):
     if request.method == "DELETE" and (ad.created_by_user == Profile.objects.get(user=request.user)):
         ad.delete()
         return Response("Successfully deleted the ad", status=status.HTTP_204_NO_CONTENT)
-    return Response("Currently logged in user did not create this ad", status=status.HTTP_400_BAD_REQUEST)
+    return Response("Currently logged in user did not create this ad", status=status.HTTP_401_UNAUTHORIZED)
