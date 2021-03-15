@@ -18,10 +18,19 @@ def index(request):
     return HttpResponse("Hello. You're at the Ad index.")
 
 
-@api_view(["GET"])
+@api_view(["POST"])
 def view_ads(request):
     context = []
-    for ad in Ad.objects.all().order_by("-pub_date"):
+    data = request.data
+    arguments = {}
+    if data.get("category") is not None:
+        arguments["category"] = data["category"]
+    if data.get("price") is not None:
+        arguments["price"] = data["price"]
+    if data.get("city") is not None:
+        arguments["city"] = data["city"]
+    ads = Ad.objects.filter(**arguments)
+    for ad in ads:
         context.append(AdSerializer(ad).data)
     return Response(context)
 
