@@ -12,7 +12,7 @@ import {
 } from "@material-ui/core";
 // import PropTypes from "prop-types";
 import useStyles from "./styles";
-import { GetUserData } from "../../service/FetchData";
+import { GetData } from "../../service/FetchData";
 
 // define which type the product info will be
 // UserProfile.propTypes = {
@@ -31,9 +31,9 @@ export default function UserProfile() {
   });
 
   useEffect(() => {
-    GetUserData("user/user")
+    GetData("user/user")
       .then((result) => {
-        console.log(result);
+        // console.log(result);
         if (result) {
           setDetails(result);
         } else {

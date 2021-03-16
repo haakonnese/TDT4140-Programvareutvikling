@@ -1,5 +1,5 @@
 import { React, useState } from "react";
-import { PostData } from "../../service/FetchData";
+import { PostPutData } from "../../service/FetchData";
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
@@ -37,8 +37,7 @@ export default function Registation(props) {
       setError({ errorMessage: passwordError, errorType: "password" });
     } else {
       // send registration to database and then do something with the result
-      const method = "PUT";
-      PostData("user/register", details, "application/json", method)
+      PostPutData("user/edit_password", details, "application/json", "PUT")
         .then((result) => {
           // console.log(result);
           if (result.token) {

@@ -1,5 +1,5 @@
 import { React, useState, useEffect } from "react";
-import { PostData } from "../service/FetchData";
+import { PostPutData } from "../service/FetchData";
 import PropTypes from "prop-types";
 import {
   Avatar,
@@ -26,7 +26,6 @@ const categories = [
 ];
 
 export default function RegisterAd(props) {
-  console.log(props);
   const classes = useStyles();
   const history = useHistory();
   const [details, setDetails] = useState({
@@ -38,7 +37,6 @@ export default function RegisterAd(props) {
     img: "",
   });
   useEffect(() => {
-    console.log(props.details);
     if (props.details) {
       setDetails(props.details);
       setPreview(props.details.img);
@@ -72,7 +70,7 @@ export default function RegisterAd(props) {
     }
     if (allow) {
       const formData = new FormData();
-      if (!details.img.includes("http")) {
+      if (details.img instanceof String && !details.img.includes("http")) {
         formData.append("img", details.img);
       }
       formData.append("category", details.category);
@@ -87,7 +85,7 @@ export default function RegisterAd(props) {
         method = "PUT";
       }
 
-      PostData("listing/register", formData, "multipart/form-data", method)
+      PostPutData("listing/register", formData, "multipart/form-data", method)
         .then((result) => {
           if (result) {
             history.push("/");

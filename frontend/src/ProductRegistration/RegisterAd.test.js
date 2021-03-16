@@ -1,14 +1,14 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import "@testing-library/jest-dom/extend-expect";
-import { PostData } from "../service/FetchData";
+import { PostPutData } from "../service/FetchData";
 import RegisterAd from "./RegisterAd";
 import { act } from "react-dom/test-utils";
 import userEvent, { specialChars } from "@testing-library/user-event";
 import { BrowserRouter as Router } from "react-router-dom";
 
 jest.mock("../service/FetchData", () => ({
-  PostData: jest.fn(),
+  PostPutData: jest.fn(),
 }));
 
 let container, item, price, city, description, button, img, category;
@@ -49,7 +49,7 @@ afterEach(() => {
 
 describe("RegisterAd component", () => {
   test("upload", async () => {
-    PostData.mockImplementation(() => Promise.resolve({ ok: "true" }));
+    PostPutData.mockImplementation(() => Promise.resolve({ ok: "true" }));
     img = container.querySelector("#imgUpload");
     const file = new File(["hello"], "hello.png", { type: "image/png" });
     await act(async () => {
@@ -58,13 +58,13 @@ describe("RegisterAd component", () => {
     await act(async () => {
       userEvent.click(button);
     });
-    expect(PostData.mock.calls.length).toBe(1);
+    expect(PostPutData.mock.calls.length).toBe(1);
   });
   test("not all field filled in", () => {
-    PostData.mockImplementation(() => Promise.resolve({ ok: "true" }));
+    PostPutData.mockImplementation(() => Promise.resolve({ ok: "true" }));
     act(() => {
       userEvent.click(button);
     });
-    expect(PostData.mock.calls.length).toBe(0);
+    expect(PostPutData.mock.calls.length).toBe(0);
   });
 });

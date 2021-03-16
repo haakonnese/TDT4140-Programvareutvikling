@@ -46,7 +46,6 @@ export default function Header(props) {
   const open = Boolean(anchorEl);
 
   const handleMenu = (event) => {
-    console.log();
     setAnchorEl(event.target);
   };
 

@@ -42,7 +42,6 @@ export default function EditAd({ match }) {
         if (result.id) {
           result.img = "http://127.0.0.1:8000" + result.img;
           result.price = result.price.toString();
-          console.log(result);
           setDetails(result);
           // console.log(products);
         } else {

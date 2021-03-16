@@ -1,5 +1,5 @@
 import { React, useState, useEffect } from "react";
-import { GetUserData, PostData } from "../../service/FetchData";
+import { GetData, PostPutData } from "../../service/FetchData";
 import PropTypes from "prop-types";
 import {
   Avatar,
@@ -35,9 +35,9 @@ export default function EditUser() {
   const [error, setError] = useState({ errorMessage: "", errorType: "" });
 
   useEffect(() => {
-    GetUserData("user/user")
+    GetData("user/user")
       .then((result) => {
-        console.log(result);
+        // console.log(result);
         if (result) {
           setDetails(result);
         } else {
@@ -58,8 +58,7 @@ export default function EditUser() {
       setError({ errorMessage: toYoungError, errorType: "number" });
     } else {
       // send registration to database and then do something with the result
-      const method = "PUT";
-      PostData("user/register", details, "application/json", method)
+      PostPutData("user/edit_profile", details, "application/json", "PUT")
         .then((result) => {
           // console.log(result);
           if (result.token) {

@@ -16,7 +16,6 @@ function UserAds() {
             res.img = "http://127.0.0.1:8000" + res.img;
           });
           setProducts(result);
-          console.log(result);
         } else {
           console.log("Feil");
         }
