@@ -27,9 +27,9 @@ def view_ads(request):
         arguments["category"] = data["category"]
     if data.get("city") is not None:
         arguments["city"] = data["city"]
-    if data["min"] is None:
+    if data.get("min") is None:
         data["min"] = 0
-    if data["max"] is None:
+    if data.get("max") is None:
         data["max"] = 10 ** 5
     ads = Ad.objects.filter(price__lte=data["max"], price__gte=data["min"], **arguments)
     for ad in ads:
