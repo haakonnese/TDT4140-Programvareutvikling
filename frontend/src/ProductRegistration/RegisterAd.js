@@ -70,7 +70,7 @@ export default function RegisterAd(props) {
     }
     if (allow) {
       const formData = new FormData();
-      if (details.img instanceof String && !details.img.includes("http")) {
+      if (!(details.img instanceof String)) {
         formData.append("img", details.img);
       }
       formData.append("category", details.category);
