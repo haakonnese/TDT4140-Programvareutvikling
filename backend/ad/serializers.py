@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Ad
+from .models import Ad, Category
 
 
 class AdSerializer(serializers.ModelSerializer):
@@ -23,9 +23,15 @@ class AdSerializer(serializers.ModelSerializer):
         instance.name = validated_data.get("name", instance.name)
         instance.description = validated_data.get("description", instance.description)
         instance.price = validated_data.get("price", instance.price)
-        instance.img = validated_data.__get("img", instance.img)
+        instance.img = validated_data.get("img", instance.img)
         instance.category = validated_data.get("category", instance.category)
         instance.city = validated_data.get("city", instance.city)
         instance.save()
 
         return instance
+
+
+class CategorySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Category
+        fields = ["category"]
