@@ -11,6 +11,7 @@ import "./index.css";
 import { Provider } from "react-redux";
 import { createStore } from "redux";
 import { GetData } from "./service/FetchData";
+import GiveRating from "./rating/GiveRating";
 
 function reducer(state, action = "default") {
   switch (action.type) {
@@ -78,6 +79,7 @@ function App() {
             />
             <Route exact path="/" component={Products}></Route>
             <Route exact path="/products/:id" component={ProductInfo} />
+            <Route exact path="/rating/:id" component={GiveRating} />
           </Switch>
         </div>
         <Footer title="SellPoint" description="" />

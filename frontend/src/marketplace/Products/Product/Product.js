@@ -37,21 +37,17 @@ function Product(props) {
       )}
       <CardContent>
         <div className={classes.cardContent}>
-          <Typography varient="h5" gutterBottom>
-            {props.product.name}
-          </Typography>
-          <Typography varient="h5">{props.product.price}kr</Typography>
+          <Typography gutterBottom>{props.product.name}</Typography>
+          <Typography>{props.product.price}kr</Typography>
         </div>
         <div className={classes.cardContent}>
-          <Typography varient="h2" color="textSecondary">
-            {props.product.city}
-          </Typography>
-          <Typography varient="h2" color="textSecondary">
+          <Typography color="textSecondary">{props.product.city}</Typography>
+          <Typography color="textSecondary">
             {props.product.category}
           </Typography>
         </div>
         {/* <br />
-        <Typography varient="h2" color="textSecondary">
+        <Typography variant="h2" color="textSecondary">
           {props.product.description}
         </Typography> */}
       </CardContent>
