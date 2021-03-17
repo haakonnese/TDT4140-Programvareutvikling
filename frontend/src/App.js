@@ -11,6 +11,9 @@ import "./index.css";
 import { Provider } from "react-redux";
 import { createStore } from "redux";
 import { GetData } from "./service/FetchData";
+import UserProfile from "./user/UserInfo/UserProfile";
+import EditUser from "./user/UserInfo/EditUser";
+import EditPassword from "./user/UserInfo/EditPassword";
 
 function reducer(state, action = "default") {
   switch (action.type) {
@@ -75,6 +78,21 @@ function App() {
               exact
               path="/opprett"
               render={() => <RegisterAd loggedIn={loggedIn} />}
+            />
+            <Route
+              exact
+              path="/brukerprofil"
+              render={() => <UserProfile loggedIn={loggedIn} />}
+            />
+            <Route
+              exact
+              path="/profilredigering"
+              render={() => <EditUser loggedIn={loggedIn} />}
+            />
+            <Route
+              exact
+              path="/passordredigering"
+              render={() => <EditPassword loggedIn={loggedIn} />}
             />
             <Route exact path="/" component={Products}></Route>
             <Route exact path="/products/:id" component={ProductInfo} />

@@ -42,7 +42,6 @@ export default function Header(props) {
   const open = Boolean(anchorEl);
 
   const handleMenu = (event) => {
-    console.log();
     setAnchorEl(event.target);
   };
 
@@ -93,8 +92,20 @@ export default function Header(props) {
               open={open}
               onClose={handleClose}
             >
-              <MenuItem onClick={handleClose}>Min profil</MenuItem>
-              <MenuItem onClick={handleClose}>Mine annonser</MenuItem>
+              <MenuItem
+                component={Link}
+                to="/brukerprofil"
+                onClick={handleClose}
+              >
+                Min profil
+              </MenuItem>
+              <MenuItem
+                component={Link}
+                to="/brukerannonser"
+                onClick={handleClose}
+              >
+                Mine annonser
+              </MenuItem>
               <MenuItem component={Link} to="/opprett" onClick={handleClose}>
                 Opprett annonse
               </MenuItem>

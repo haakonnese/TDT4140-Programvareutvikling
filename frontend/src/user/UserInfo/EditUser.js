@@ -1,50 +1,45 @@
 import { React, useState, useEffect } from "react";
-import { GetData } from "../../service/FetchData";
+import { GetData, PostPutData } from "../../service/FetchData";
 import PropTypes from "prop-types";
-// import {
-//   Avatar,
-//   Button,
-//   CssBaseline,
-//   Typography,
-//   Container,
-//   TextField,
-// } from "@material-ui/core";
+import {
+  Avatar,
+  Button,
+  CssBaseline,
+  Typography,
+  Container,
+} from "@material-ui/core";
+import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 // import { Autocomplete } from "@material-ui/lab";
 // import PostAdd from "@material-ui/icons/PostAdd";
-// import useStyles from "../../standardComponents/styles";
-// import InputTextField from "../../standardComponents/InputTextField";
+import useStyles from "../../standardComponents/styles";
+import InputTextField from "../../standardComponents/InputTextField";
 import { useHistory } from "react-router-dom";
-import Registration from "../../user/Registration";
+// import Registration from "../../user/Registration";
 // import { phoneError } from "./errorMessages";
-
-// const categories = [
-//   { type: "Kjøretøy" },
-//   { type: "Sportsutsyr" },
-//   { type: "Bøker" },
-//   { type: "Elektronikk" },
-//   { type: "Leker" },
-//   { type: "Annet" },
-// ];
+import { emailError, toYoungError, toOldError } from "../errorMessages";
 
 EditUser.propTypes = {
-  match: PropTypes.object.isRequired,
   errorType: PropTypes.string,
 };
 
-export default function EditUser({ match }) {
-  // const classes = useStyles();
+export default function EditUser() {
+  const classes = useStyles();
   const history = useHistory();
-  const [details, setDetails] = useState(false);
+  const [details, setDetails] = useState({
+    user: { first_name: "", last_name: "" },
+    birth_year: "",
+    phone: "",
+    city: "",
+  });
+
+  const [error, setError] = useState({ errorMessage: "", errorType: "" });
 
   useEffect(() => {
-    GetData("listing/listing", match.params.id)
+    GetData("user/user")
       .then((result) => {
-        if (result.id) {
-          result.img = "http://127.0.0.1:8000" + result.img;
-          result.price = result.price.toString();
-          console.log(result);
+        // console.log(result);
+        if (result) {
           setDetails(result);
-          // console.log(products);
         } else {
           console.log("Feil");
         }
@@ -54,13 +49,129 @@ export default function EditUser({ match }) {
       });
   }, []);
 
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    // error-handeling
+    if (parseInt(details.birth_year) < 1900) {
+      setError({ errorMessage: toOldError, errorType: "number" });
+    } else if (parseInt(details.birth_year) > new Date().getFullYear() - 13) {
+      setError({ errorMessage: toYoungError, errorType: "number" });
+    } else {
+      // send registration to database and then do something with the result
+      PostPutData("user/edit_profile", details, "application/json", "PUT")
+        .then((result) => {
+          // console.log(result);
+          if (result.token) {
+            localStorage.setItem("token", result.token);
+            history.push("/");
+          } else {
+            setError({ erorMessage: emailError, errorType: "email" });
+          }
+        })
+        .catch(() => {
+          setError({ erorMessage: emailError, errorType: "email" });
+        });
+    }
+  };
+
   return (
-    <div>
-      {details ? (
-        <Registration loggedIn={true} details={details} edit={true} />
-      ) : (
-        ""
-      )}
-    </div>
+    <Container component="main" maxWidth="xs">
+      <CssBaseline />
+      <div className={classes.paper}>
+        <Avatar className={classes.avatar}>
+          <LockOutlinedIcon />
+        </Avatar>
+        <Typography component="h1" variant="h5">
+          Endre info
+        </Typography>
+        <form className={classes.form} onSubmit={handleSubmit}>
+          <InputTextField
+            value="first_name"
+            user={true}
+            type="textfield"
+            id="firstName"
+            label="Fornavn"
+            autoComplete="given-name"
+            val={details.user.first_name}
+            details={details}
+            setDetails={setDetails}
+            autoFocus
+          />
+          <InputTextField
+            value="last_name"
+            user={true}
+            type="textfield"
+            id="lastName"
+            label="Etternavn"
+            autoComplete="family-name"
+            val={details.user.last_name}
+            details={details}
+            setDetails={setDetails}
+          />
+          {/* <InputTextField
+            value="username"
+            user={true}
+            type="email"
+            id="username"
+            label="E-post"
+            errorMessage={error.errorMessage}
+            errorType={error.errorType}
+            displayHelper={emailError}
+            autoComplete="email"
+            val={details.user.username}
+            details={details}
+            setDetails={setDetails}
+          /> */}
+          <InputTextField
+            value="phone"
+            user={false}
+            type="tel"
+            id="tel"
+            label="Telefonnummer"
+            autoComplete="tel"
+            val={details.phone}
+            details={details}
+            setDetails={setDetails}
+          />
+          <InputTextField
+            value="city"
+            user={false}
+            type="textfield"
+            id="city"
+            label="Hjemby"
+            autoComplete="off"
+            val={details.city}
+            details={details}
+            setDetails={setDetails}
+          />
+          <InputTextField
+            value="birth_year"
+            user={false}
+            type="number"
+            id="birthYear"
+            label="Fødselsår"
+            autoComplete="bday-year"
+            errorMessage={error.errorMessage}
+            errorType={error.errorType}
+            displayHelper={error.errorMessage}
+            val={details.birth_year}
+            details={details}
+            setDetails={setDetails}
+          />
+          <Button
+            type="submit"
+            fullWidth
+            variant="contained"
+            color="primary"
+            className={classes.submit}
+          >
+            Endre
+          </Button>
+        </form>
+      </div>
+      {/* <Box mt={8}>
+        <Copyright />
+      </Box> */}
+    </Container>
   );
 }
