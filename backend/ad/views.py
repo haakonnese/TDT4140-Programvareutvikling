@@ -75,7 +75,7 @@ def change_ad(request, id):
     except Ad.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
 
-    if request.method == "PUT" and (ad.created_by_user == Profile.objects.get(user=request.user)):
+    if ad.created_by_user == Profile.objects.get(user=request.user):
         serializer = AdSerializer(ad, data=request.data)
         if serializer.is_valid():
             serializer.save()
@@ -95,7 +95,7 @@ def delete_ad(request, id):
     except Ad.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
 
-    if request.method == "DELETE" and (ad.created_by_user == Profile.objects.get(user=request.user)):
+    if ad.created_by_user == Profile.objects.get(user=request.user):
         ad.delete()
         return Response("Successfully deleted the ad", status=status.HTTP_204_NO_CONTENT)
     return Response("Currently logged in user did not create this ad", status=status.HTTP_401_UNAUTHORIZED)
