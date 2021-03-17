@@ -80,12 +80,14 @@ export default function RegisterAd(props) {
       formData.append("city", details.city);
       formData.append("created_by_user", "");
       let method = "POST";
+      let type = "listing/register";
       if (props.edit) {
         formData.append("id", details.id);
         method = "PUT";
+        type = "listing/view/" + details.id;
       }
 
-      PostPutData("listing/register", formData, "multipart/form-data", method)
+      PostPutData(type, formData, "multipart/form-data", method)
         .then((result) => {
           if (result) {
             history.push("/");
