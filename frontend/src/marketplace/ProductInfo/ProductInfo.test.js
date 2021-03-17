@@ -31,7 +31,7 @@ describe("ProductInfo component", () => {
     await act(async () => {
       ReactDOM.render(
         <Router>
-          <ProductInfo match={{ params: { id: 1 } }} />
+          <ProductInfo match={{ params: { id: 1 } }} loggedIn={true} />
         </Router>,
         container
       );

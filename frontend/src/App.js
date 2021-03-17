@@ -78,8 +78,20 @@ function App() {
               render={() => <RegisterAd loggedIn={loggedIn} />}
             />
             <Route exact path="/" component={Products}></Route>
-            <Route exact path="/products/:id" component={ProductInfo} />
-            <Route exact path="/rating/:id" component={GiveRating} />
+            <Route
+              exact
+              path="/products/:id"
+              render={({ match }) => (
+                <ProductInfo loggedIn={loggedIn} match={match} />
+              )}
+            />
+            <Route
+              exact
+              path="/rating/:id"
+              render={({ match }) => (
+                <GiveRating loggedIn={loggedIn} match={match} />
+              )}
+            />
           </Switch>
         </div>
         <Footer title="SellPoint" description="" />

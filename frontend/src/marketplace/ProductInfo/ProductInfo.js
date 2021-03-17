@@ -5,7 +5,6 @@ import {
   CardMedia,
   CardContent,
   Typography,
-  CircularProgress,
   Button,
   // IconButton,
 } from "@material-ui/core";
@@ -14,12 +13,6 @@ import PropTypes from "prop-types";
 // import FavoriteBorderIcon from "@material-ui/icons/FavoriteBorder";
 import useStyles from "./styles";
 import { GetData } from "../../service/FetchData";
-
-// define which type the product info will be
-ProductInfo.propTypes = {
-  match: PropTypes.object.isRequired,
-  errorType: PropTypes.string,
-};
 
 // ProductInfo test (paste "produkt" inside useState)
 // const produkt = {
@@ -34,14 +27,14 @@ ProductInfo.propTypes = {
 //     "https://www.if.no/magasinet/imageshop/img_shp_img_ymq7qsg42u-780x450.jpeg",
 // };
 
-function ProductInfo({ match }) {
+function ProductInfo(props) {
   // hooks
   const history = useHistory();
   const [product, setProduct] = useState();
 
   // "match" matches given id with id from url
   useEffect(() => {
-    GetData("listing/listing", match.params.id)
+    GetData("listing/listing", props.match.params.id)
       .then((result) => {
         if (result.id) {
           result.img = "http://127.0.0.1:8000" + result.img;
@@ -68,9 +61,7 @@ function ProductInfo({ match }) {
               image={product.img}
               title={product.name}
             />
-          ) : (
-            <CircularProgress />
-          )}
+          ) : null}
           <CardContent>
             <div className={classes.cardContent}>
               <Typography variant="h5" gutterBottom>
@@ -89,17 +80,18 @@ function ProductInfo({ match }) {
                   Tlf: {product.phone}
                 </Typography>
               </div>
-              <Link align="right" to={`/rating/${product.id}`}>
-                <Button
-                  className={classes.infoButton}
-                  aria-label="Mer info"
-                  variant="outlined"
-                  color="primary"
-                >
-                  Gi tilbakemelding på produkt
-                </Button>
-              </Link>
-
+              {product.rating == null && props.loggedIn ? (
+                <Link align="right" to={`/rating/${product.id}`}>
+                  <Button
+                    className={classes.infoButton}
+                    aria-label="Mer info"
+                    variant="outlined"
+                    color="primary"
+                  >
+                    Gi tilbakemelding på produkt
+                  </Button>
+                </Link>
+              ) : null}
               {/* Favorite-button for adding product to favorite-list */}
               {/* <IconButton className={classes.iconButton} aria-label="Favoriser">
                     <FavoriteBorderIcon />
@@ -114,11 +106,15 @@ function ProductInfo({ match }) {
             </Typography>
           </CardContent>
         </Card>
-      ) : (
-        <CircularProgress />
-      )}
+      ) : null}
     </main>
   );
 }
+// define which type the product info will be
+ProductInfo.propTypes = {
+  match: PropTypes.object.isRequired,
+  errorType: PropTypes.string,
+  loggedIn: PropTypes.bool.isRequired,
+};
 
 export default ProductInfo;

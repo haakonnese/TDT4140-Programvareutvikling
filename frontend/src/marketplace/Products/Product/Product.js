@@ -6,7 +6,6 @@ import {
   CardActions,
   Typography,
   Button,
-  CircularProgress,
   // IconButton,
 } from "@material-ui/core";
 // favourite-button to add product to favourite-list
@@ -32,9 +31,7 @@ function Product(props) {
           image={props.product.img}
           title={props.product.name}
         />
-      ) : (
-        <CircularProgress />
-      )}
+      ) : null}
       <CardContent>
         <div className={classes.cardContent}>
           <Typography gutterBottom>{props.product.name}</Typography>
