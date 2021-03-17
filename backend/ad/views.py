@@ -99,3 +99,13 @@ def delete_ad(request, id):
         ad.delete()
         return Response("Successfully deleted the ad", status=status.HTTP_204_NO_CONTENT)
     return Response("Currently logged in user did not create this ad", status=status.HTTP_401_UNAUTHORIZED)
+
+
+@api_view(["GET"])
+@permission_classes([IsAuthenticated])
+def view_users_ads(request):
+    context = []
+    for ad in Ad.objects.all().order_by("-pub_date"):
+        if ad.created_by_user == Profile.objects.get(user=request.user):
+            context.append(AdSerializer(ad).data)
+    return Response(context)
