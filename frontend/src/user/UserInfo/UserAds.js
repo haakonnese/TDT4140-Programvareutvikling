@@ -9,7 +9,7 @@ function UserAds() {
 
   useEffect(() => {
     // { token: localStorage.getItem("token") }
-    GetData("listing/listings")
+    GetData("listing/listings", "mylistings")
       .then((result) => {
         if (result.length > 0) {
           result.forEach((res) => {
@@ -23,21 +23,6 @@ function UserAds() {
       .catch((error) => {
         console.log("Feil", error);
       });
-    // GetData("user/user")
-    //   .then((result) => {
-    //     console.log(result);
-    //     setUser(result);
-    //     console.log({ user });
-    //     // if (result) {
-    //     //   localStorage.getItem("token", result.token);
-    //     //   setUser(result);
-    //     // } else {
-    //     //   console.log("Feil");
-    //     // }
-    //   })
-    //   .catch((error) => {
-    //     console.log("Feil", error);
-    //   });
   }, []);
   return (
     <main>
@@ -52,7 +37,7 @@ function UserAds() {
         }}
       >
         {products
-          // .filter((product) => product.created_by_user === user.user)
+          // .filter((product) => product.created_by_user === 1)
           .map((product) => (
             <Grid item key={product.id} xs={12} sm={6} md={4} lg={3}>
               <UserAd product={product} />
