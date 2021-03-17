@@ -5,15 +5,16 @@ import {
   Container,
   CssBaseline,
   Typography,
-  Avatar,
   Box,
   Button,
   FormHelperText,
+  Card,
+  CardMedia,
+  CardContent,
 } from "@material-ui/core";
 import { Rating } from "@material-ui/lab";
 import InputTextField from "../standardComponents/InputTextField";
 import useStyles from "../standardComponents/styles";
-import PostAdd from "@material-ui/icons/PostAdd";
 import { Link } from "react-router-dom";
 
 function GiveRating({ match }) {
@@ -25,6 +26,7 @@ function GiveRating({ match }) {
   const [empty, setEmpty] = useState(false);
   useEffect(() => {
     GetData("listing/listing", match.params.id).then((result) => {
+      result.img = "http://127.0.0.1:8000" + result.img;
       setProduct(result);
     });
   }, []);
@@ -53,15 +55,31 @@ function GiveRating({ match }) {
   };
   return (
     <Container>
+      <CssBaseline />
       {product && product.rating == null ? (
         <div>
-          {!rated ? (
-            <Container component="main" maxWidth="xs">
-              <CssBaseline />
+          <Container component="main" maxWidth="xs">
+            <Card style={{ marginTop: 30, width: "100%" }}>
+              <CardContent>
+                <Typography gutterBottom>{product.name}</Typography>
+                <div
+                  style={{ display: "flex", justifyContent: "space-between" }}
+                >
+                  <Typography gutterBottom color="textSecondary">
+                    {product.first_name} {product.last_name}
+                  </Typography>
+                  <Typography gutterBottom color="textSecondary">
+                    {product.price}kr
+                  </Typography>
+                </div>
+              </CardContent>
+              <CardMedia
+                style={{ height: 0, paddingTop: "56.25%", width: "100%" }}
+                image={product.img}
+              />
+            </Card>
+            {!rated ? (
               <div className={classes.paper}>
-                <Avatar className={classes.avatar}>
-                  <PostAdd />
-                </Avatar>
                 <Box borderColor="transparent" mb={3}>
                   <Typography component="h1" variant="h5">
                     Gi tilbakemelding
@@ -117,25 +135,22 @@ function GiveRating({ match }) {
                   ) : null}
                 </form>
               </div>
-            </Container>
-          ) : (
-            <Container component="main" maxWidth="xs">
-              <CssBaseline />
-              <div className={classes.paper}>
-                <Avatar className={classes.avatar}>
-                  <PostAdd />
-                </Avatar>
-                <Box borderColor="transparent" mb={3}>
-                  <Typography component="h1" variant="h5">
-                    Takk for tilbakemeldingen
-                  </Typography>
-                </Box>
-                <Link to="/">
-                  <Button>Tilbake til forsiden</Button>
-                </Link>
-              </div>
-            </Container>
-          )}
+            ) : (
+              <Container component="main" maxWidth="xs">
+                <CssBaseline />
+                <div className={classes.paper}>
+                  <Box borderColor="transparent" mb={3}>
+                    <Typography component="h1" variant="h5">
+                      Takk for tilbakemeldingen
+                    </Typography>
+                  </Box>
+                  <Link to="/">
+                    <Button>Tilbake til forsiden</Button>
+                  </Link>
+                </div>
+              </Container>
+            )}
+          </Container>
         </div>
       ) : (
         <div>Kan ikke gi tilbakemelding</div>
