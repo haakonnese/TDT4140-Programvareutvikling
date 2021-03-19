@@ -1,4 +1,4 @@
-import { React, useState } from "react";
+import { React, useState, useEffect } from "react";
 import { Button, Grid, TextField, FormHelperText } from "@material-ui/core";
 import { Autocomplete } from "@material-ui/lab";
 import { connect } from "react-redux";
@@ -9,11 +9,16 @@ import { priceError } from "./errorMessages";
 function Filter(props) {
   const [error, setError] = useState({ error: false, errorMessage: "" });
   const [details, setDetails] = useState(filter);
+
+  useEffect(() => {
+    search();
+  }, [details.category]);
+
   function search() {
     if (
-      details.minimum &&
-      details.maximum &&
-      details.maximum < details.minimum
+      Number.isInteger(details.min) &&
+      Number.isInteger(details.max) &&
+      details.max < details.min
     ) {
       setError({ error: true, errorMessage: priceError });
     } else {
@@ -47,21 +52,21 @@ function Filter(props) {
             <TextField
               variant="outlined"
               margin="normal"
-              id="minimum"
+              id="min"
               type="number"
               label="Fra kr"
               error={error.error}
               fullWidth
               onChange={(e) => {
                 if (e.target.value < 0) {
-                  setDetails({ ...details, minimum: 0 });
+                  setDetails({ ...details, min: 0 });
                 } else if (e.target.value !== "") {
-                  setDetails({ ...details, minimum: parseInt(e.target.value) });
+                  setDetails({ ...details, min: parseInt(e.target.value) });
                 } else {
-                  setDetails({ ...details, minimum: false });
+                  setDetails({ ...details, min: false });
                 }
               }}
-              value={details.minimum}
+              value={Number.isInteger(details.min) ? details.min : ""}
             />
           </Grid>
           <Grid item xs={6}>
@@ -69,20 +74,20 @@ function Filter(props) {
               variant="outlined"
               margin="normal"
               type="number"
-              id="maximum"
+              id="max"
               label="Til kr"
               error={error.error}
               fullWidth
               onChange={(e) => {
                 if (e.target.value < 0) {
-                  setDetails({ ...details, maximum: 0 });
+                  setDetails({ ...details, max: 0 });
                 } else if (e.target.value !== "") {
-                  setDetails({ ...details, maximum: parseInt(e.target.value) });
+                  setDetails({ ...details, max: parseInt(e.target.value) });
                 } else {
-                  setDetails({ ...details, maximum: false });
+                  setDetails({ ...details, max: false });
                 }
               }}
-              value={details.maximum}
+              value={Number.isInteger(details.max) ? details.max : ""}
             />
           </Grid>
         </Grid>

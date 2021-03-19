@@ -44,7 +44,7 @@ function Products(props) {
           });
           setProducts(result);
         } else {
-          console.log("Feil");
+          setProducts(result);
         }
       })
       .catch((error) => {

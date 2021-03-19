@@ -22,9 +22,9 @@ beforeEach(() => {
   });
   document.body.appendChild(container);
 
-  minimum = container.querySelector("#minimum");
+  minimum = container.querySelector("#min");
   userEvent.type(minimum, "120");
-  maximum = container.querySelector("#maximum");
+  maximum = container.querySelector("#max");
   userEvent.type(maximum, "200");
   city = container.querySelector("#city");
   userEvent.type(city, "Oslo");

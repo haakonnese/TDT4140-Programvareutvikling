@@ -12,8 +12,8 @@ function categoryReducer(
   }
 }
 export const filter = {
-  minimum: false,
-  maximum: false,
+  min: false,
+  max: false,
   category: null,
   city: null,
 };
