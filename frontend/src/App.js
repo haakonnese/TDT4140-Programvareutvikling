@@ -9,24 +9,9 @@ import Footer from "./Footer";
 import RegisterAd from "./ProductRegistration/RegisterAd";
 import "./index.css";
 import { Provider } from "react-redux";
-import { createStore } from "redux";
 import { GetData } from "./service/FetchData";
+import store from "./reducers";
 
-function reducer(state, action = "default") {
-  switch (action.type) {
-    case "update":
-      return action.payload;
-    default:
-      return state;
-  }
-}
-const store = createStore(reducer, {
-  categories: [
-    {
-      category: "",
-    },
-  ],
-});
 function App() {
   const [loggedIn, setLoggedIn] = useState(
     localStorage.getItem("token") != null
@@ -36,9 +21,10 @@ function App() {
   }
   useEffect(() => {
     GetData("listing/categories").then((data) => {
-      if (data.length > 0) {
-        store.dispatch({ type: "update", payload: { categories: data } });
-      }
+      store.dispatch({
+        type: "UPDATE_CATEGORY",
+        payload: data,
+      });
     });
   }, []);
   return (

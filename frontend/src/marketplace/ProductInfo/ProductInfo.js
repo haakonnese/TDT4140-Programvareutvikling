@@ -47,16 +47,15 @@ function ProductInfo({ match }) {
           setProducts(result);
           // console.log(products);
         } else {
-          console.log("Feil");
+          history.replace("/404");
         }
       })
       .catch(() => {
-        history.push("/404");
+        history.replace("/404");
       });
   }, []);
 
   // css for jsx
-  console.log(products);
   const classes = useStyles();
   return (
     <main className={classes.main}>
