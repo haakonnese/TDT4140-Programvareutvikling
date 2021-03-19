@@ -72,7 +72,7 @@ function RegisterAd(props) {
       formData.append("name", details.name);
       formData.append("price", details.price);
       formData.append("city", details.city);
-      formData.append("created_by_user", "");
+      // formData.append("created_by_user", "");
       PostData("listing/register", formData, "multipart/form-data")
         .then((result) => {
           if (result) {
@@ -131,6 +131,7 @@ function RegisterAd(props) {
 
             <Autocomplete
               id="category"
+              noOptionsText="Kategori ikke funnet"
               options={props.categories.map((option) => option.category)}
               onChange={(e, value) => {
                 setDetails({ ...details, category: value });

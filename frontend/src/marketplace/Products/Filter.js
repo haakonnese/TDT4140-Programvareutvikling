@@ -9,7 +9,6 @@ import { priceError } from "./errorMessages";
 function Filter(props) {
   const [error, setError] = useState({ error: false, errorMessage: "" });
   const [details, setDetails] = useState(filter);
-  console.log(details);
   function search() {
     if (
       details.minimum &&
@@ -153,6 +152,7 @@ function Filter(props) {
           {" "}
           <Autocomplete
             id="category"
+            noOptionsText="Kategori ikke funnet"
             options={props.categories.map((option) => option.category)}
             onChange={(e, value) => {
               if (value === "") {

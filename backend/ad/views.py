@@ -2,10 +2,10 @@
 
 # Create your views here.
 from django.core.exceptions import ObjectDoesNotExist
+from rest_framework.response import Response
 from django.http import HttpResponse, Http404
 from rest_framework import status
 from rest_framework.decorators import api_view, permission_classes
-from rest_framework.response import Response
 from .models import Ad, Category
 from .serializers import AdSerializer, CategorySerializer
 from .forms import ImageForm
@@ -18,10 +18,21 @@ def index(request):
     return HttpResponse("Hello. You're at the Ad index.")
 
 
-@api_view(["GET"])
+@api_view(["POST"])
 def view_ads(request):
     context = []
-    for ad in Ad.objects.all().order_by("-pub_date"):
+    data = request.data
+    arguments = {}
+    if data.get("category") is not None:
+        arguments["category"] = data["category"]
+    if data.get("city") is not None:
+        arguments["city"] = data["city"]
+    if data.get("min") is None:
+        data["min"] = 0
+    if data.get("max") is None:
+        data["max"] = 10 ** 5
+    ads = Ad.objects.filter(price__lte=data["max"], price__gte=data["min"], **arguments)
+    for ad in ads:
         context.append(AdSerializer(ad).data)
     return Response(context)
 
@@ -45,6 +56,9 @@ def register_ad(request):
     """Create a new Ad."""
     updated_request = request.POST.copy()
     updated_request.update({"created_by_user": Profile.objects.get(user=request.user)})
+    category = Category.objects.get(category=updated_request["category"])
+    updated_request.pop("category")
+    updated_request.update({"category": category})
     form = ImageForm(updated_request, request.FILES)
     if form.is_valid():
         form.save()

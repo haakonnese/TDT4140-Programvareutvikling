@@ -50,7 +50,7 @@ function Products(props) {
       .catch((error) => {
         console.log("Feil", error);
       });
-  }, []);
+  }, [props.filter]);
 
   return (
     <main>
