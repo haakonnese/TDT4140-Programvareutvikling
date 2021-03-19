@@ -12,6 +12,7 @@ import { Provider } from "react-redux";
 import { createStore } from "redux";
 import { GetData } from "./service/FetchData";
 import GiveRating from "./rating/GiveRating";
+import SeeRating from "./rating/SeeRating";
 
 function reducer(state, action = "default") {
   switch (action.type) {
@@ -78,6 +79,7 @@ function App() {
               render={() => <RegisterAd loggedIn={loggedIn} />}
             />
             <Route exact path="/" component={Products}></Route>
+            <Route exact path="/bruker/:userId" component={SeeRating}></Route>
             <Route
               exact
               path="/products/:id"
