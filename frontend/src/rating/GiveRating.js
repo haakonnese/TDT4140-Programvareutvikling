@@ -99,6 +99,7 @@ function GiveRating(props) {
                           Hvor bra gikk kjøpet
                         </Typography>
                         <Rating
+                          id="stars"
                           size="large"
                           name="customized-10"
                           onChange={(event, newValue) => {
