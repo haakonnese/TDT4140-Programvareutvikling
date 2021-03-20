@@ -8,6 +8,7 @@ import { useHistory } from "react-router-dom";
 // const testObject = {
 //   first_name: "Håkon",
 //   last_name: "Nese",
+//   city: "Trondheim",
 //   avg_rating: 9,
 //   ratings: [
 //     {
@@ -79,6 +80,7 @@ function SeeRating({ match }) {
             <Typography variant="h5">
               Gjennomsnittlig rating: {user.avg_rating}
             </Typography>
+            <Typography variant="h5">Hjemby: {user.city}</Typography>
           </Grid>
           <div id="rating">
             {user.ratings.map((rating) => (
