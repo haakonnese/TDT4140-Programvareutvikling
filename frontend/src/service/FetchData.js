@@ -42,9 +42,35 @@ export function GetData(type, userData = null) {
   } else {
     text = type;
   }
+  const headers = {
+    Accept: "application/json",
+    // "Content-Type": contentType,
+  };
+  if (localStorage.getItem("token") != null) {
+    headers.Authorization = "Token " + localStorage.getItem("token");
+  }
   return new Promise((resolve, reject) => {
     fetch(BASE_URL + text, {
       method: "GET",
+      headers: headers,
+    })
+      .then((response) => response.json())
+      .then((responseJson) => resolve(responseJson))
+      .catch((error) => reject(error));
+  });
+}
+
+export function DeleteData(type, userData = null) {
+  // fetches data from the given endpoint and returns the promise (responseJson)
+  let text;
+  if (userData != null) {
+    text = type + "/" + userData;
+  } else {
+    text = type;
+  }
+  return new Promise((resolve, reject) => {
+    fetch(BASE_URL + text, {
+      method: "DELETE",
     })
       .then((response) => response.json())
       .then((responseJson) => resolve(responseJson))

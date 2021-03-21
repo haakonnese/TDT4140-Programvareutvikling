@@ -76,7 +76,16 @@ function App() {
               path="/opprett"
               render={() => <RegisterAd loggedIn={loggedIn} />}
             />
-            <Route exact path="/" component={Products}></Route>
+            <Route
+              exact
+              path="/lagredeannonser"
+              render={() => <Products loggedIn={loggedIn} onlyUser={true} />}
+            />
+            <Route
+              exact
+              path="/"
+              render={() => <Products onlyUser={false} />}
+            />
             <Route exact path="/products/:id" component={ProductInfo} />
           </Switch>
         </div>

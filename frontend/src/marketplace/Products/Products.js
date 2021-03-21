@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { Grid } from "@material-ui/core";
+import { Grid, Typography } from "@material-ui/core";
 import { GetData } from "../../service/FetchData";
 import Product from "./Product/Product";
+import PropTypes from "prop-types";
 
-function Products() {
+function Products(props) {
   // Product test
   // const product = [
   //   {
@@ -32,13 +33,19 @@ function Products() {
 
   // hooks
   const [products, setProducts] = useState([]);
+  let endpoint = "listing/listings";
+  if (props.onlyUser) {
+    endpoint = "listing/favories";
+  }
   useEffect(() => {
-    GetData("listing/listings")
+    GetData(endpoint)
       .then((result) => {
+        console.log(result);
         if (result.length > 0) {
           result.forEach((res) => {
             res.img = "http://127.0.0.1:8000" + res.img;
           });
+          console.log(result);
           setProducts(result);
         } else {
           console.log("Feil");
@@ -48,9 +55,25 @@ function Products() {
         console.log("Feil", error);
       });
   }, []);
-
   return (
     <main>
+      {props.onlyUser ? (
+        <Grid
+          container
+          justify="flex-start"
+          spacing={4}
+          style={{
+            width: "100%",
+            margin: 0,
+            marginTop: 10,
+          }}
+        >
+          <Grid item xs={12}>
+            <Typography variant="h5">Lagrede annonser</Typography>{" "}
+          </Grid>
+        </Grid>
+      ) : null}
+
       <Grid
         container
         justify="flex-start"
@@ -61,6 +84,11 @@ function Products() {
           marginTop: 20,
         }}
       >
+        {products.length === 0 ? (
+          <Grid item xs={12}>
+            <Typography>Det er ingen annonser å vise</Typography>
+          </Grid>
+        ) : null}
         {products.map((product) => (
           <Grid item key={product.id} xs={12} sm={6} md={4} lg={3}>
             <Product product={product} />
@@ -70,5 +98,8 @@ function Products() {
     </main>
   );
 }
-
+Products.propTypes = {
+  loggedIn: PropTypes.bool,
+  onlyUser: PropTypes.bool.isRequired,
+};
 export default Products;
