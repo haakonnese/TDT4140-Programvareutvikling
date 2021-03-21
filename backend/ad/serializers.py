@@ -1,5 +1,11 @@
 from rest_framework import serializers
-from .models import Ad, Category
+from .models import Ad, Category, Favorite
+
+
+class FavoriteSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Favorite
+        fields = ["profile", "ad"]
 
 
 class AdSerializer(serializers.ModelSerializer):
