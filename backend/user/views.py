@@ -59,7 +59,9 @@ def edit_profile(request):
         return response
     ProfileSerializer.update(ProfileSerializer(), instance=request.user.profile, validated_data=data)
     response.status_code = status.HTTP_200_OK
-    response.data = ProfileSerializer(request.user.profile).data
+    profile_data = ProfileSerializer(request.user.profile).data
+    profile_data.get("user").pop("password")
+    response.data = profile_data
     return response
 
 
