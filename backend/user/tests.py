@@ -19,7 +19,7 @@ class ProfileTest(unittest.TestCase):
             last_name="Tester",
             first_name="Test",
         )
-        test_user = Profile.objects.create(user=test_user, city="Tronheim", birth_year="1960", phone="33312333")
+        test_user = Profile.objects.create(user=test_user, city="Trondheim", birth_year="1960", phone="33312333")
 
     @classmethod
     def tearDownClass(cls):

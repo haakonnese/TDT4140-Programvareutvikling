@@ -1,5 +1,5 @@
-import { React, useState, useEffect } from "react";
-import { PostPutData } from "../service/FetchData";
+import { React, useState } from "react";
+import { PostData } from "../service/FetchData";
 import PropTypes from "prop-types";
 import {
   Avatar,
@@ -14,18 +14,19 @@ import PostAdd from "@material-ui/icons/PostAdd";
 import useStyles from "../standardComponents/styles";
 import InputTextField from "../standardComponents/InputTextField";
 import { useHistory } from "react-router-dom";
+import { connect } from "react-redux";
 // import { phoneError } from "./errorMessages";
 
-const categories = [
-  { type: "Kjøretøy" },
-  { type: "Sportsutsyr" },
-  { type: "Bøker" },
-  { type: "Elektronikk" },
-  { type: "Leker" },
-  { type: "Annet" },
-];
+// const categories = [
+//   { type: "Kjøretøy" },
+//   { type: "Sportsutsyr" },
+//   { type: "Bøker" },
+//   { type: "Elektronikk" },
+//   { type: "Leker" },
+//   { type: "Annet" },
+// ];
 
-export default function RegisterAd(props) {
+function RegisterAd(props) {
   const classes = useStyles();
   const history = useHistory();
   const [details, setDetails] = useState({
@@ -36,12 +37,7 @@ export default function RegisterAd(props) {
     description: "",
     img: "",
   });
-  useEffect(() => {
-    if (props.details) {
-      setDetails(props.details);
-      setPreview(props.details.img);
-    }
-  }, []);
+
   const [preview, setPreview] = useState(false);
   function previewImage(e) {
     if (e.target.files[0]) {
@@ -70,24 +66,14 @@ export default function RegisterAd(props) {
     }
     if (allow) {
       const formData = new FormData();
-      if (!(details.img instanceof String)) {
-        formData.append("img", details.img);
-      }
+      formData.append("img", details.img);
       formData.append("category", details.category);
       formData.append("description", details.description);
       formData.append("name", details.name);
       formData.append("price", details.price);
       formData.append("city", details.city);
-      formData.append("created_by_user", "");
-      let method = "POST";
-      let type = "listing/register";
-      if (props.edit) {
-        formData.append("id", details.id);
-        method = "PUT";
-        type = "listing/view/" + details.id;
-      }
-
-      PostPutData(type, formData, "multipart/form-data", method)
+      // formData.append("created_by_user", "");
+      PostData("listing/register", formData, "multipart/form-data")
         .then((result) => {
           if (result) {
             history.push("/");
@@ -106,7 +92,7 @@ export default function RegisterAd(props) {
             <PostAdd />
           </Avatar>
           <Typography component="h1" variant="h5">
-            {props.edit ? "Endre" : "Registrer"} annonse
+            Registrer annonse
           </Typography>
           <form className={classes.form} onSubmit={handleSubmit}>
             <InputTextField
@@ -145,7 +131,8 @@ export default function RegisterAd(props) {
 
             <Autocomplete
               id="category"
-              options={categories.map((option) => option.type)}
+              noOptionsText="Kategori ikke funnet"
+              options={props.categories.map((option) => option.category)}
               onChange={(e, value) => {
                 setDetails({ ...details, category: value });
               }}
@@ -178,7 +165,7 @@ export default function RegisterAd(props) {
                 style={{ width: "100%" }}
                 component="span"
               >
-                {props.edit ? "Endre" : "Last opp ett"} bilde
+                Last opp et bilde
               </Button>
             </label>
             <input
@@ -196,7 +183,7 @@ export default function RegisterAd(props) {
                 position: "relative",
                 zIndex: -1,
               }}
-              required={!props.edit}
+              required
             />
             {preview && (
               <img
@@ -217,7 +204,7 @@ export default function RegisterAd(props) {
               color="primary"
               className={classes.submit}
             >
-              {props.edit ? "Endre" : "Registrer"}
+              Registrer
             </Button>
           </form>
         </div>
@@ -229,6 +216,10 @@ export default function RegisterAd(props) {
 }
 RegisterAd.propTypes = {
   loggedIn: PropTypes.bool,
-  details: PropTypes.object,
-  edit: PropTypes.bool,
+  categories: PropTypes.array,
 };
+
+const mapStateToProps = (state) => {
+  return { categories: state.categories };
+};
+export default connect(mapStateToProps)(RegisterAd);
