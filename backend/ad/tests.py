@@ -1,7 +1,7 @@
 import unittest
 from rest_framework.test import APIClient
 from user.models import Profile
-from .models import Ad, Category
+from .models import Ad, Category, Favorite
 from django.contrib.auth.models import User
 from rest_framework.authtoken.models import Token
 import os
@@ -61,6 +61,25 @@ class AdsTest(unittest.TestCase):
         self.assertEqual(ad1.description, d["description"])
         self.assertEqual(ad1.price, d["price"]),
         self.assertEqual(ad1.category, Category.objects.get(category=d["category"]))
+
+        # Favoriser en annonse
+        response = self.client.post("/api/listing/favorite/save", {"ad": ad1.id})
+        # Sjekk at responsen er 201 favorite created.
+        self.assertEqual(response.status_code, 201, "Post favorite failed")
+        favorite = Favorite.objects.filter(profile=Profile.objects.get(user=user1), ad=ad1)
+        self.assertEqual(len(favorite), 1, "Not correct response for post favorite")
+
+        response = self.client.get("/api/listing/favorites")
+        # Sjekk at responsen er 200.
+        self.assertEqual(response.status_code, 200, "Get all favorites of user failed")
+        favorite = Favorite.objects.filter(profile=Profile.objects.get(user=user1))
+        self.assertEqual(len(favorite), 1, "Not correct response for getting all favorites")
+
+        response = self.client.delete("/api/listing/favorite/delete/" + str(ad1.id))
+        # Sjekk at responsen er 200.
+        self.assertEqual(response.status_code, 200, "Delete favorite failed")
+        favorite = Favorite.objects.filter(profile=Profile.objects.get(user=user1), ad=ad1)
+        self.assertEqual(len(favorite), 0, "Favorite is not removed from user")
 
         # Sjekker responsen som funker
         # response = self.client.get("ad/view/1", d, format="json")
