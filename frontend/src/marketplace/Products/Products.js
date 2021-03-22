@@ -3,6 +3,7 @@ import { Grid, Typography } from "@material-ui/core";
 import { GetData } from "../../service/FetchData";
 import Product from "./Product/Product";
 import PropTypes from "prop-types";
+import { useHistory } from "react-router-dom";
 
 function Products(props) {
   // Product test
@@ -33,28 +34,29 @@ function Products(props) {
 
   // hooks
   const [products, setProducts] = useState([]);
+  const history = useHistory();
   let endpoint = "listing/listings";
-  if (props.onlyUser) {
+  if (props.onlyUser && !props.loggedIn) {
+    history.replaceState("/404");
+  } else if (props.onlyUser) {
     endpoint = "listing/favories";
   }
   useEffect(() => {
     GetData(endpoint)
       .then((result) => {
-        console.log(result);
         if (result.length > 0) {
           result.forEach((res) => {
             res.img = "http://127.0.0.1:8000" + res.img;
           });
-          console.log(result);
           setProducts(result);
         } else {
-          console.log("Feil");
+          setProducts([]);
         }
       })
-      .catch((error) => {
-        console.log("Feil", error);
+      .catch(() => {
+        setProducts([]);
       });
-  }, []);
+  }, [props.onlyUser]);
   return (
     <main>
       {props.onlyUser ? (
