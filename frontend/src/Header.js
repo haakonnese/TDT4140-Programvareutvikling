@@ -95,6 +95,13 @@ export default function Header(props) {
             >
               <MenuItem onClick={handleClose}>Min profil</MenuItem>
               <MenuItem onClick={handleClose}>Mine annonser</MenuItem>
+              <MenuItem
+                component={Link}
+                to="/lagredeannonser"
+                onClick={handleClose}
+              >
+                Lagrede annonser
+              </MenuItem>
               <MenuItem component={Link} to="/opprett" onClick={handleClose}>
                 Opprett annonse
               </MenuItem>

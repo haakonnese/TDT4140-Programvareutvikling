@@ -13,6 +13,7 @@ import PropTypes from "prop-types";
 // import FavoriteBorderIcon from "@material-ui/icons/FavoriteBorder";
 import useStyles from "./styles";
 import { GetData } from "../../service/FetchData";
+import HeartButton from "../HeartButton";
 
 // define which type the product info will be
 ProductInfo.propTypes = {
@@ -79,16 +80,15 @@ function ProductInfo({ match }) {
               <Typography varient="h5">{products.price}kr</Typography>
             </div>
 
-            <div className={classes.sellerInfo}>
-              <Typography varient="h2">By: {products.city}</Typography>
-              <Typography varient="h2">
-                Selger: {products.first_name} {products.last_name}
-              </Typography>
-              <Typography varient="h2">Tlf: {products.phone}</Typography>
-              {/* Favorite-button for adding product to favorite-list */}
-              {/* <IconButton className={classes.iconButton} aria-label="Favoriser">
-                    <FavoriteBorderIcon />
-                  </IconButton> */}
+            <div className={classes.cardContent}>
+              <div className={classes.sellerInfo}>
+                <Typography varient="h2">By: {products.city}</Typography>
+                <Typography varient="h2">
+                  Selger: {products.first_name} {products.last_name}
+                </Typography>
+                <Typography varient="h2">Tlf: {products.phone}</Typography>
+              </div>
+              <HeartButton product={products} />
             </div>
             <br />
             <Typography

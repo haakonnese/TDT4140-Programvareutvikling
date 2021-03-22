@@ -58,4 +58,21 @@ describe("Products component", () => {
     expect(price1).toBeInTheDocument();
     expect(price2).toBeInTheDocument();
   });
+  it("shows saved ads", async () => {
+    const container = document.createElement("div");
+    document.body.appendChild(container);
+    GetData.mockImplementation(() => Promise.resolve(products));
+    await act(async () => {
+      ReactDOM.render(
+        <Router>
+          <Products loggedIn={true} onlyUser={true} />
+        </Router>,
+        container
+      );
+    });
+    //   console.log(container)
+
+    const saved = screen.getByText("Lagrede annonser");
+    expect(saved).toBeInTheDocument();
+  });
 });
