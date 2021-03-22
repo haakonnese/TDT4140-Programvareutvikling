@@ -76,12 +76,22 @@ def change_ad(request, id):
         return Response(status=status.HTTP_404_NOT_FOUND)
 
     if ad.created_by_user == Profile.objects.get(user=request.user):
-        serializer = AdSerializer(ad, data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    return Response("Currently logged in user did not create this ad", status=status.HTTP_401_UNAUTHORIZED)
+        updated_request = request.POST.copy()
+        updated_request.update({"created_by_user": Profile.objects.get(user=request.user)})
+        category = Category.objects.get(category=updated_request["category"])
+        updated_request.pop("category")
+        updated_request.update({"category": category})
+        form = ImageForm(updated_request, request.FILES)
+        if form.is_valid():
+            form.save()
+            return Response("Successfully uploaded", status=status.HTTP_201_CREATED)
+        return Response("Error on uploaded", status=status.HTTP_400_BAD_REQUEST)
+        # serializer = AdSerializer(ad, data=request.data)
+        # if serializer.is_valid():
+        #     serializer.save()
+        #     return Response(serializer.data)
+        # return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        return Response("Currently logged in user did not create this ad", status=status.HTTP_401_UNAUTHORIZED)
 
 
 @api_view(["DELETE"])
