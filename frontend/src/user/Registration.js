@@ -12,6 +12,8 @@ import Container from "@material-ui/core/Container";
 import InputTextField from "../standardComponents/InputTextField";
 import { Link, useHistory } from "react-router-dom";
 import PropTypes from "prop-types";
+import { connect } from "react-redux";
+import store from "./../reducers";
 
 import {
   emailError,
@@ -19,11 +21,11 @@ import {
   toYoungError,
   toOldError,
 } from "./errorMessages";
-export default function Registation(props) {
+function Registation(props) {
   // css for jsx
   const classes = useStyles();
   const history = useHistory();
-  const { changeLoggedIn, loggedIn } = props;
+  const { loggedIn } = props;
   const [details, setDetails] = useState({
     user: { first_name: "", last_name: "", username: "", password: "" },
     birth_year: "",
@@ -57,7 +59,10 @@ export default function Registation(props) {
           // console.log(result);
           if (result.token) {
             localStorage.setItem("token", result.token);
-            changeLoggedIn(true);
+            store.dispatch({
+              type: "UPDATE_LOGGED_IN",
+              payload: localStorage.getItem("token") != null,
+            });
             history.push("/");
           } else {
             setError({ erorMessage: emailError, errorType: "email" });
@@ -211,6 +216,10 @@ export default function Registation(props) {
 }
 
 Registation.propTypes = {
-  changeLoggedIn: PropTypes.func,
   loggedIn: PropTypes.bool,
 };
+
+const mapStateToProps = (state) => {
+  return { loggedIn: state.loggedIn };
+};
+export default connect(mapStateToProps)(Registation);

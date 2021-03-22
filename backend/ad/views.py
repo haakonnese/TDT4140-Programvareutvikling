@@ -18,14 +18,32 @@ def index(request):
     return HttpResponse("Hello. You're at the Ad index.")
 
 
-@api_view(["GET"])
+@api_view(["POST"])
 def view_ads(request):
     context = []
+    data = request.data
+    arguments = {}
+    if data.get("category") is not None:
+        arguments["category"] = data["category"]
+    if data.get("city") is not None:
+        arguments["city"] = data["city"]
+    if data.get("min") is False:
+        data["min"] = 0
+    if data.get("max") is False:
+        data["max"] = 10 ** 15
+    if data.get("favorite") is True:
+        profile = Profile.objects.get(user=request.user)
+        favorites = Favorite.objects.filter(profile=profile)
+        ads = Ad.objects.filter(
+            id__in=favorites.values("ad"), price__lte=data["max"], price__gte=data["min"], **arguments
+        ).order_by("-pub_date")
+    else:
+        ads = Ad.objects.filter(price__lte=data["max"], price__gte=data["min"], **arguments).order_by("-pub_date")
     if not request.user.is_anonymous:
         profile = Profile.objects.get(user=request.user)
     else:
         profile = None
-    for ad in Ad.objects.all().order_by("-pub_date"):
+    for ad in ads:
         data = AdSerializer(ad).data
         if profile is not None:
             favorite = Favorite.objects.filter(profile=profile, ad=ad)

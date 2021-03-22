@@ -10,6 +10,8 @@ import {
   MenuItem,
 } from "@material-ui/core";
 import { AccountCircle } from "@material-ui/icons";
+import { connect } from "react-redux";
+import store from "./reducers";
 // import IconButton from "@material-ui/core/IconButton";
 // import SearchIcon from "@material-ui/icons/Search";
 import { Link, useHistory } from "react-router-dom";
@@ -33,10 +35,10 @@ const useStyles = makeStyles((theme) => ({
   avatar: { backgroundColor: theme.palette.secondary.main },
 }));
 
-export default function Header(props) {
+function Header(props) {
   //   const history = useHistory();
   const classes = useStyles();
-  const { title, loggedIn, changeLoggedIn } = props;
+  const { title, loggedIn } = props;
   const history = useHistory();
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
@@ -109,7 +111,10 @@ export default function Header(props) {
                 onClick={(e) => {
                   localStorage.removeItem("token");
                   handleClose();
-                  changeLoggedIn(false);
+                  store.dispatch({
+                    type: "UPDATE_LOGGED_IN",
+                    payload: localStorage.getItem("token") != null,
+                  });
                   history.push("/");
                 }}
               >
@@ -132,5 +137,8 @@ export default function Header(props) {
 Header.propTypes = {
   title: PropTypes.string,
   loggedIn: PropTypes.bool,
-  changeLoggedIn: PropTypes.func,
 };
+const mapStateToProps = (state) => {
+  return { loggedIn: state.loggedIn };
+};
+export default connect(mapStateToProps)(Header);

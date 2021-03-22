@@ -6,6 +6,8 @@ import { PostData, DeleteData } from "../service/FetchData";
 import { act } from "react-dom/test-utils";
 import HeartButton from "./HeartButton";
 import userEvent from "@testing-library/user-event";
+import { Provider } from "react-redux";
+import store from "./../reducers";
 
 jest.mock("../service/FetchData", () => ({
   PostData: jest.fn(),
@@ -44,6 +46,10 @@ let container;
 beforeEach(() => {
   container = document.createElement("div");
   document.body.appendChild(container);
+  store.dispatch({
+    type: "UPDATE_LOGGED_IN",
+    payload: true,
+  });
 });
 
 afterEach(() => {
@@ -58,7 +64,12 @@ describe("HearButton component", () => {
     PostData.mockImplementation(() => Promise.resolve());
     DeleteData.mockImplementation(() => Promise.resolve());
     act(() => {
-      ReactDOM.render(<HeartButton product={products[1]} />, container);
+      ReactDOM.render(
+        <Provider store={store}>
+          <HeartButton product={products[1]} />
+        </Provider>,
+        container
+      );
     });
     //   console.log(container)
     const favorite = screen.getByLabelText("Favoriser");
@@ -74,7 +85,12 @@ describe("HearButton component", () => {
     PostData.mockImplementation(() => Promise.resolve());
     DeleteData.mockImplementation(() => Promise.resolve());
     act(() => {
-      ReactDOM.render(<HeartButton product={products[0]} />, container);
+      ReactDOM.render(
+        <Provider store={store}>
+          <HeartButton product={products[0]} />
+        </Provider>,
+        container
+      );
     });
     const favorite = screen.getByLabelText("Favoriser");
     expect(favorite).toBeInTheDocument();

@@ -2,13 +2,15 @@ import { screen } from "@testing-library/react";
 import React from "react";
 import ReactDOM from "react-dom";
 import "@testing-library/jest-dom/extend-expect";
-import { GetData } from "../../service/FetchData";
+import { PostData } from "../../service/FetchData";
 import { act } from "react-dom/test-utils";
 import Products from "./Products";
 import { BrowserRouter as Router } from "react-router-dom";
+import store from "./../../reducers";
+import { Provider } from "react-redux";
 
 jest.mock("../../service/FetchData", () => ({
-  GetData: jest.fn(),
+  PostData: jest.fn(),
 }));
 
 const products = [
@@ -42,12 +44,18 @@ describe("Products component", () => {
   test("if prices is correct", async () => {
     const container = document.createElement("div");
     document.body.appendChild(container);
-    GetData.mockImplementation(() => Promise.resolve(products));
+    PostData.mockImplementation(() => Promise.resolve(products));
+    store.dispatch({
+      type: "UPDATE_CATEGORY",
+      payload: [{ category: "Annet" }],
+    });
     await act(async () => {
       ReactDOM.render(
-        <Router>
-          <Products />
-        </Router>,
+        <Provider store={store}>
+          <Router>
+            <Products onlyUser={false} />
+          </Router>
+        </Provider>,
         container
       );
     });
@@ -61,12 +69,18 @@ describe("Products component", () => {
   it("shows saved ads", async () => {
     const container = document.createElement("div");
     document.body.appendChild(container);
-    GetData.mockImplementation(() => Promise.resolve(products));
+    PostData.mockImplementation(() => Promise.resolve(products));
+    store.dispatch({
+      type: "UPDATE_LOGGED_IN",
+      payload: true,
+    });
     await act(async () => {
       ReactDOM.render(
-        <Router>
-          <Products loggedIn={true} onlyUser={true} />
-        </Router>,
+        <Provider store={store}>
+          <Router>
+            <Products onlyUser={true} />
+          </Router>
+        </Provider>,
         container
       );
     });

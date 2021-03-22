@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { Grid, Typography } from "@material-ui/core";
-import { GetData } from "../../service/FetchData";
+import { PostData } from "../../service/FetchData";
 import Product from "./Product/Product";
-import PropTypes from "prop-types";
 import { useHistory } from "react-router-dom";
+import Filter from "./Filter";
+import { connect } from "react-redux";
+import PropTypes from "prop-types";
 
 function Products(props) {
   // Product test
@@ -35,14 +37,17 @@ function Products(props) {
   // hooks
   const [products, setProducts] = useState([]);
   const history = useHistory();
-  let endpoint = "listing/listings";
   if (props.onlyUser && !props.loggedIn) {
-    history.replaceState("/404");
-  } else if (props.onlyUser) {
-    endpoint = "listing/favorites";
+    history.replace("/404");
   }
   useEffect(() => {
-    GetData(endpoint)
+    const data = props.filter;
+    if (props.onlyUser) {
+      data.favorite = true;
+    } else {
+      data.favorite = false;
+    }
+    PostData("listing/listings", data)
       .then((result) => {
         if (result.length > 0) {
           result.forEach((res) => {
@@ -50,13 +55,13 @@ function Products(props) {
           });
           setProducts(result);
         } else {
-          setProducts([]);
+          setProducts(result);
         }
       })
       .catch(() => {
         setProducts([]);
       });
-  }, [props.onlyUser]);
+  }, [props.onlyUser, props.filter, props.loggedIn]);
   return (
     <main>
       {props.onlyUser ? (
@@ -75,7 +80,7 @@ function Products(props) {
           </Grid>
         </Grid>
       ) : null}
-
+      <Filter />
       <Grid
         container
         justify="flex-start"
@@ -103,5 +108,10 @@ function Products(props) {
 Products.propTypes = {
   loggedIn: PropTypes.bool,
   onlyUser: PropTypes.bool.isRequired,
+  filter: PropTypes.object,
 };
-export default Products;
+const mapStateToProps = (state) => {
+  return { filter: state.filter, loggedIn: state.loggedIn };
+};
+
+export default connect(mapStateToProps)(Products);

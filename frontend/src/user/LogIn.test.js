@@ -7,6 +7,8 @@ import LogIn from "./LogIn";
 import { act } from "react-dom/test-utils";
 import userEvent from "@testing-library/user-event";
 import { BrowserRouter as Router } from "react-router-dom";
+import { Provider } from "react-redux";
+import store from "./../reducers";
 
 jest.mock("../service/FetchData", () => ({
   PostData: jest.fn(),
@@ -19,9 +21,11 @@ beforeEach(() => {
   document.body.appendChild(container);
   act(() => {
     ReactDOM.render(
-      <Router>
-        <LogIn changeLoggedIn={(e) => true} loggedIn={false} />
-      </Router>,
+      <Provider store={store}>
+        <Router>
+          <LogIn />
+        </Router>
+      </Provider>,
       container
     );
   });
