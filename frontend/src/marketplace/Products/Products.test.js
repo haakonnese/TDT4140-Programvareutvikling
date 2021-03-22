@@ -2,12 +2,12 @@ import { screen } from "@testing-library/react";
 import React from "react";
 import ReactDOM from "react-dom";
 import "@testing-library/jest-dom/extend-expect";
-import { GetData } from "../../../service/FetchData";
+import { GetData } from "../../service/FetchData";
 import { act } from "react-dom/test-utils";
 import Products from "./Products";
 import { BrowserRouter as Router } from "react-router-dom";
 
-jest.mock("../../../service/FetchData", () => ({
+jest.mock("../../service/FetchData", () => ({
   GetData: jest.fn(),
 }));
 

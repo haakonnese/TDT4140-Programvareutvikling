@@ -12,7 +12,7 @@ import PropTypes from "prop-types";
 // favourite-button to add product to favourite-list
 // import FavoriteBorderIcon from "@material-ui/icons/FavoriteBorder";
 import useStyles from "./styles";
-import { GetData } from "../../../service/FetchData";
+import { GetData } from "../../service/FetchData";
 
 // define which type the product info will be
 ProductInfo.propTypes = {
@@ -56,7 +56,6 @@ function ProductInfo({ match }) {
   }, []);
 
   // css for jsx
-  console.log(products);
   const classes = useStyles();
   return (
     <main className={classes.main}>
