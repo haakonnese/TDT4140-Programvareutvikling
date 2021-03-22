@@ -56,7 +56,6 @@ function ProductInfo({ match }) {
   }, []);
 
   // css for jsx
-  console.log(products);
   const classes = useStyles();
   return (
     <main className={classes.main}>
