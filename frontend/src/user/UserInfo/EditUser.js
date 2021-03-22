@@ -1,48 +1,55 @@
 import { React, useState, useEffect } from "react";
-import { PostPutData } from "../service/FetchData";
-import Avatar from "@material-ui/core/Avatar";
-import Button from "@material-ui/core/Button";
-import CssBaseline from "@material-ui/core/CssBaseline";
-import Grid from "@material-ui/core/Grid";
-import TextField from "@material-ui/core/TextField";
-import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
-import Typography from "@material-ui/core/Typography";
-import useStyles from "../standardComponents/styles";
-import Container from "@material-ui/core/Container";
-import InputTextField from "../standardComponents/InputTextField";
-import { Link, useHistory } from "react-router-dom";
+import { GetData, PostPutData } from "../../service/FetchData";
 import PropTypes from "prop-types";
-import { connect } from "react-redux";
-import store from "./../reducers";
-
 import {
-  emailError,
-  passwordError,
-  toYoungError,
-  toOldError,
-} from "./errorMessages";
-function Registation(props) {
-  // css for jsx
+  Avatar,
+  Button,
+  CssBaseline,
+  Typography,
+  Container,
+} from "@material-ui/core";
+import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
+// import { Autocomplete } from "@material-ui/lab";
+// import PostAdd from "@material-ui/icons/PostAdd";
+import useStyles from "../../standardComponents/styles";
+import InputTextField from "../../standardComponents/InputTextField";
+import { useHistory } from "react-router-dom";
+// import Registration from "../../user/Registration";
+// import { phoneError } from "./errorMessages";
+import { emailError, toYoungError, toOldError } from "../errorMessages";
+import { connect } from "react-redux";
+
+EditUser.propTypes = {
+  errorType: PropTypes.string,
+};
+
+function EditUser() {
   const classes = useStyles();
   const history = useHistory();
-  const { loggedIn } = props;
   const [details, setDetails] = useState({
-    user: { first_name: "", last_name: "", username: "", password: "" },
+    user: { first_name: "", last_name: "" },
     birth_year: "",
     phone: "",
     city: "",
   });
-  // hooks
-  const [passwordCheck, setPasswordCheck] = useState("");
+
   const [error, setError] = useState({ errorMessage: "", errorType: "" });
-  // check if logged in
+
   useEffect(() => {
-    if (loggedIn) {
-      history.push("/");
-    }
+    GetData("user/user")
+      .then((result) => {
+        // console.log(result);
+        if (result) {
+          setDetails(result);
+        } else {
+          console.log("Feil");
+        }
+      })
+      .catch(() => {
+        history.push("/404");
+      });
   }, []);
 
-  // submit-button. What to do when someone tries to register
   const handleSubmit = (e) => {
     e.preventDefault();
     // error-handeling
@@ -50,19 +57,12 @@ function Registation(props) {
       setError({ errorMessage: toOldError, errorType: "number" });
     } else if (parseInt(details.birth_year) > new Date().getFullYear() - 13) {
       setError({ errorMessage: toYoungError, errorType: "number" });
-    } else if (details.user.password !== passwordCheck) {
-      setError({ errorMessage: passwordError, errorType: "password" });
     } else {
       // send registration to database and then do something with the result
-      PostPutData("user/register", details)
+      PostPutData("user/edit_profile", details, "application/json", "PUT")
         .then((result) => {
           // console.log(result);
-          if (result.token) {
-            localStorage.setItem("token", result.token);
-            store.dispatch({
-              type: "UPDATE_LOGGED_IN",
-              payload: localStorage.getItem("token") != null,
-            });
+          if (result) {
             history.push("/");
           } else {
             setError({ erorMessage: emailError, errorType: "email" });
@@ -82,7 +82,7 @@ function Registation(props) {
           <LockOutlinedIcon />
         </Avatar>
         <Typography component="h1" variant="h5">
-          Registrer deg
+          Endre info
         </Typography>
         <form className={classes.form} onSubmit={handleSubmit}>
           <InputTextField
@@ -108,7 +108,7 @@ function Registation(props) {
             details={details}
             setDetails={setDetails}
           />
-          <InputTextField
+          {/* <InputTextField
             value="username"
             user={true}
             type="email"
@@ -121,7 +121,7 @@ function Registation(props) {
             val={details.user.username}
             details={details}
             setDetails={setDetails}
-          />
+          /> */}
           <InputTextField
             value="phone"
             user={false}
@@ -158,38 +158,6 @@ function Registation(props) {
             details={details}
             setDetails={setDetails}
           />
-          <InputTextField
-            value="password"
-            user={true}
-            type="password"
-            id="password"
-            label="Passord"
-            errorMessage={error.errorMessage}
-            errorType={error.errorType}
-            autoComplete="off"
-            val={details.user.password}
-            details={details}
-            setDetails={setDetails}
-          />
-          <TextField
-            variant="outlined"
-            margin="normal"
-            required
-            fullWidth
-            value={passwordCheck}
-            type="password"
-            id="password2"
-            label="Gjenta passord"
-            error={error.errorMessage === passwordError}
-            helperText={
-              error.errorMessage === passwordError
-                ? error.errorMessage
-                : error.errorMessage === ""
-                ? " "
-                : false
-            }
-            onChange={(e) => setPasswordCheck(e.target.value)}
-          />
           <Button
             type="submit"
             fullWidth
@@ -197,15 +165,8 @@ function Registation(props) {
             color="primary"
             className={classes.submit}
           >
-            Registrer
+            Endre
           </Button>
-          <Grid container>
-            <Grid item>
-              <Link to="/logginn" variant="body2">
-                {"Har du allerede bruker? Logg inn her"}
-              </Link>
-            </Grid>
-          </Grid>
         </form>
       </div>
       {/* <Box mt={8}>
@@ -215,11 +176,7 @@ function Registation(props) {
   );
 }
 
-Registation.propTypes = {
-  loggedIn: PropTypes.bool,
-};
-
 const mapStateToProps = (state) => {
   return { loggedIn: state.loggedIn };
 };
-export default connect(mapStateToProps)(Registation);
+export default connect(mapStateToProps)(EditUser);

@@ -2,7 +2,7 @@ import { screen } from "@testing-library/react";
 import React from "react";
 import ReactDOM from "react-dom";
 import "@testing-library/jest-dom/extend-expect";
-import { PostData } from "../../service/FetchData";
+import { PostPutData } from "../../service/FetchData";
 import { act } from "react-dom/test-utils";
 import Products from "./Products";
 import { BrowserRouter as Router } from "react-router-dom";
@@ -10,7 +10,7 @@ import store from "./../../reducers";
 import { Provider } from "react-redux";
 
 jest.mock("../../service/FetchData", () => ({
-  PostData: jest.fn(),
+  PostPutData: jest.fn(),
 }));
 
 const products = [
@@ -44,7 +44,7 @@ describe("Products component", () => {
   test("if prices is correct", async () => {
     const container = document.createElement("div");
     document.body.appendChild(container);
-    PostData.mockImplementation(() => Promise.resolve(products));
+    PostPutData.mockImplementation(() => Promise.resolve(products));
     store.dispatch({
       type: "UPDATE_CATEGORY",
       payload: [{ category: "Annet" }],
@@ -69,7 +69,7 @@ describe("Products component", () => {
   it("shows saved ads", async () => {
     const container = document.createElement("div");
     document.body.appendChild(container);
-    PostData.mockImplementation(() => Promise.resolve(products));
+    PostPutData.mockImplementation(() => Promise.resolve(products));
     store.dispatch({
       type: "UPDATE_LOGGED_IN",
       payload: true,

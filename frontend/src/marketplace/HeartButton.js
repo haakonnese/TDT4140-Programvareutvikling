@@ -1,7 +1,7 @@
 import { IconButton } from "@material-ui/core";
 import { Favorite, FavoriteBorder } from "@material-ui/icons";
 import React, { useState } from "react";
-import { DeleteData, PostData } from "../service/FetchData";
+import { DeleteData, PostPutData } from "../service/FetchData";
 import PropTypes from "prop-types";
 import useStyles from "./Products/Product/styles";
 import { connect } from "react-redux";
@@ -11,7 +11,7 @@ function HeartButton(props) {
   const [favorite, setFavorite] = useState(props.product.favorite);
   function toggleFavorite() {
     if (!favorite) {
-      PostData("listing/favorite/save", { ad: props.product.id })
+      PostPutData("listing/favorite/save", { ad: props.product.id })
         .then(() => setFavorite(!favorite))
         .catch((e) => console.log(e));
     } else {

@@ -11,6 +11,9 @@ import "./index.css";
 import { Provider } from "react-redux";
 import { GetData } from "./service/FetchData";
 import store from "./reducers";
+import UserProfile from "./user/UserInfo/UserProfile";
+import EditUser from "./user/UserInfo/EditUser";
+import EditPassword from "./user/UserInfo/EditPassword";
 
 function App() {
   useEffect(() => {
@@ -18,12 +21,23 @@ function App() {
       type: "UPDATE_LOGGED_IN",
       payload: localStorage.getItem("token") != null,
     });
-    GetData("listing/categories").then((data) => {
-      store.dispatch({
-        type: "UPDATE_CATEGORY",
-        payload: data,
+    GetData("listing/categories")
+      .then((data) => {
+        store.dispatch({
+          type: "UPDATE_CATEGORY",
+          payload: data,
+        });
+      })
+      .catch((e) => {
+        if (e === 401) {
+          store.dispatch({
+            type: "UPDATE_LOGGED_IN",
+            payload: false,
+          });
+        } else {
+          console.log("Feil");
+        }
       });
-    });
   }, []);
   return (
     <Provider store={store}>
@@ -44,6 +58,9 @@ function App() {
               path="/"
               render={() => <Products onlyUser={false} />}
             />
+            <Route exact path="/brukerprofil" component={UserProfile} />
+            <Route exact path="/profilredigering" component={EditUser} />
+            <Route exact path="/passordredigering" component={EditPassword} />
             <Route exact path="/products/:id" component={ProductInfo} />
           </Switch>
         </div>

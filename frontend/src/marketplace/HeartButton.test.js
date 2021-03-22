@@ -2,7 +2,7 @@ import { screen } from "@testing-library/react";
 import React from "react";
 import ReactDOM from "react-dom";
 import "@testing-library/jest-dom/extend-expect";
-import { PostData, DeleteData } from "../service/FetchData";
+import { PostPutData, DeleteData } from "../service/FetchData";
 import { act } from "react-dom/test-utils";
 import HeartButton from "./HeartButton";
 import userEvent from "@testing-library/user-event";
@@ -10,7 +10,7 @@ import { Provider } from "react-redux";
 import store from "./../reducers";
 
 jest.mock("../service/FetchData", () => ({
-  PostData: jest.fn(),
+  PostPutData: jest.fn(),
   DeleteData: jest.fn(),
 }));
 
@@ -61,7 +61,7 @@ describe("HearButton component", () => {
   // use async and await in act when expecting component
   // to render with a promise inside
   test("remove favorite", async () => {
-    PostData.mockImplementation(() => Promise.resolve());
+    PostPutData.mockImplementation(() => Promise.resolve());
     DeleteData.mockImplementation(() => Promise.resolve());
     act(() => {
       ReactDOM.render(
@@ -77,12 +77,12 @@ describe("HearButton component", () => {
     await act(async () => {
       userEvent.click(favorite);
     });
-    expect(PostData.mock.calls.length).toBe(0);
+    expect(PostPutData.mock.calls.length).toBe(0);
     expect(DeleteData.mock.calls.length).toBe(1);
   });
 
   test("add favorite", async () => {
-    PostData.mockImplementation(() => Promise.resolve());
+    PostPutData.mockImplementation(() => Promise.resolve());
     DeleteData.mockImplementation(() => Promise.resolve());
     act(() => {
       ReactDOM.render(
@@ -97,7 +97,7 @@ describe("HearButton component", () => {
     await act(async () => {
       userEvent.click(favorite);
     });
-    expect(PostData.mock.calls.length).toBe(1);
+    expect(PostPutData.mock.calls.length).toBe(1);
     expect(DeleteData.mock.calls.length).toBe(0);
   });
 });

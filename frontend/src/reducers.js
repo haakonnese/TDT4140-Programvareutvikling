@@ -29,6 +29,9 @@ function filterReducer(state = filter, action = "DEFAULT_FILTER") {
 function loggedInReducer(state = false, action = "DEFAULT_LOGGED_IN") {
   switch (action.type) {
     case "UPDATE_LOGGED_IN":
+      if (action.payload === false) {
+        localStorage.removeItem("token");
+      }
       return action.payload;
     default:
       return state;

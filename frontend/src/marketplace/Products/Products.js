@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Grid, Typography } from "@material-ui/core";
-import { PostData } from "../../service/FetchData";
+import { PostPutData } from "../../service/FetchData";
 import Product from "./Product/Product";
 import { useHistory } from "react-router-dom";
 import Filter from "./Filter";
@@ -47,7 +47,7 @@ function Products(props) {
     } else {
       data.favorite = false;
     }
-    PostData("listing/listings", data)
+    PostPutData("listing/listings", data)
       .then((result) => {
         if (result.length > 0) {
           result.forEach((res) => {
