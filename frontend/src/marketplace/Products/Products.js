@@ -39,7 +39,7 @@ function Products(props) {
   if (props.onlyUser && !props.loggedIn) {
     history.replaceState("/404");
   } else if (props.onlyUser) {
-    endpoint = "listing/favories";
+    endpoint = "listing/favorites";
   }
   useEffect(() => {
     GetData(endpoint)

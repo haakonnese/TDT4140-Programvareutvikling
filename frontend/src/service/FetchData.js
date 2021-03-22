@@ -68,11 +68,25 @@ export function DeleteData(type, userData = null) {
   } else {
     text = type;
   }
+  const headers = {
+    Accept: "application/json",
+    // "Content-Type": contentType,
+  };
+  if (localStorage.getItem("token") != null) {
+    headers.Authorization = "Token " + localStorage.getItem("token");
+  }
   return new Promise((resolve, reject) => {
     fetch(BASE_URL + text, {
       method: "DELETE",
+      headers: headers,
     })
-      .then((response) => response.json())
+      .then((response) => {
+        if (response.status >= 200 && response.status <= 300) {
+          return response.json();
+        } else {
+          throw new Error("Not correct response");
+        }
+      })
       .then((responseJson) => resolve(responseJson))
       .catch((error) => reject(error));
   });

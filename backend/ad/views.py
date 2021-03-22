@@ -119,7 +119,7 @@ def ad_detail(request, pk):
 @permission_classes([IsAuthenticated])
 def save_favorite(request):
     """Create a new Ad."""
-    updated_request = request.POST.copy()
+    updated_request = request.data.copy()
     updated_request.update({"profile": request.user})
     favorite = FavoriteSerializer(data=updated_request)
     if favorite.is_valid():
@@ -132,12 +132,12 @@ def save_favorite(request):
 @permission_classes([IsAuthenticated])
 def delete_favorite(request, id):
     """
-    Retrieve, update or delete an ad.
+    Remove favorite.
     """
     try:
         favorite = Favorite.objects.get(profile=Profile.objects.get(user=request.user), ad=Ad.objects.get(id=id))
         favorite.delete()
-        return Response(status=status.HTTP_200_OK)
+        return Response("Successfully removed favorite", status=status.HTTP_200_OK)
     except Favorite.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
 
@@ -147,7 +147,6 @@ def delete_favorite(request, id):
 def view_favorites(request):
     context = []
     profile = Profile.objects.get(user=request.user)
-    print(profile)
     favorites = Favorite.objects.filter(profile=profile)
     for ad in Ad.objects.filter(id__in=favorites.values("ad")).order_by("-pub_date"):
         data = AdSerializer(ad).data
