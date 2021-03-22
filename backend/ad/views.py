@@ -27,10 +27,10 @@ def view_ads(request):
         arguments["category"] = data["category"]
     if data.get("city") is not None:
         arguments["city"] = data["city"]
-    if data.get("min") is None:
+    if data.get("min") is False:
         data["min"] = 0
-    if data.get("max") is None:
-        data["max"] = 10 ** 5
+    if data.get("max") is False:
+        data["max"] = 10 ** 15
     ads = Ad.objects.filter(price__lte=data["max"], price__gte=data["min"], **arguments)
     for ad in ads:
         context.append(AdSerializer(ad).data)
