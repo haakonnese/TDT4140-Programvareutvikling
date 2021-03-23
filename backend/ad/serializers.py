@@ -6,7 +6,7 @@ from rating.models import Rating
 class AdSerializer(serializers.ModelSerializer):
     class Meta:
         model = Ad
-        fields = ["id", "created_by_user", "name", "description", "price", "img", "category", "city"]
+        fields = ["id", "created_by_user", "name", "description", "price", "img", "category", "city", "rating"]
 
     # def create(self, validated_data):
     #     """
