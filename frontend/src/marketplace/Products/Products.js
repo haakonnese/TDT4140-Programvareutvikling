@@ -53,7 +53,7 @@ function Products() {
     <main>
       <Grid
         container
-        justify="flex-start"
+        justify="center"
         spacing={4}
         style={{
           width: "100%",
