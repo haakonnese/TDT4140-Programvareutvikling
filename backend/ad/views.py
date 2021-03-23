@@ -2,10 +2,10 @@
 
 # Create your views here.
 from django.core.exceptions import ObjectDoesNotExist
+from rest_framework.response import Response
 from django.http import HttpResponse, Http404
 from rest_framework import status
 from rest_framework.decorators import api_view, permission_classes
-from rest_framework.response import Response
 from .models import Ad, Category
 from .serializers import AdSerializer, CategorySerializer
 from .forms import ImageForm
@@ -18,10 +18,21 @@ def index(request):
     return HttpResponse("Hello. You're at the Ad index.")
 
 
-@api_view(["GET"])
+@api_view(["POST"])
 def view_ads(request):
     context = []
-    for ad in Ad.objects.all().order_by("-pub_date"):
+    data = request.data
+    arguments = {}
+    if data.get("category") is not None:
+        arguments["category"] = data["category"]
+    if data.get("city") is not None:
+        arguments["city__iexact"] = data["city"]
+    if data.get("min") is not False:
+        arguments["price__gte"] = data["min"]
+    if data.get("max") is not False:
+        arguments["price__lte"] = data["max"]
+    ads = Ad.objects.filter(**arguments)
+    for ad in ads:
         context.append(AdSerializer(ad).data)
     return Response(context)
 
