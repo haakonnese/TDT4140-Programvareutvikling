@@ -1,9 +1,6 @@
 import { combineReducers, createStore } from "redux";
 
-function categoryReducer(
-  state = [{ category: "" }],
-  action = "DEFAULT_CATEGORY"
-) {
+function categoryReducer(state = [], action = "DEFAULT_CATEGORY") {
   switch (action.type) {
     case "UPDATE_CATEGORY":
       return action.payload;

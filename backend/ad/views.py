@@ -26,19 +26,18 @@ def view_ads(request):
     if data.get("category") is not None:
         arguments["category"] = data["category"]
     if data.get("city") is not None:
-        arguments["city"] = data["city"]
-    if data.get("min") is False:
-        data["min"] = 0
-    if data.get("max") is False:
-        data["max"] = 10 ** 15
+        arguments["city__iexact"] = data["city"]
+    if data.get("min") is not False:
+        arguments["price__gte"] = data["min"]
+    if data.get("max") is not False:
+        arguments["price__lte"] = data["max"]
+    ads = Ad.objects.filter(**arguments)
     if data.get("favorite") is True:
         profile = Profile.objects.get(user=request.user)
         favorites = Favorite.objects.filter(profile=profile)
-        ads = Ad.objects.filter(
-            id__in=favorites.values("ad"), price__lte=data["max"], price__gte=data["min"], **arguments
-        ).order_by("-pub_date")
-    else:
-        ads = Ad.objects.filter(price__lte=data["max"], price__gte=data["min"], **arguments).order_by("-pub_date")
+        arguments["id__in"] = favorites.values("ad")
+    ads = Ad.objects.filter(**arguments).order_by("-pub_date")
+
     if not request.user.is_anonymous:
         profile = Profile.objects.get(user=request.user)
     else:
