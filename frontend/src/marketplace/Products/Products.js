@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Grid } from "@material-ui/core";
+import { Button, Grid, Container } from "@material-ui/core";
 import { GetData } from "../../service/FetchData";
 import Product from "./Product/Product";
 
@@ -31,8 +31,12 @@ function Products() {
   // ];
 
   // hooks
+  const [currentPage, setPage] = useState();
+  const maxItemsPerPage = 1;
   const [products, setProducts] = useState([]);
   useEffect(() => {
+    setPage(1);
+    console.log(currentPage);
     GetData("listing/listings")
       .then((result) => {
         if (result.length > 0) {
@@ -49,11 +53,21 @@ function Products() {
       });
   }, []);
 
+  const changeBack = () => {
+    setPage(currentPage - 1);
+    console.log(currentPage);
+  };
+
+  const changeNext = () => {
+    setPage(currentPage + 1);
+    console.log(currentPage);
+  };
+
   return (
     <main>
       <Grid
         container
-        justify="flex-start"
+        justify="center"
         spacing={4}
         style={{
           width: "100%",
@@ -61,12 +75,37 @@ function Products() {
           marginTop: 20,
         }}
       >
-        {products.map((product) => (
-          <Grid item key={product.id} xs={12} sm={6} md={4} lg={3}>
-            <Product product={product} />
-          </Grid>
-        ))}
+        {products
+          .slice(
+            currentPage * maxItemsPerPage - maxItemsPerPage,
+            currentPage * maxItemsPerPage
+          )
+          .map((product) => (
+            <Grid item key={product.id} xs={12} sm={6} md={4} lg={3}>
+              <Product product={product} />
+            </Grid>
+          ))}
       </Grid>
+      <Container
+        container
+        justify="center"
+        style={{
+          maxWidth: "15%",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        {currentPage > 1 ? (
+          <Button style={{ width: "50%" }} onClick={changeBack}>
+            Tilbake
+          </Button>
+        ) : null}
+        {products.length > currentPage * maxItemsPerPage ? (
+          <Button style={{ width: "50%" }} onClick={changeNext}>
+            Neste
+          </Button>
+        ) : null}
+      </Container>
     </main>
   );
 }
