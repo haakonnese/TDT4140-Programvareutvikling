@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { Button, Grid, Container } from "@material-ui/core";
-import { GetData } from "../../service/FetchData";
+import { PostPutData, GetData } from "../../service/FetchData";
 import Product from "./Product/Product";
+import Filter from "./Filter";
+import { connect } from "react-redux";
+import PropTypes from "prop-types";
 
-function Products() {
+function Products(props) {
   // Product test
   // const product = [
   //   {
@@ -31,13 +34,23 @@ function Products() {
   // ];
 
   // hooks
-  const [currentPage, setPage] = useState();
-  const maxItemsPerPage = 1;
+  const [currentPage, setPage] = useState(1);
+  const [maxPage, setMax] = useState(1);
   const [products, setProducts] = useState([]);
   useEffect(() => {
-    setPage(1);
-    console.log(currentPage);
-    GetData("listing/listings")
+    GetData("listing/numberOfPages")
+      .then((result) => {
+        setMax(result);
+      })
+      .catch((error) => {
+        console.log("Feil", error);
+      });
+  }, []);
+  useEffect(() => {
+    // console.log(currentPage);
+    const filter = props.filter;
+    filter.page = currentPage;
+    PostPutData("listing/listings", filter)
       .then((result) => {
         if (result.length > 0) {
           result.forEach((res) => {
@@ -45,13 +58,13 @@ function Products() {
           });
           setProducts(result);
         } else {
-          console.log("Feil");
+          setProducts(result);
         }
       })
       .catch((error) => {
         console.log("Feil", error);
       });
-  }, []);
+  }, [props.filter, currentPage]);
 
   const changeBack = () => {
     setPage(currentPage - 1);
@@ -65,6 +78,7 @@ function Products() {
 
   return (
     <main>
+      <Filter />
       <Grid
         container
         justify="center"
@@ -75,16 +89,11 @@ function Products() {
           marginTop: 20,
         }}
       >
-        {products
-          .slice(
-            currentPage * maxItemsPerPage - maxItemsPerPage,
-            currentPage * maxItemsPerPage
-          )
-          .map((product) => (
-            <Grid item key={product.id} xs={12} sm={6} md={4} lg={3}>
-              <Product product={product} />
-            </Grid>
-          ))}
+        {products.map((product) => (
+          <Grid item key={product.id} xs={12} sm={6} md={4} lg={3}>
+            <Product product={product} />
+          </Grid>
+        ))}
       </Grid>
       <Container
         container
@@ -100,7 +109,7 @@ function Products() {
             Tilbake
           </Button>
         ) : null}
-        {products.length > currentPage * maxItemsPerPage ? (
+        {currentPage < maxPage ? (
           <Button style={{ width: "50%" }} onClick={changeNext}>
             Neste
           </Button>
@@ -109,5 +118,11 @@ function Products() {
     </main>
   );
 }
+Products.propTypes = {
+  filter: PropTypes.object,
+};
+const mapStateToProps = (state) => {
+  return { filter: state.filter };
+};
 
-export default Products;
+export default connect(mapStateToProps)(Products);
