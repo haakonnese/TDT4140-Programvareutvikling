@@ -6,6 +6,13 @@ from rating.models import Rating
 # Create your models here.
 
 
+class Category(models.Model):
+    category = models.CharField(max_length=40, primary_key=True)
+
+    def __str__(self):
+        return self.category
+
+
 class Ad(models.Model):
     created_by_user = models.ForeignKey(Profile, on_delete=models.CASCADE)
     pub_date = models.DateTimeField(auto_now=True)
@@ -13,7 +20,7 @@ class Ad(models.Model):
     description = models.TextField()
     price = models.PositiveIntegerField()
     img = models.ImageField(upload_to="product/")
-    category = models.CharField(max_length=50)
+    category = models.ForeignKey(Category, on_delete=models.CASCADE)
     city = models.CharField(max_length=100, default="Ikke oppgitt")
     rating = models.ForeignKey(Rating, on_delete=models.SET_NULL, null=True)
 

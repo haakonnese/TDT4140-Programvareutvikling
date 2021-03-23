@@ -6,6 +6,8 @@ import RegisterAd from "./RegisterAd";
 import { act } from "react-dom/test-utils";
 import userEvent, { specialChars } from "@testing-library/user-event";
 import { BrowserRouter as Router } from "react-router-dom";
+import { Provider } from "react-redux";
+import { createStore } from "redux";
 
 jest.mock("../service/FetchData", () => ({
   PostData: jest.fn(),
@@ -13,13 +15,24 @@ jest.mock("../service/FetchData", () => ({
 
 let container, item, price, city, description, button, img, category;
 
+function reducer(state, action = "default") {
+  switch (action.type) {
+    case "update":
+      return action.payload;
+    default:
+      return state;
+  }
+}
+const store = createStore(reducer, { categories: [{ category: "Annet" }] });
 beforeEach(() => {
   container = document.createElement("div");
   act(() => {
     ReactDOM.render(
-      <Router>
-        <RegisterAd loggedIn={true} />
-      </Router>,
+      <Provider store={store}>
+        <Router>
+          <RegisterAd loggedIn={true} />
+        </Router>
+      </Provider>,
       container
     );
   });

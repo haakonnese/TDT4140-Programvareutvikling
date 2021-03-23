@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Ad
+from .models import Ad, Category
 from rating.models import Rating
 
 
@@ -32,3 +32,9 @@ class AdSerializer(serializers.ModelSerializer):
             instance.rating = Rating.objects.get(id=rating)
         instance.save()
         return instance
+
+
+class CategorySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Category
+        fields = ["category"]
