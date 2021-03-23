@@ -2,7 +2,7 @@ import { screen } from "@testing-library/react";
 import React from "react";
 import ReactDOM from "react-dom";
 import "@testing-library/jest-dom/extend-expect";
-import { PostPutData } from "../../service/FetchData";
+import { PostPutData, GetData } from "../../service/FetchData";
 import { act } from "react-dom/test-utils";
 import Products from "./Products";
 import { BrowserRouter as Router } from "react-router-dom";
@@ -11,6 +11,7 @@ import { Provider } from "react-redux";
 
 jest.mock("../../service/FetchData", () => ({
   PostPutData: jest.fn(),
+  GetData: jest.fn(),
 }));
 
 const products = [
@@ -45,6 +46,7 @@ describe("Products component", () => {
     const container = document.createElement("div");
     document.body.appendChild(container);
     PostPutData.mockImplementation(() => Promise.resolve(products));
+    GetData.mockImplementation(() => Promise.resolve(products));
     store.dispatch({
       type: "UPDATE_CATEGORY",
       payload: [{ category: "Annet" }],
