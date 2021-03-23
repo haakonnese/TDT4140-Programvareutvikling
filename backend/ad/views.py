@@ -2,10 +2,10 @@
 
 # Create your views here.
 from django.core.exceptions import ObjectDoesNotExist
+from rest_framework.response import Response
 from django.http import HttpResponse, Http404
 from rest_framework import status
 from rest_framework.decorators import api_view, permission_classes
-from rest_framework.response import Response
 from .models import Ad, Category
 from .serializers import AdSerializer, CategorySerializer
 from .forms import ImageForm
@@ -18,10 +18,21 @@ def index(request):
     return HttpResponse("Hello. You're at the Ad index.")
 
 
-@api_view(["GET"])
+@api_view(["POST"])
 def view_ads(request):
     context = []
-    for ad in Ad.objects.all().order_by("-pub_date"):
+    data = request.data
+    arguments = {}
+    if data.get("category") is not None:
+        arguments["category"] = data["category"]
+    if data.get("city") is not None:
+        arguments["city__iexact"] = data["city"]
+    if data.get("min") is not False:
+        arguments["price__gte"] = data["min"]
+    if data.get("max") is not False:
+        arguments["price__lte"] = data["max"]
+    ads = Ad.objects.filter(**arguments)
+    for ad in ads:
         context.append(AdSerializer(ad).data)
     return Response(context)
 
@@ -77,21 +88,17 @@ def change_ad(request, id):
 
     if ad.created_by_user == Profile.objects.get(user=request.user):
         updated_request = request.POST.copy()
+        updated_request.pop("created_by_user")
         updated_request.update({"created_by_user": Profile.objects.get(user=request.user)})
         category = Category.objects.get(category=updated_request["category"])
         updated_request.pop("category")
         updated_request.update({"category": category})
-        form = ImageForm(updated_request, request.FILES)
+        form = ImageForm(updated_request, request.FILES, instance=ad)
         if form.is_valid():
             form.save()
             return Response("Successfully uploaded", status=status.HTTP_201_CREATED)
         return Response("Error on uploaded", status=status.HTTP_400_BAD_REQUEST)
-        # serializer = AdSerializer(ad, data=request.data)
-        # if serializer.is_valid():
-        #     serializer.save()
-        #     return Response(serializer.data)
-        # return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-        return Response("Currently logged in user did not create this ad", status=status.HTTP_401_UNAUTHORIZED)
+    return Response("Currently logged in user did not create this ad", status=status.HTTP_401_UNAUTHORIZED)
 
 
 @api_view(["DELETE"])

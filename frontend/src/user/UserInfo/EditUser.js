@@ -61,8 +61,7 @@ export default function EditUser() {
       PostPutData("user/edit_profile", details, "application/json", "PUT")
         .then((result) => {
           // console.log(result);
-          if (result.token) {
-            localStorage.setItem("token", result.token);
+          if (result) {
             history.push("/");
           } else {
             setError({ erorMessage: emailError, errorType: "email" });
