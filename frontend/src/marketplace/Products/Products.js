@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Grid } from "@material-ui/core";
-import { PostData } from "../../service/FetchData";
+import { PostPutData } from "../../service/FetchData";
 import Product from "./Product/Product";
 import Filter from "./Filter";
 import { connect } from "react-redux";
@@ -36,7 +36,7 @@ function Products(props) {
   // hooks
   const [products, setProducts] = useState([]);
   useEffect(() => {
-    PostData("listing/listings", props.filter)
+    PostPutData("listing/listings", props.filter)
       .then((result) => {
         if (result.length > 0) {
           result.forEach((res) => {
