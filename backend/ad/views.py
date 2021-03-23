@@ -96,7 +96,7 @@ def change_ad(request, id):
         form = ImageForm(updated_request, request.FILES, instance=ad)
         if form.is_valid():
             form.save()
-            return Response("Successfully uploaded", status=status.HTTP_201_CREATED)
+            return Response("Successfully edited", status=status.HTTP_200_OK)
         return Response("Error on uploaded", status=status.HTTP_400_BAD_REQUEST)
     return Response("Currently logged in user did not create this ad", status=status.HTTP_401_UNAUTHORIZED)
 
