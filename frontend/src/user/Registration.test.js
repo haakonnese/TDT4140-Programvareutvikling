@@ -2,7 +2,7 @@ import { screen } from "@testing-library/react";
 import React from "react";
 import ReactDOM from "react-dom";
 import "@testing-library/jest-dom/extend-expect";
-import { PostData } from "../service/FetchData";
+import { PostPutData } from "../service/FetchData";
 import Registration from "./Registration";
 import { act } from "react-dom/test-utils";
 import userEvent from "@testing-library/user-event";
@@ -15,7 +15,7 @@ import {
 } from "./errorMessages";
 
 jest.mock("../service/FetchData", () => ({
-  PostData: jest.fn(),
+  PostPutData: jest.fn(),
 }));
 
 let container,
@@ -107,7 +107,7 @@ describe("Registration component", () => {
   // use async and await in act when expecting component
   // to render with a promise inside
   it("will say email does not exist", async () => {
-    PostData.mockImplementation(() => Promise.reject(new Error("Email")));
+    PostPutData.mockImplementation(() => Promise.reject(new Error("Email")));
     await act(async () => {
       userEvent.click(button);
     });
