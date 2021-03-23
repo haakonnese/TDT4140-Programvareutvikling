@@ -96,7 +96,6 @@ function Products(props) {
         ))}
       </Grid>
       <Container
-        container
         justify="center"
         style={{
           maxWidth: "15%",
