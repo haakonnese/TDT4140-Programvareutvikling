@@ -10,13 +10,13 @@ import RegisterAd from "./ProductRegistration/RegisterAd";
 import "./index.css";
 import { Provider } from "react-redux";
 import { GetData } from "./service/FetchData";
-<<<<<<< HEAD
+
 import store from "./reducers";
-=======
+
 import UserProfile from "./user/UserInfo/UserProfile";
 import EditUser from "./user/UserInfo/EditUser";
 import EditPassword from "./user/UserInfo/EditPassword";
->>>>>>> 974816a0be9cc1f88079d10734e5775d9269f9a3
+
 
 function App() {
   const [loggedIn, setLoggedIn] = useState(
