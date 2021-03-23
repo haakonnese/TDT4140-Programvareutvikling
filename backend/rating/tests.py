@@ -1,7 +1,7 @@
 import unittest
 from rest_framework.test import APIClient
 from user.models import Profile
-from ad.models import Ad
+from ad.models import Ad, Category
 from django.contrib.auth.models import User
 from rest_framework.authtoken.models import Token
 from .models import Rating
@@ -19,6 +19,8 @@ class ratingTest(unittest.TestCase):
             last_name="Test",
             password="test1234",
         )
+        category = Category.objects.create(category="test")
+        category.save()
         user1.save()
         test_user1 = Profile(user=user1, phone="3984503", city="Trondheim", birth_year="1990")
         test_user1.save()
@@ -28,6 +30,8 @@ class ratingTest(unittest.TestCase):
         # Sletter brukerne og annonsene
         user1 = User.objects.get(username="user1")
         user1.delete()
+        category = Category.objects.get(category="test")
+        category.delete()
         os.remove(os.path.dirname(__file__) + "/../media/product/test_rating.jpg")
 
     def setUp(self):
