@@ -9,25 +9,13 @@ import Footer from "./Footer";
 import RegisterAd from "./ProductRegistration/RegisterAd";
 import "./index.css";
 import { Provider } from "react-redux";
-import { createStore } from "redux";
 import { GetData } from "./service/FetchData";
 import GiveRating from "./rating/GiveRating";
+import store from "./reducers";
+import UserProfile from "./user/UserInfo/UserProfile";
+import EditUser from "./user/UserInfo/EditUser";
+import EditPassword from "./user/UserInfo/EditPassword";
 
-function reducer(state, action = "default") {
-  switch (action.type) {
-    case "update":
-      return action.payload;
-    default:
-      return state;
-  }
-}
-const store = createStore(reducer, {
-  categories: [
-    {
-      category: "",
-    },
-  ],
-});
 function App() {
   const [loggedIn, setLoggedIn] = useState(
     localStorage.getItem("token") != null
@@ -37,9 +25,10 @@ function App() {
   }
   useEffect(() => {
     GetData("listing/categories").then((data) => {
-      if (data.length > 0) {
-        store.dispatch({ type: "update", payload: { categories: data } });
-      }
+      store.dispatch({
+        type: "UPDATE_CATEGORY",
+        payload: data,
+      });
     });
   }, []);
   return (
@@ -76,6 +65,21 @@ function App() {
               exact
               path="/opprett"
               render={() => <RegisterAd loggedIn={loggedIn} />}
+            />
+            <Route
+              exact
+              path="/brukerprofil"
+              render={() => <UserProfile loggedIn={loggedIn} />}
+            />
+            <Route
+              exact
+              path="/profilredigering"
+              render={() => <EditUser loggedIn={loggedIn} />}
+            />
+            <Route
+              exact
+              path="/passordredigering"
+              render={() => <EditPassword loggedIn={loggedIn} />}
             />
             <Route exact path="/" component={Products}></Route>
             <Route

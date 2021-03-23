@@ -2,7 +2,7 @@ import { screen } from "@testing-library/react";
 import React from "react";
 import ReactDOM from "react-dom";
 import "@testing-library/jest-dom/extend-expect";
-import { GetData, PostData } from "../service/FetchData";
+import { GetData, PostPutData } from "../service/FetchData";
 import { act } from "react-dom/test-utils";
 import userEvent from "@testing-library/user-event";
 import { BrowserRouter as Router } from "react-router-dom";
@@ -10,7 +10,7 @@ import GiveRating from "./GiveRating";
 
 jest.mock("../service/FetchData", () => ({
   GetData: jest.fn(),
-  PostData: jest.fn(),
+  PostPutData: jest.fn(),
 }));
 
 let products, container, description, button, stars;
@@ -63,7 +63,9 @@ describe("GiveRating component", () => {
       );
     });
     document.body.appendChild(container);
-    const errorText = screen.getByText("Kan ikke gi tilbakemelding");
+    const errorText = screen.getByText(
+      "Det er allerede gitt tilbakemelding på denne annonsen"
+    );
     expect(errorText).toBeInTheDocument();
   });
 
@@ -79,7 +81,7 @@ describe("GiveRating component", () => {
     });
     document.body.appendChild(container);
 
-    PostData.mockImplementation(() => Promise.resolve({ id: 1 }));
+    PostPutData.mockImplementation(() => Promise.resolve({ id: 1 }));
     stars = container.querySelector("#customized-10-9");
     userEvent.click(stars);
     description = container.querySelector("#description");

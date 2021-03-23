@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { GetData, PostData } from "../service/FetchData";
+import { GetData, PostPutData } from "../service/FetchData";
 import PropTypes from "prop-types";
 import {
   Container,
@@ -45,7 +45,7 @@ function GiveRating(props) {
         details.id == null
       )
     ) {
-      PostData("rating/register", details)
+      PostPutData("rating/register", details)
         .then((result) => {
           if (result) {
             setRated(true);
