@@ -43,7 +43,7 @@ lint-django:
     - cd backend
     - pip install pip --upgrade
     - pip install -r requirements.txt
-    - flake8 --ignore=E203
+    - flake8 --extend-ignore=E203
   variables:
     SECRET_KEY: SECRET_KEY
 
