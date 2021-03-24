@@ -5,6 +5,7 @@ import "@testing-library/jest-dom/extend-expect";
 import { GetData } from "../../service/FetchData";
 import { act } from "react-dom/test-utils";
 import ProductInfo from "./ProductInfo";
+import { BrowserRouter as Router } from "react-router-dom";
 
 jest.mock("../../service/FetchData", () => ({
   GetData: jest.fn(),
@@ -28,7 +29,12 @@ describe("ProductInfo component", () => {
     document.body.appendChild(container);
     GetData.mockImplementation(() => Promise.resolve(products));
     await act(async () => {
-      ReactDOM.render(<ProductInfo match={{ params: { id: 1 } }} />, container);
+      ReactDOM.render(
+        <Router>
+          <ProductInfo match={{ params: { id: 1 } }} loggedIn={true} />
+        </Router>,
+        container
+      );
     });
     //   console.log(container)
 

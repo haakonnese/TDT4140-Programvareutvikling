@@ -10,6 +10,7 @@ import RegisterAd from "./ProductRegistration/RegisterAd";
 import "./index.css";
 import { Provider } from "react-redux";
 import { GetData } from "./service/FetchData";
+import GiveRating from "./rating/GiveRating";
 import store from "./reducers";
 import UserProfile from "./user/UserInfo/UserProfile";
 import EditUser from "./user/UserInfo/EditUser";
@@ -81,7 +82,20 @@ function App() {
               render={() => <EditPassword loggedIn={loggedIn} />}
             />
             <Route exact path="/" component={Products}></Route>
-            <Route exact path="/products/:id" component={ProductInfo} />
+            <Route
+              exact
+              path="/products/:id"
+              render={({ match }) => (
+                <ProductInfo loggedIn={loggedIn} match={match} />
+              )}
+            />
+            <Route
+              exact
+              path="/rating/:id"
+              render={({ match }) => (
+                <GiveRating loggedIn={loggedIn} match={match} />
+              )}
+            />
           </Switch>
         </div>
         <Footer title="SellPoint" description="" />
