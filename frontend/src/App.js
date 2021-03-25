@@ -8,11 +8,14 @@ import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import Footer from "./Footer";
 import RegisterAd from "./ProductRegistration/RegisterAd";
 import "./index.css";
-import { Provider } from "react-redux";
-import { GetData } from "./service/FetchData";
-import store from "./reducers";
+import UserAds from "./user/UserInfo/UserAds";
 import UserProfile from "./user/UserInfo/UserProfile";
 import EditUser from "./user/UserInfo/EditUser";
+import EditAd from "./user/UserInfo/EditAd";
+import { Provider } from "react-redux";
+import { GetData } from "./service/FetchData";
+import GiveRating from "./rating/GiveRating";
+import store from "./reducers";
 import EditPassword from "./user/UserInfo/EditPassword";
 
 function App() {
@@ -53,15 +56,20 @@ function App() {
               path="/lagredeannonser"
               render={() => <Products onlyUser={true} />}
             />
+
             <Route
               exact
               path="/"
               render={() => <Products onlyUser={false} />}
             />
             <Route exact path="/brukerprofil" component={UserProfile} />
+            <Route exact path="/brukerannonser" component={UserAds} />
             <Route exact path="/profilredigering" component={EditUser} />
             <Route exact path="/passordredigering" component={EditPassword} />
             <Route exact path="/products/:id" component={ProductInfo} />
+            <Route exact path="/endreannonse/:id" component={EditAd} />
+            <Route exact path="/products/:id" component={ProductInfo} />
+            <Route exact path="/rating/:id" component={GiveRating} />
           </Switch>
         </div>
         <Footer title="SellPoint" description="" />

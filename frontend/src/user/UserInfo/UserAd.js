@@ -6,19 +6,21 @@ import {
   CardActions,
   Typography,
   Button,
+  CircularProgress,
+  // IconButton,
 } from "@material-ui/core";
 // favourite-button to add product to favourite-list
+// import FavoriteBorderIcon from "@material-ui/icons/FavoriteBorder";
 import useStyles from "./styles";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
-import HeartButton from "../../HeartButton";
 
-Product.propTypes = {
+UserAd.propTypes = {
   product: PropTypes.object.isRequired,
   errorType: PropTypes.string,
 };
 
-function Product(props) {
+function UserAd(props) {
   // css for jsx
   const classes = useStyles();
 
@@ -30,40 +32,48 @@ function Product(props) {
           image={props.product.img}
           title={props.product.name}
         />
-      ) : null}
+      ) : (
+        <CircularProgress />
+      )}
       <CardContent>
         <div className={classes.cardContent}>
-          <Typography gutterBottom>{props.product.name}</Typography>
-          <Typography>{props.product.price}kr</Typography>
+          <Typography varient="h5" gutterBottom>
+            {props.product.name}
+          </Typography>
+          <Typography varient="h5">{props.product.price}kr</Typography>
         </div>
         <div className={classes.cardContent}>
-          <Typography color="textSecondary">{props.product.city}</Typography>
-          <Typography color="textSecondary">
+          <Typography varient="h2" color="textSecondary">
+            {props.product.city}
+          </Typography>
+          <Typography varient="h2" color="textSecondary">
             {props.product.category}
           </Typography>
         </div>
         {/* <br />
-        <Typography variant="h2" color="textSecondary">
+        <Typography varient="h2" color="textSecondary">
           {props.product.description}
         </Typography> */}
       </CardContent>
       <CardActions disableSpacing className={classes.cardActions}>
-        <Link to={`/products/${props.product.id}`}>
+        <Link to={`/endreannonse/${props.product.id}`}>
           <Button
             className={classes.infoButton}
             aria-label="Mer info"
             variant="outlined"
             color="primary"
           >
-            Mer info
+            Endre info
           </Button>
         </Link>
         {/* En knapp for å legge produkt til i favoritter - kan jobbes på med onClick osv. */}
         {/* Kan kommenteres ut når vi har opprettet favoritter hos bruker */}
-        <HeartButton product={props.product} />
+        {/* <IconButton className={classes.iconButton} aria-label="Favoriser">
+          <FavoriteBorderIcon />
+        </IconButton> */}
       </CardActions>
     </Card>
   );
 }
 
-export default Product;
+export default UserAd;

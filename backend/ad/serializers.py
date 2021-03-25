@@ -1,17 +1,16 @@
 from rest_framework import serializers
 from .models import Ad, Category, Favorite
-
+from rating.models import Rating
 
 class FavoriteSerializer(serializers.ModelSerializer):
     class Meta:
         model = Favorite
         fields = ["profile", "ad"]
 
-
 class AdSerializer(serializers.ModelSerializer):
     class Meta:
         model = Ad
-        fields = ["id", "created_by_user", "name", "description", "price", "img", "category", "city"]
+        fields = ["id", "created_by_user", "name", "description", "price", "img", "category", "city", "rating"]
 
     # def create(self, validated_data):
     #     """
@@ -29,11 +28,13 @@ class AdSerializer(serializers.ModelSerializer):
         instance.name = validated_data.get("name", instance.name)
         instance.description = validated_data.get("description", instance.description)
         instance.price = validated_data.get("price", instance.price)
-        instance.img = validated_data.__get("img", instance.img)
+        instance.img = validated_data.get("img", instance.img)
         instance.category = validated_data.get("category", instance.category)
         instance.city = validated_data.get("city", instance.city)
+        rating = validated_data.get("rating")
+        if rating is not None:
+            instance.rating = Rating.objects.get(id=rating)
         instance.save()
-
         return instance
 
 
