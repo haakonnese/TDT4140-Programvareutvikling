@@ -30,6 +30,10 @@ const useStyles = makeStyles((theme) => ({
   logIn: {
     float: "right",
   },
+  ad: {
+    float: "right",
+    marginRight: "1em",
+  },
   avatar: { backgroundColor: theme.palette.secondary.main },
 }));
 
