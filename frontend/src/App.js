@@ -19,6 +19,7 @@ import store from "./reducers";
 import EditPassword from "./user/UserInfo/EditPassword";
 
 function App() {
+  // localStorage.removeItem("token");
   const [loggedIn, setLoggedIn] = useState(
     localStorage.getItem("token") != null
   );

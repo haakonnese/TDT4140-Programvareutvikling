@@ -61,41 +61,32 @@ function RegisterAd(props) {
   // handle submit from button
   const handleSubmit = (e) => {
     e.preventDefault();
-    // error-handeling
-    let allow = true;
-    // send registration to database and then do something with the result
-    for (const key in details) {
-      if (details[key] === "" || details[key] == null) {
-        allow = false;
-      }
-    }
-    if (allow) {
-      const formData = new FormData();
-      if (!(details.img instanceof String)) {
-        formData.append("img", details.img);
-      }
-      formData.append("category", details.category);
-      formData.append("description", details.description);
-      formData.append("name", details.name);
-      formData.append("price", details.price);
-      formData.append("city", details.city);
-      formData.append("created_by_user", "");
-      let method = "POST";
-      let type = "listing/register";
-      if (props.edit) {
-        formData.append("id", details.id);
-        method = "PUT";
-        type = "listing/listing/" + details.id + "/edit";
-      }
 
-      PostPutData(type, formData, "multipart/form-data", method)
-        .then((result) => {
-          if (result) {
-            history.push("/");
-          }
-        })
-        .catch((e) => console.log(e));
+    const formData = new FormData();
+    if (!(details.img instanceof String)) {
+      formData.append("img", details.img);
     }
+    formData.append("category", details.category);
+    formData.append("description", details.description);
+    formData.append("name", details.name);
+    formData.append("price", details.price);
+    formData.append("city", details.city);
+    formData.append("created_by_user", "");
+    let method = "POST";
+    let type = "listing/register";
+    if (props.edit) {
+      formData.append("id", details.id);
+      method = "PUT";
+      type = "listing/listing/" + details.id + "/edit";
+    }
+
+    PostPutData(type, formData, "multipart/form-data", method)
+      .then((result) => {
+        if (result) {
+          history.push("/");
+        }
+      })
+      .catch((e) => console.log(e));
   };
 
   return (
