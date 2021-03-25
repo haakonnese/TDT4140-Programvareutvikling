@@ -2,8 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom";
 import "@testing-library/jest-dom/extend-expect";
 import { PostPutData, GetData } from "../../service/FetchData";
-
-import EditAd from "../../user/UserInfo/EditAD";
+import EditAd from "../../user/UserInfo/EditAd";
 import { act } from "react-dom/test-utils";
 import userEvent, { specialChars } from "@testing-library/user-event";
 import { BrowserRouter as Router } from "react-router-dom";
