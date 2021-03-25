@@ -143,9 +143,9 @@ class AdsTest(unittest.TestCase):
         self.client.post("/api/listing/register", d1)
         self.client.post("/api/listing/register", d2)
         # Sjekker at vi får en filtrert liste tilbake
-        data = {"category": "test", "price": 200, "city": "Trondheim", "min": 140, "max": 200}
+        data = {"category": "test", "price": 200, "city": "Trondheim", "min": 140, "max": 200, "page": 1}
         response = self.client.post("/api/listing/listings", data)
-        ads = response.data
+        ads = response.data["products"]
         for ad in ads:
             if ad["category"] != "test" or ad["city"] != "Trondheim" or ad["price"] > 200 or ad["price"] < 140:
                 raise Error()

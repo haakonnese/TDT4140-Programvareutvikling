@@ -12,6 +12,7 @@ from .forms import ImageForm
 from rest_framework.permissions import IsAuthenticated
 from user.models import Profile
 from django.contrib.auth.models import User
+import math
 
 
 def index(request):
@@ -31,10 +32,17 @@ def view_ads(request):
         arguments["price__gte"] = data["min"]
     if data.get("max") is not False:
         arguments["price__lte"] = data["max"]
-    ads = Ad.objects.filter(**arguments)
+    try:
+        page = int(data.get("page"))
+    except ValueError:
+        return Response(status=status.HTTP_400_BAD_REQUEST, data="Page is missing")
+    ads = Ad.objects.filter(**arguments).order_by("-pub_date")
+    ads_per_page = 12
+    num = math.ceil(ads.count() / ads_per_page)
+    ads = ads[(page - 1) * ads_per_page : ads_per_page * page]
     for ad in ads:
         context.append(AdSerializer(ad).data)
-    return Response(context)
+    return Response({"num_pages": num, "products": context})
 
 
 @api_view(["GET"])
