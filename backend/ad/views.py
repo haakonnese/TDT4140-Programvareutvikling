@@ -63,6 +63,7 @@ def view_ads(request):
         context.append(data)
     return Response({"num_pages": num, "products": context})
 
+
 @api_view(["GET"])
 def view_single_ad(request, id):
     try:
@@ -193,9 +194,11 @@ def view_favorites(request):
         data = AdSerializer(ad).data
         data.update({"favorite": True})
         context.append(data)
+    return Response(context)
+
 
 @api_view(["GET"])
-@permission_classes([IsAuthenticated])      
+@permission_classes([IsAuthenticated])
 def view_users_ads(request):
     context = []
     for ad in Ad.objects.all().order_by("-pub_date"):

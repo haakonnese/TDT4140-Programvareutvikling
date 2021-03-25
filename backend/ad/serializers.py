@@ -2,10 +2,12 @@ from rest_framework import serializers
 from .models import Ad, Category, Favorite
 from rating.models import Rating
 
+
 class FavoriteSerializer(serializers.ModelSerializer):
     class Meta:
         model = Favorite
         fields = ["profile", "ad"]
+
 
 class AdSerializer(serializers.ModelSerializer):
     class Meta:
