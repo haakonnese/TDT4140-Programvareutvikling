@@ -47,38 +47,12 @@ const profile =
   ;
 
 
-// describe("Products component", () => {
-//   // use async and await in act when expecting component
-//   // to render with a promise inside
-//   test("if userinfo firstname is correct", async () => {
-//     const container = document.createElement("div");
-//     document.body.appendChild(container);
-    
-//     GetData.mockImplementation(() => Promise.resolve(profile));
-//     await act(async () => {
-//       ReactDOM.render(
-//         <Router>
-//           <EditUser />
-//         </Router>,
-//         container
-//       );
-//     });
-//     const profiletxt = container.querySelector(
-//      "#firstName"
-//      );
-     
-//      console.log(profiletxt.value)
-//     expect(profiletxt).toBeInTheDocument();
-    
 
-   
-//   });
-// });
 
 beforeEach(async () => {
   container = document.createElement("div");
   GetData.mockImplementation(() => Promise.resolve(profile));
-  act(() => {
+  await act(async() => {
     ReactDOM.render(
       <Router>
         <EditUser />
@@ -119,7 +93,8 @@ afterEach(() => {
 
 describe("Registration component", () => {
 
-  it("will get userdata", () => {
+  test("will get userdata", async() => {
+    
 
     const profiletxt = container.querySelector(
       "#firstName");
@@ -131,7 +106,7 @@ describe("Registration component", () => {
     
   });
   
-  it("will say to to young", () => {
+  test("will say to to young", async() => {
     userEvent.clear(birthYear);
     userEvent.type(birthYear, (new Date().getFullYear() - 12).toString());
     act(() => {
@@ -141,7 +116,7 @@ describe("Registration component", () => {
     expect(errorText).toBeInTheDocument();
   });
 
-  it("will say to to old", () => {
+  test("will say to to old", async() => {
     userEvent.clear(birthYear);
     userEvent.type(birthYear, "1899");
     act(() => {
@@ -151,7 +126,7 @@ describe("Registration component", () => {
     expect(errorText).toBeInTheDocument();
   });
 
-  it("will say no Data", async () => {
+  test("will say no Data", async () => {
     PostPutData.mockImplementation(() => Promise.reject({birthyear: ""}));
     await act(async () => {
       userEvent.click(button);
