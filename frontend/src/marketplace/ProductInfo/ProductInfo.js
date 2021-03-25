@@ -47,11 +47,11 @@ function ProductInfo({ match }) {
           setProducts(result);
           // console.log(products);
         } else {
-          console.log("Feil");
+          history.replace("/404");
         }
       })
       .catch(() => {
-        history.push("/404");
+        history.replace("/404");
       });
   }, []);
 

@@ -19,10 +19,7 @@ export default function Registation(props) {
   const classes = useStyles();
   const history = useHistory();
   const [details, setDetails] = useState({
-    user: { first_name: "", last_name: "", username: "", password: "" },
-    birth_year: "",
-    phone: "",
-    city: "",
+    password: "",
   });
   // hooks
   const [passwordCheck, setPasswordCheck] = useState("");
@@ -33,15 +30,14 @@ export default function Registation(props) {
   const handleSubmit = (e) => {
     e.preventDefault();
     // error-handeling
-    if (details.user.password !== passwordCheck) {
+    if (details.password !== passwordCheck) {
       setError({ errorMessage: passwordError, errorType: "password" });
     } else {
       // send registration to database and then do something with the result
       PostPutData("user/edit_password", details, "application/json", "PUT")
         .then((result) => {
           // console.log(result);
-          if (result.token) {
-            localStorage.setItem("token", result.token);
+          if (result) {
             history.push("/");
           } else {
             setError({ erorMessage: emailError, errorType: "email" });
@@ -66,14 +62,13 @@ export default function Registation(props) {
         <form className={classes.form} onSubmit={handleSubmit}>
           <InputTextField
             value="password"
-            user={true}
             type="password"
             id="password"
             label="Passord"
             errorMessage={error.errorMessage}
             errorType={error.errorType}
             autoComplete="off"
-            val={details.user.password}
+            val={details.password}
             details={details}
             setDetails={setDetails}
           />
