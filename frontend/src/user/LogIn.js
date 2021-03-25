@@ -1,5 +1,5 @@
 import { React, useState, useEffect } from "react";
-import { PostData } from "../service/FetchData";
+import { PostPutData } from "../service/FetchData";
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
@@ -32,7 +32,7 @@ export default function LogIn(props) {
     e.preventDefault();
 
     // send log-in credentials to database and check if they were correct
-    PostData("user/login", details)
+    PostPutData("user/login", details)
       .then((result) => {
         if (result.token) {
           localStorage.setItem("token", result.token);

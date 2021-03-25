@@ -1,6 +1,11 @@
 import { BASE_URL } from "./sellPointURL";
 
-export function PostData(type, userData, contentType = "application/json") {
+export function PostPutData(
+  type,
+  userData,
+  contentType = "application/json",
+  method = "POST"
+) {
   // fetches data from the given endpoint and returns the promise (responseJson)
   return new Promise((resolve, reject) => {
     const headers = {
@@ -18,7 +23,7 @@ export function PostData(type, userData, contentType = "application/json") {
       body = JSON.stringify(userData);
     }
     fetch(BASE_URL + type, {
-      method: "POST",
+      method: method,
       headers: headers,
       body: body,
     })
@@ -42,9 +47,16 @@ export function GetData(type, userData = null) {
   } else {
     text = type;
   }
+  const headers = {
+    Accept: "application/json",
+  };
+  if (localStorage.getItem("token") != null) {
+    headers.Authorization = "Token " + localStorage.getItem("token");
+  }
   return new Promise((resolve, reject) => {
     fetch(BASE_URL + text, {
       method: "GET",
+      headers: headers,
     })
       .then((response) => response.json())
       .then((responseJson) => resolve(responseJson))
