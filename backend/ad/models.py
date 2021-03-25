@@ -1,6 +1,7 @@
 from django.db import models
 from user.models import Profile
 from PIL import Image
+from rating.models import Rating
 
 # Create your models here.
 
@@ -21,6 +22,7 @@ class Ad(models.Model):
     img = models.ImageField(upload_to="product/")
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
     city = models.CharField(max_length=100, default="Ikke oppgitt")
+    rating = models.ForeignKey(Rating, on_delete=models.SET_NULL, null=True)
 
     def __str__(self):
         return self.name
