@@ -57,7 +57,7 @@ function Products(props) {
       <Filter />
       <Grid
         container
-        justify="flex-start"
+        justify="center"
         spacing={4}
         style={{
           width: "100%",
