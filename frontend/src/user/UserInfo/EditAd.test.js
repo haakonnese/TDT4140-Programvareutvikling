@@ -33,6 +33,10 @@ beforeEach(async () => {
     type: "UPDATE_CATEGORY",
     payload: [{ category: "Annet" }, { category: "Kjøretøy" }],
   });
+  store.dispatch({
+    type: "UPDATE_LOGGED_IN",
+    payload: true,
+  });
   container = document.createElement("div");
   GetData.mockImplementation(() => Promise.resolve(Ad));
   await act(async () => {

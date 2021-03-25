@@ -13,6 +13,8 @@ import {
   toYoungError,
   toOldError,
 } from "./errorMessages";
+import { Provider } from "react-redux";
+import store from "./../reducers";
 
 jest.mock("../service/FetchData", () => ({
   PostPutData: jest.fn(),
@@ -33,9 +35,11 @@ beforeEach(async () => {
   container = document.createElement("div");
   act(() => {
     ReactDOM.render(
-      <Router>
-        <Registration />
-      </Router>,
+      <Provider store={store}>
+        <Router>
+          <Registration />
+        </Router>
+      </Provider>,
       container
     );
   });

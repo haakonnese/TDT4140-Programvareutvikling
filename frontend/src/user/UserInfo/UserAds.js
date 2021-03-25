@@ -28,7 +28,6 @@ function UserAds() {
     <main>
       <Grid
         container
-        justify="center"
         spacing={4}
         style={{
           width: "100%",

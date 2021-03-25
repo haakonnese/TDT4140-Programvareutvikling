@@ -17,12 +17,13 @@ import { useHistory } from "react-router-dom";
 // import Registration from "../../user/Registration";
 // import { phoneError } from "./errorMessages";
 import { emailError, toYoungError, toOldError } from "../errorMessages";
+import { connect } from "react-redux";
 
 EditUser.propTypes = {
   errorType: PropTypes.string,
 };
 
-export default function EditUser() {
+function EditUser() {
   const classes = useStyles();
   const history = useHistory();
   const [details, setDetails] = useState({
@@ -174,3 +175,8 @@ export default function EditUser() {
     </Container>
   );
 }
+
+const mapStateToProps = (state) => {
+  return { loggedIn: state.loggedIn };
+};
+export default connect(mapStateToProps)(EditUser);

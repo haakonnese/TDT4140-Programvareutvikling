@@ -3,7 +3,8 @@ import React from "react";
 import ReactDOM from "react-dom";
 import "@testing-library/jest-dom/extend-expect";
 import { PostPutData, GetData } from "../../service/FetchData";
-
+import { Provider } from "react-redux";
+import store from "./../../reducers";
 import EditUser from "../UserInfo/EditUser";
 import { act } from "react-dom/test-utils";
 import userEvent from "@testing-library/user-event";
@@ -29,9 +30,11 @@ beforeEach(async () => {
   GetData.mockImplementation(() => Promise.resolve(profile));
   await act(async () => {
     ReactDOM.render(
-      <Router>
-        <EditUser />
-      </Router>,
+      <Provider store={store}>
+        <Router>
+          <EditUser />
+        </Router>
+      </Provider>,
       container
     );
   });

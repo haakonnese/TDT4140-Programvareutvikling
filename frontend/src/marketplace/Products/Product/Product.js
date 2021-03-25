@@ -6,13 +6,12 @@ import {
   CardActions,
   Typography,
   Button,
-  // IconButton,
 } from "@material-ui/core";
 // favourite-button to add product to favourite-list
-// import FavoriteBorderIcon from "@material-ui/icons/FavoriteBorder";
 import useStyles from "./styles";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
+import HeartButton from "../../HeartButton";
 
 Product.propTypes = {
   product: PropTypes.object.isRequired,
@@ -61,9 +60,7 @@ function Product(props) {
         </Link>
         {/* En knapp for å legge produkt til i favoritter - kan jobbes på med onClick osv. */}
         {/* Kan kommenteres ut når vi har opprettet favoritter hos bruker */}
-        {/* <IconButton className={classes.iconButton} aria-label="Favoriser">
-          <FavoriteBorderIcon />
-        </IconButton> */}
+        <HeartButton product={props.product} />
       </CardActions>
     </Card>
   );

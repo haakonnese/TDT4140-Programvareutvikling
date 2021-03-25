@@ -13,6 +13,8 @@ import PropTypes from "prop-types";
 // import FavoriteBorderIcon from "@material-ui/icons/FavoriteBorder";
 import useStyles from "./styles";
 import { GetData } from "../../service/FetchData";
+import HeartButton from "../HeartButton";
+import { connect } from "react-redux";
 
 // ProductInfo test (paste "produkt" inside useState)
 // const produkt = {
@@ -80,18 +82,25 @@ function ProductInfo(props) {
                   Tlf: {product.phone}
                 </Typography>
               </div>
-              {product.rating == null && props.loggedIn ? (
-                <Link align="right" to={`/rating/${product.id}`}>
-                  <Button
-                    className={classes.infoButton}
-                    aria-label="Mer info"
-                    variant="outlined"
-                    color="primary"
-                  >
-                    Gi tilbakemelding på produkt
-                  </Button>
-                </Link>
-              ) : null}
+              <div>
+                <div style={{ float: "right" }}>
+                  <HeartButton product={product} />
+                </div>
+                <div>
+                  {product.rating == null && props.loggedIn ? (
+                    <Link align="right" to={`/rating/${product.id}`}>
+                      <Button
+                        className={classes.infoButton}
+                        aria-label="Mer info"
+                        variant="outlined"
+                        color="primary"
+                      >
+                        Gi tilbakemelding på produkt
+                      </Button>
+                    </Link>
+                  ) : null}
+                </div>
+              </div>
               {/* Favorite-button for adding product to favorite-list */}
               {/* <IconButton className={classes.iconButton} aria-label="Favoriser">
                     <FavoriteBorderIcon />
@@ -116,5 +125,7 @@ ProductInfo.propTypes = {
   errorType: PropTypes.string,
   loggedIn: PropTypes.bool.isRequired,
 };
-
-export default ProductInfo;
+const mapStateToProps = (state) => {
+  return { loggedIn: state.loggedIn };
+};
+export default connect(mapStateToProps)(ProductInfo);

@@ -240,6 +240,6 @@ RegisterAd.propTypes = {
 };
 
 const mapStateToProps = (state) => {
-  return { categories: state.categories };
+  return { categories: state.categories, loggedIn: state.loggedIn };
 };
 export default connect(mapStateToProps)(RegisterAd);
