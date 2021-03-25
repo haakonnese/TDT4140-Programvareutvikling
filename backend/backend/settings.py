@@ -44,6 +44,7 @@ REST_FRAMEWORK = {
 
 INSTALLED_APPS = [
     "ad.apps.AdConfig",
+    "rating.apps.RatingConfig",
     "user.apps.UserConfig",
     "django.contrib.admin",
     "django.contrib.auth",

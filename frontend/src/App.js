@@ -14,6 +14,7 @@ import EditUser from "./user/UserInfo/EditUser";
 import EditAd from "./user/UserInfo/EditAd";
 import { Provider } from "react-redux";
 import { GetData } from "./service/FetchData";
+import GiveRating from "./rating/GiveRating";
 import store from "./reducers";
 import EditPassword from "./user/UserInfo/EditPassword";
 
@@ -89,7 +90,20 @@ function App() {
             />
             <Route exact path="/endreannonse/:id" component={EditAd} />
             <Route exact path="/" component={Products}></Route>
-            <Route exact path="/products/:id" component={ProductInfo} />
+            <Route
+              exact
+              path="/products/:id"
+              render={({ match }) => (
+                <ProductInfo loggedIn={loggedIn} match={match} />
+              )}
+            />
+            <Route
+              exact
+              path="/rating/:id"
+              render={({ match }) => (
+                <GiveRating loggedIn={loggedIn} match={match} />
+              )}
+            />
           </Switch>
         </div>
         <Footer title="SellPoint" description="" />
