@@ -1,4 +1,4 @@
-import React from "react";
+import { React, useState } from "react";
 import {
   Card,
   CardMedia,
@@ -14,6 +14,7 @@ import {
 import useStyles from "./styles";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
+// import { PostPutData } from "../../service/FetchData";
 
 UserAd.propTypes = {
   product: PropTypes.object.isRequired,
@@ -23,9 +24,25 @@ UserAd.propTypes = {
 function UserAd(props) {
   // css for jsx
   const classes = useStyles();
+  const [details, setDetails] = useState({ id: "", sold: false });
 
+  const handleClick = (e) => {
+    e.preventDefault();
+    setDetails({ id: props.product.id, sold: !details.sold });
+    // PostPutData("listing/sold", details)
+    //   .then((result) => {
+    //     if (result) {
+    //       history.push("/");
+    //     }
+    //   })
+    //   .catch((e) => console.log(e));
+  };
+  const styling = {
+    flex: 1,
+    backgroundColor: "lightgrey",
+  };
   return (
-    <Card className={classes.root}>
+    <Card className={classes.root} style={details.sold ? styling : null}>
       {props.product.img ? (
         <CardMedia
           className={classes.media}
@@ -66,11 +83,15 @@ function UserAd(props) {
             Endre info
           </Button>
         </Link>
-        {/* En knapp for å legge produkt til i favoritter - kan jobbes på med onClick osv. */}
-        {/* Kan kommenteres ut når vi har opprettet favoritter hos bruker */}
-        {/* <IconButton className={classes.iconButton} aria-label="Favoriser">
-          <FavoriteBorderIcon />
-        </IconButton> */}
+        <Button
+          className={classes.infoButton}
+          aria-label="Mer info"
+          variant="outlined"
+          color={details.sold ? "secondary" : "primary"}
+          onClick={handleClick}
+        >
+          {details.sold ? "Solgt" : "Merk solgt"}
+        </Button>
       </CardActions>
     </Card>
   );
