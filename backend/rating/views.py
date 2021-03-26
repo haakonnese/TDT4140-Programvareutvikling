@@ -64,6 +64,7 @@ def get_rating(request, id):
         return response
     data = UserSerializer(user).data
     data.pop("password")
+    data["user_id"] = user.pk
     data["city"] = user.profile.city
     ads = Ad.objects.filter(created_by_user=id)
     ratings = []
