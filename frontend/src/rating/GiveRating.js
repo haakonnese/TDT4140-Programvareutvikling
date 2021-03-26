@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { GetData, PostData } from "../service/FetchData";
+import { GetData, PostPutData } from "../service/FetchData";
 import PropTypes from "prop-types";
 import {
   Container,
@@ -45,7 +45,7 @@ function GiveRating(props) {
         details.id == null
       )
     ) {
-      PostData("rating/register", details)
+      PostPutData("rating/register", details)
         .then((result) => {
           if (result) {
             setRated(true);
@@ -61,109 +61,111 @@ function GiveRating(props) {
       <CssBaseline />
       {!product ? null : (
         <div>
-          {product.rating == null ? (
-            <div>
-              <Container component="main" maxWidth="xs">
-                <Card style={{ marginTop: 30, width: "100%" }}>
-                  <CardContent>
-                    <Typography gutterBottom>{product.name}</Typography>
-                    <div
-                      style={{
-                        display: "flex",
-                        justifyContent: "space-between",
-                      }}
-                    >
-                      <Typography gutterBottom color="textSecondary">
-                        {product.first_name} {product.last_name}
+          <div>
+            <Container component="main" maxWidth="xs">
+              <Card style={{ marginTop: 30, width: "100%" }}>
+                <CardContent>
+                  <Typography gutterBottom>{product.name}</Typography>
+                  <div
+                    style={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                    }}
+                  >
+                    <Typography gutterBottom color="textSecondary">
+                      {product.first_name} {product.last_name}
+                    </Typography>
+                    <Typography gutterBottom color="textSecondary">
+                      {product.price}kr
+                    </Typography>
+                  </div>
+                </CardContent>
+                <CardMedia
+                  style={{ height: 0, paddingTop: "56.25%", width: "100%" }}
+                  image={product.img}
+                />
+              </Card>
+              {product.rating == null && !rated ? (
+                <div className={classes.paper}>
+                  <Box borderColor="transparent" mb={3}>
+                    <Typography component="h1" variant="h5">
+                      Gi tilbakemelding
+                    </Typography>
+                  </Box>
+                  <form className={classes.form} onSubmit={handleSubmit}>
+                    <Box component="fieldset" borderColor="transparent">
+                      <Typography component="legend">
+                        Hvor bra gikk kjøpet
                       </Typography>
-                      <Typography gutterBottom color="textSecondary">
-                        {product.price}kr
-                      </Typography>
-                    </div>
-                  </CardContent>
-                  <CardMedia
-                    style={{ height: 0, paddingTop: "56.25%", width: "100%" }}
-                    image={product.img}
-                  />
-                </Card>
-                {!rated ? (
-                  <div className={classes.paper}>
-                    <Box borderColor="transparent" mb={3}>
-                      <Typography component="h1" variant="h5">
-                        Gi tilbakemelding
-                      </Typography>
-                    </Box>
-                    <form className={classes.form} onSubmit={handleSubmit}>
-                      <Box component="fieldset" borderColor="transparent">
-                        <Typography component="legend">
-                          Hvor bra gikk kjøpet
-                        </Typography>
-                        <Rating
-                          id="stars"
-                          size="large"
-                          name="customized-10"
-                          onChange={(event, newValue) => {
-                            setDetails({ ...details, stars: newValue });
-                            setEmpty(false);
-                          }}
-                          max={10}
-                        />
-                        {empty ? (
-                          <FormHelperText error>
-                            Antall stjerner må fylles inn
-                          </FormHelperText>
-                        ) : null}
-                      </Box>
-                      <InputTextField
-                        isRequired
-                        value="description"
-                        type="textfield"
-                        id="description"
-                        label="Beskriv din opplevelse med kjøpet."
-                        multiline={true}
-                        val={details.description}
-                        details={details}
-                        setDetails={setDetails}
+                      <Rating
+                        id="stars"
+                        size="large"
+                        name="customized-10"
+                        onChange={(event, newValue) => {
+                          setDetails({ ...details, stars: newValue });
+                          setEmpty(false);
+                        }}
+                        max={10}
                       />
-                      <Button
-                        type="submit"
-                        fullWidth
-                        id="submit"
-                        variant="contained"
-                        color="primary"
-                        className={classes.submit}
-                      >
-                        Registrer
-                      </Button>
-                      {error ? (
-                        <FormHelperText component="div" error>
-                          <Typography>
-                            Det skjedde en feil med registreringen
-                          </Typography>
+                      {empty ? (
+                        <FormHelperText error>
+                          Antall stjerner må fylles inn
                         </FormHelperText>
                       ) : null}
-                    </form>
-                  </div>
-                ) : (
-                  <Container component="main" maxWidth="xs">
-                    <CssBaseline />
-                    <div className={classes.paper}>
-                      <Box borderColor="transparent" mb={3}>
-                        <Typography component="h1" variant="h5">
-                          Takk for tilbakemeldingen
+                    </Box>
+                    <InputTextField
+                      isRequired
+                      value="description"
+                      type="textfield"
+                      id="description"
+                      label="Beskriv din opplevelse med kjøpet."
+                      multiline={true}
+                      val={details.description}
+                      details={details}
+                      setDetails={setDetails}
+                    />
+                    <Button
+                      type="submit"
+                      fullWidth
+                      id="submit"
+                      variant="contained"
+                      color="primary"
+                      className={classes.submit}
+                    >
+                      Registrer
+                    </Button>
+                    {error ? (
+                      <FormHelperText component="div" error>
+                        <Typography>
+                          Det skjedde en feil med registreringen
                         </Typography>
-                      </Box>
-                      <Link to="/">
-                        <Button>Tilbake til forsiden</Button>
-                      </Link>
-                    </div>
-                  </Container>
-                )}
-              </Container>
-            </div>
-          ) : (
-            <div>Kan ikke gi tilbakemelding</div>
-          )}
+                      </FormHelperText>
+                    ) : null}
+                  </form>
+                </div>
+              ) : (
+                <Container component="main" maxWidth="xs">
+                  <CssBaseline />
+                  <div className={classes.paper}>
+                    <Box borderColor="transparent" mb={3}>
+                      <Typography
+                        component="h1"
+                        variant="h5"
+                        style={{ textAlign: "center" }}
+                      >
+                        {rated
+                          ? "Takk for tilbakemeldingen"
+                          : "Det er allerede gitt tilbakemelding på denne annonsen"}
+                      </Typography>
+                    </Box>
+                    <Link to="/">
+                      <Button>Tilbake til forsiden</Button>
+                    </Link>
+                  </div>
+                </Container>
+              )}
+            </Container>
+          </div>
         </div>
       )}
     </Container>

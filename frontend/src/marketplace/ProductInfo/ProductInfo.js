@@ -42,11 +42,11 @@ function ProductInfo(props) {
           setProduct(result);
           // console.log(product);
         } else {
-          console.log("Feil");
+          history.replace("/404");
         }
       })
       .catch(() => {
-        history.push("/404");
+        history.replace("/404");
       });
   }, []);
 
