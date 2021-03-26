@@ -2,14 +2,16 @@ import { screen } from "@testing-library/react";
 import React from "react";
 import ReactDOM from "react-dom";
 import "@testing-library/jest-dom/extend-expect";
-import { PostData } from "../service/FetchData";
+import { PostPutData } from "../service/FetchData";
 import LogIn from "./LogIn";
 import { act } from "react-dom/test-utils";
 import userEvent from "@testing-library/user-event";
 import { BrowserRouter as Router } from "react-router-dom";
+import { Provider } from "react-redux";
+import store from "./../reducers";
 
 jest.mock("../service/FetchData", () => ({
-  PostData: jest.fn(),
+  PostPutData: jest.fn(),
 }));
 
 let container;
@@ -19,9 +21,11 @@ beforeEach(() => {
   document.body.appendChild(container);
   act(() => {
     ReactDOM.render(
-      <Router>
-        <LogIn changeLoggedIn={(e) => true} loggedIn={false} />
-      </Router>,
+      <Provider store={store}>
+        <Router>
+          <LogIn />
+        </Router>
+      </Provider>,
       container
     );
   });
@@ -33,7 +37,7 @@ afterEach(() => {
 });
 describe("Log in component", () => {
   it("will say wrong password - error", async () => {
-    PostData.mockImplementation(() => Promise.reject(new Error("Error")));
+    PostPutData.mockImplementation(() => Promise.reject(new Error("Error")));
     const email = container.querySelector('Input[type="email"]');
     email.value = "test@test.com";
     const password = container.querySelector('Input[type="password"]');
@@ -47,7 +51,7 @@ describe("Log in component", () => {
   });
 
   it("will not say wrong password", async () => {
-    PostData.mockImplementation(() =>
+    PostPutData.mockImplementation(() =>
       Promise.resolve({
         token: "bd2740afbafaf01ab80a4bd0eb7d776321b6bd98",
       })
@@ -65,7 +69,7 @@ describe("Log in component", () => {
   });
 
   it("will say wrong password - wrong data", async () => {
-    PostData.mockImplementation(() =>
+    PostPutData.mockImplementation(() =>
       Promise.resolve({
         user: "wrong data",
       })

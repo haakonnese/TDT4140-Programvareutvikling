@@ -10,6 +10,8 @@ import {
   MenuItem,
 } from "@material-ui/core";
 import { AccountCircle } from "@material-ui/icons";
+import { connect } from "react-redux";
+import store from "./reducers";
 // import IconButton from "@material-ui/core/IconButton";
 // import SearchIcon from "@material-ui/icons/Search";
 import { Link, useHistory } from "react-router-dom";
@@ -30,19 +32,22 @@ const useStyles = makeStyles((theme) => ({
   logIn: {
     float: "right",
   },
+  ad: {
+    float: "right",
+    marginRight: "1em",
+  },
   avatar: { backgroundColor: theme.palette.secondary.main },
 }));
 
-export default function Header(props) {
+function Header(props) {
   //   const history = useHistory();
   const classes = useStyles();
-  const { title, loggedIn, changeLoggedIn } = props;
+  const { title, loggedIn } = props;
   const history = useHistory();
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
 
   const handleMenu = (event) => {
-    console.log();
     setAnchorEl(event.target);
   };
 
@@ -93,16 +98,37 @@ export default function Header(props) {
               open={open}
               onClose={handleClose}
             >
-              <MenuItem onClick={handleClose}>Min profil</MenuItem>
-              <MenuItem onClick={handleClose}>Mine annonser</MenuItem>
+              <MenuItem
+                component={Link}
+                to="/brukerprofil"
+                onClick={handleClose}
+              >
+                Min profil
+              </MenuItem>
+              <MenuItem
+                component={Link}
+                to="/brukerannonser"
+                onClick={handleClose}
+              >
+                Mine annonser
+              </MenuItem>
+              <MenuItem
+                component={Link}
+                to="/lagredeannonser"
+                onClick={handleClose}
+              >
+                Lagrede annonser
+              </MenuItem>
               <MenuItem component={Link} to="/opprett" onClick={handleClose}>
                 Opprett annonse
               </MenuItem>
               <MenuItem
-                onClick={(e) => {
-                  localStorage.removeItem("token");
+                onClick={() => {
                   handleClose();
-                  changeLoggedIn(false);
+                  store.dispatch({
+                    type: "UPDATE_LOGGED_IN",
+                    payload: false,
+                  });
                   history.push("/");
                 }}
               >
@@ -125,5 +151,8 @@ export default function Header(props) {
 Header.propTypes = {
   title: PropTypes.string,
   loggedIn: PropTypes.bool,
-  changeLoggedIn: PropTypes.func,
 };
+const mapStateToProps = (state) => {
+  return { loggedIn: state.loggedIn };
+};
+export default connect(mapStateToProps)(Header);

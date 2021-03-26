@@ -1,36 +1,35 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import "@testing-library/jest-dom/extend-expect";
-import { PostData } from "../service/FetchData";
+import { PostPutData } from "../service/FetchData";
 import RegisterAd from "./RegisterAd";
 import { act } from "react-dom/test-utils";
 import userEvent, { specialChars } from "@testing-library/user-event";
 import { BrowserRouter as Router } from "react-router-dom";
+import store from "./../reducers";
 import { Provider } from "react-redux";
-import { createStore } from "redux";
 
 jest.mock("../service/FetchData", () => ({
-  PostData: jest.fn(),
+  PostPutData: jest.fn(),
 }));
 
 let container, item, price, city, description, button, img, category;
 
-function reducer(state, action = "default") {
-  switch (action.type) {
-    case "update":
-      return action.payload;
-    default:
-      return state;
-  }
-}
-const store = createStore(reducer, { categories: [{ category: "Annet" }] });
 beforeEach(() => {
   container = document.createElement("div");
+  store.dispatch({
+    type: "UPDATE_CATEGORY",
+    payload: [{ category: "Annet" }],
+  });
+  store.dispatch({
+    type: "UPDATE_LOGGED_IN",
+    payload: true,
+  });
   act(() => {
     ReactDOM.render(
       <Provider store={store}>
         <Router>
-          <RegisterAd loggedIn={true} />
+          <RegisterAd />
         </Router>
       </Provider>,
       container
@@ -62,7 +61,7 @@ afterEach(() => {
 
 describe("RegisterAd component", () => {
   test("upload", async () => {
-    PostData.mockImplementation(() => Promise.resolve({ ok: "true" }));
+    PostPutData.mockImplementation(() => Promise.resolve({ ok: "true" }));
     img = container.querySelector("#imgUpload");
     const file = new File(["hello"], "hello.png", { type: "image/png" });
     await act(async () => {
@@ -71,13 +70,13 @@ describe("RegisterAd component", () => {
     await act(async () => {
       userEvent.click(button);
     });
-    expect(PostData.mock.calls.length).toBe(1);
+    expect(PostPutData.mock.calls.length).toBe(1);
   });
   test("not all field filled in", () => {
-    PostData.mockImplementation(() => Promise.resolve({ ok: "true" }));
+    PostPutData.mockImplementation(() => Promise.resolve({ ok: "true" }));
     act(() => {
       userEvent.click(button);
     });
-    expect(PostData.mock.calls.length).toBe(0);
+    expect(PostPutData.mock.calls.length).toBe(0);
   });
 });

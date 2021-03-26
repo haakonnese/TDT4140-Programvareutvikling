@@ -5,6 +5,8 @@ import "@testing-library/jest-dom/extend-expect";
 import { GetData } from "../../service/FetchData";
 import { act } from "react-dom/test-utils";
 import ProductInfo from "./ProductInfo";
+import { Provider } from "react-redux";
+import store from "./../../reducers";
 
 jest.mock("../../service/FetchData", () => ({
   GetData: jest.fn(),
@@ -28,7 +30,12 @@ describe("ProductInfo component", () => {
     document.body.appendChild(container);
     GetData.mockImplementation(() => Promise.resolve(products));
     await act(async () => {
-      ReactDOM.render(<ProductInfo match={{ params: { id: 1 } }} />, container);
+      ReactDOM.render(
+        <Provider store={store}>
+          <ProductInfo match={{ params: { id: 1 } }} />
+        </Provider>,
+        container
+      );
     });
     //   console.log(container)
 
