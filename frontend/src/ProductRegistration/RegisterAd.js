@@ -61,11 +61,14 @@ function RegisterAd(props) {
   // handle submit from button
   const handleSubmit = (e) => {
     e.preventDefault();
-    // error-handeling
     let allow = true;
-    // send registration to database and then do something with the result
     for (const key in details) {
-      if (details[key] === "" || details[key] == null) {
+      if (
+        ["price", "name", "city", "category", "description", "img"].includes(
+          key
+        ) &&
+        (details[key] === "" || details[key] === null)
+      ) {
         allow = false;
       }
     }
@@ -85,7 +88,7 @@ function RegisterAd(props) {
       if (props.edit) {
         formData.append("id", details.id);
         method = "PUT";
-        type = "listing/view/" + details.id;
+        type = "listing/listing/" + details.id + "/edit";
       }
 
       PostPutData(type, formData, "multipart/form-data", method)
@@ -237,6 +240,6 @@ RegisterAd.propTypes = {
 };
 
 const mapStateToProps = (state) => {
-  return { categories: state.categories };
+  return { categories: state.categories, loggedIn: state.loggedIn };
 };
 export default connect(mapStateToProps)(RegisterAd);

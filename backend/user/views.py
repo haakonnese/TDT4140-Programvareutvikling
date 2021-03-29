@@ -29,6 +29,7 @@ def get_profile(request):
     response = Response()
     if request.user.is_anonymous:
         return Response(status=status.HTTP_403_FORBIDDEN)
+    print(request.user)
     response.data = ProfileSerializer(request.user.profile).data
     response.status_code = status.HTTP_200_OK
     return response

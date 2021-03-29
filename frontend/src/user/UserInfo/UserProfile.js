@@ -13,6 +13,7 @@ import {
 // import PropTypes from "prop-types";
 import useStyles from "./styles";
 import { GetData } from "../../service/FetchData";
+import { connect } from "react-redux";
 
 // define which type the product info will be
 // UserProfile.propTypes = {
@@ -20,7 +21,7 @@ import { GetData } from "../../service/FetchData";
 //   errorType: PropTypes.string,
 // };
 
-export default function UserProfile() {
+function UserProfile() {
   const classes = useStyles();
   const history = useHistory();
   const [details, setDetails] = useState({
@@ -94,3 +95,8 @@ export default function UserProfile() {
     </main>
   );
 }
+
+const mapStateToProps = (state) => {
+  return { loggedIn: state.loggedIn };
+};
+export default connect(mapStateToProps)(UserProfile);
