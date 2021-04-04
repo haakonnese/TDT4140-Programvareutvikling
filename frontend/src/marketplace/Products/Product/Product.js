@@ -12,7 +12,7 @@ import useStyles from "./styles";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import HeartButton from "../../HeartButton";
-
+import Container from "react-bootstrap/Container";
 Product.propTypes = {
   product: PropTypes.object.isRequired,
   errorType: PropTypes.string,
@@ -25,12 +25,34 @@ function Product(props) {
   return (
     <Card className={classes.root}>
       {props.product.img ? (
+        <div style={{ position: "relative" }}>
+          <Container
+            style={{
+              position: "absolute",
+              top: "25%",
+              zIndex: 100,
+              right: 0,
+            }}
+          >
+            <Typography align="center" color="secondary" variant="h3">
+              {props.product.sold ? "Solgt" : ""}
+            </Typography>
+          </Container>
+          <CardMedia
+            className={classes.media}
+            image={props.product.img}
+            title={props.product.name}
+            style={{ filter: "grayscale(100%)" }}
+          ></CardMedia>
+        </div>
+      ) : null}
+      {/* {props.product.img ? (
         <CardMedia
           className={classes.media}
           image={props.product.img}
           title={props.product.name}
         />
-      ) : null}
+      ) : null} */}
       <CardContent>
         <div className={classes.cardContent}>
           <Typography gutterBottom>{props.product.name}</Typography>
