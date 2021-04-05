@@ -12,7 +12,7 @@ class FavoriteSerializer(serializers.ModelSerializer):
 class AdSerializer(serializers.ModelSerializer):
     class Meta:
         model = Ad
-        fields = ["id", "created_by_user", "name", "description", "price", "img", "category", "city", "rating"]
+        fields = ["id", "created_by_user", "name", "description", "price", "img", "category", "city", "rating", "sold"]
 
     # def create(self, validated_data):
     #     """
@@ -34,6 +34,7 @@ class AdSerializer(serializers.ModelSerializer):
         instance.category = validated_data.get("category", instance.category)
         instance.city = validated_data.get("city", instance.city)
         rating = validated_data.get("rating")
+        instance.sold = validated_data.get("sold", instance.sold)
         if rating is not None:
             instance.rating = Rating.objects.get(id=rating)
         instance.save()

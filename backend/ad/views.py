@@ -205,3 +205,23 @@ def view_users_ads(request):
         if ad.created_by_user == Profile.objects.get(user=request.user):
             context.append(AdSerializer(ad).data)
     return Response(context)
+
+
+@api_view(["POST"])
+@permission_classes([IsAuthenticated])
+def change_sold(request):
+    """
+    Update the sold-field in an ad
+    """
+    ad_id = request.data["id"]
+    sold = request.data["sold"]
+    try:
+        ad = Ad.objects.get(id=ad_id)
+    except Ad.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+    if ad.created_by_user == Profile.objects.get(user=request.user):
+        ad.sold = sold
+        ad.save()
+        return Response("Successfully edited " + ad.sold, status=status.HTTP_200_OK)
+    return Response("Currently logged in user did not create this ad", status=status.HTTP_401_UNAUTHORIZED)
