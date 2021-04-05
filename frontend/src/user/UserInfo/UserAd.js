@@ -28,9 +28,9 @@ function UserAd(props) {
   const [details, setDetails] = useState(props.product.sold);
   const handleClick = (e) => {
     e.preventDefault();
-    PostPutData("listing/sold/", { ad: props.product.id, details })
-      .then(() => setDetails(!details))
-      .catch((e) => console.log(e));
+    setDetails(!details);
+    PostPutData("listing/sold", { id: props.product.id, sold: !details });
+    console.log(e);
   };
   const styling = {
     flex: 1,
@@ -65,7 +65,7 @@ function UserAd(props) {
           className={classes.media}
           image={props.product.img}
           title={props.product.name}
-          
+
         />
       ) : (
         <CircularProgress />

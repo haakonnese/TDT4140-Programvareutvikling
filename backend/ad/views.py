@@ -223,5 +223,5 @@ def change_sold(request):
     if ad.created_by_user == Profile.objects.get(user=request.user):
         ad.sold = sold
         ad.save()
-        return Response("Successfully edited " + ad.sold, status=status.HTTP_200_OK)
+        return Response("Successfully edited", status=status.HTTP_200_OK)
     return Response("Currently logged in user did not create this ad", status=status.HTTP_401_UNAUTHORIZED)
