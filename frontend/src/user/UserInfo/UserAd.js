@@ -28,7 +28,7 @@ function UserAd(props) {
   const [details, setDetails] = useState(props.product.sold);
   const handleClick = (e) => {
     e.preventDefault();
-    PostPutData("listing/sold/", { ad: props.product.id })
+    PostPutData("listing/sold/", { ad: props.product.id, details })
       .then(() => setDetails(!details))
       .catch((e) => console.log(e));
   };
