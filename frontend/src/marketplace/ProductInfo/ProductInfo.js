@@ -34,7 +34,7 @@ function ProductInfo(props) {
   const history = useHistory();
   const [product, setProduct] = useState();
 
-  // "match" matches given id with id from url
+  // "match" matcher gitt id med id fra url
   useEffect(() => {
     GetData("listing/listing", props.match.params.id)
       .then((result) => {
@@ -53,6 +53,7 @@ function ProductInfo(props) {
 
   // css for jsx
   const classes = useStyles();
+  // et Card-element som viser bildet og ytterligere info om annonsen
   return (
     <main className={classes.main}>
       {product ? (
@@ -83,6 +84,7 @@ function ProductInfo(props) {
                 </Typography>
               </div>
               <div>
+                {/* knapper for å gi tilbakemelding og favorisere annonsen */}
                 <div style={{ float: "right" }}>
                   <HeartButton product={product} />
                 </div>
@@ -101,10 +103,6 @@ function ProductInfo(props) {
                   ) : null}
                 </div>
               </div>
-              {/* Favorite-button for adding product to favorite-list */}
-              {/* <IconButton className={classes.iconButton} aria-label="Favoriser">
-                    <FavoriteBorderIcon />
-                  </IconButton> */}
             </div>
             <br />
             <Typography

@@ -50,11 +50,8 @@ function UserAd(props) {
             {props.product.category}
           </Typography>
         </div>
-        {/* <br />
-        <Typography varient="h2" color="textSecondary">
-          {props.product.description}
-        </Typography> */}
       </CardContent>
+      {/* knapp for å komme til "endre annonse"-siden */}
       <CardActions disableSpacing className={classes.cardActions}>
         <Link to={`/endreannonse/${props.product.id}`}>
           <Button
@@ -66,11 +63,6 @@ function UserAd(props) {
             Endre info
           </Button>
         </Link>
-        {/* En knapp for å legge produkt til i favoritter - kan jobbes på med onClick osv. */}
-        {/* Kan kommenteres ut når vi har opprettet favoritter hos bruker */}
-        {/* <IconButton className={classes.iconButton} aria-label="Favoriser">
-          <FavoriteBorderIcon />
-        </IconButton> */}
       </CardActions>
     </Card>
   );

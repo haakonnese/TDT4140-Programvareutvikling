@@ -5,15 +5,6 @@ import { useHistory } from "react-router-dom";
 import RegisterAd from "../../ProductRegistration/RegisterAd";
 import { connect } from "react-redux";
 
-// const categories = [
-//   { type: "Kjøretøy" },
-//   { type: "Sportsutsyr" },
-//   { type: "Bøker" },
-//   { type: "Elektronikk" },
-//   { type: "Leker" },
-//   { type: "Annet" },
-// ];
-
 EditAd.propTypes = {
   match: PropTypes.object.isRequired,
   errorType: PropTypes.string,
@@ -40,6 +31,7 @@ function EditAd({ match }) {
         history.push("/404");
       });
   }, []);
+  // bruker skjemaet fra RegisterAd for å registrere ny informasjon om annonsen
   return (
     <div>
       {details ? (

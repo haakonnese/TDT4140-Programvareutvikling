@@ -64,6 +64,7 @@ function UserProfile() {
             </Typography>
           </div>
         </CardContent>
+        {/* Knapper for å redigere profil og passord */}
         <CardActions disableSpacing className={classes.cardActions}>
           <Link to="/profilredigering">
             <Button
@@ -85,11 +86,6 @@ function UserProfile() {
               Endre passord
             </Button>
           </Link>
-          {/* En knapp for å legge produkt til i favoritter - kan jobbes på med onClick osv. */}
-          {/* Kan kommenteres ut når vi har opprettet favoritter hos bruker */}
-          {/* <IconButton className={classes.iconButton} aria-label="Favoriser">
-          <FavoriteBorderIcon />
-        </IconButton> */}
         </CardActions>
       </Card>
     </main>
