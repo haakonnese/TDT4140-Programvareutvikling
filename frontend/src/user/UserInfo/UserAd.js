@@ -30,8 +30,7 @@ function UserAd(props) {
   const handleClick = (e) => {
     e.preventDefault();
     setDetails(!details);
-    PostPutData("listing/sold", { id: props.product.id, sold: details });
-    console.log(details);
+    PostPutData("listing/sold", { id: props.product.id, sold: !details });
     console.log(e);
   };
   const styling = {
@@ -67,7 +66,7 @@ function UserAd(props) {
           className={classes.media}
           image={props.product.img}
           title={props.product.name}
-          
+
         />
       ) : (
         <CircularProgress />
