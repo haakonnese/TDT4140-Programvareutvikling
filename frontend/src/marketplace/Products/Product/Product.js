@@ -21,17 +21,21 @@ Product.propTypes = {
 function Product(props) {
   // css for jsx
   const classes = useStyles();
+  const styling = {
+    flex: 1,
+    backgroundColor: "lightgrey",
+  };
 
   return (
-    <Card className={classes.root}>
+    <Card className={classes.root} style={props.product.sold ? styling : null}>
       {props.product.img ? (
         <div style={{ position: "relative" }}>
           <Container
             style={{
               position: "absolute",
-              top: "25%",
-              zIndex: 100,
-              right: 0,
+              top: "100%",
+              zIndex: 0,
+              right: 150,
             }}
           >
             <Typography align="center" color="secondary" variant="h3">
