@@ -26,11 +26,13 @@ function UserAd(props) {
   // css for jsx
   const classes = useStyles();
   const [details, setDetails] = useState(props.product.sold);
+  console.log(details);
   const handleClick = (e) => {
     e.preventDefault();
-    PostPutData("listing/sold/", { ad: props.product.id, details })
-      .then(() => setDetails(!details))
-      .catch((e) => console.log(e));
+    setDetails(!details);
+    PostPutData("listing/sold", { id: props.product.id, sold: details });
+    console.log(details);
+    console.log(e);
   };
   const styling = {
     flex: 1,

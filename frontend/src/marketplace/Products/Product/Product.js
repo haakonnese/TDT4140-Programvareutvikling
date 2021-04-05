@@ -42,7 +42,6 @@ function Product(props) {
             className={classes.media}
             image={props.product.img}
             title={props.product.name}
-            style={{ filter: "grayscale(100%)" }}
           ></CardMedia>
         </div>
       ) : null}
