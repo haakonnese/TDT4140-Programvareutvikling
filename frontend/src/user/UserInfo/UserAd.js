@@ -14,7 +14,7 @@ import {
 import useStyles from "./styles";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
-import { DeleteData, PostPutData } from "../../service/FetchData";
+import { PostPutData } from "../../service/FetchData";
 import Container from "react-bootstrap/Container";
 
 UserAd.propTypes = {
@@ -26,26 +26,18 @@ function UserAd(props) {
   // css for jsx
   const classes = useStyles();
   const [details, setDetails] = useState(props.product.sold);
-
   const handleClick = (e) => {
     e.preventDefault();
-
-    if (!details) {
-      PostPutData("listing/sold/save", { ad: props.product.id })
-        .then(() => setDetails(!details))
-        .catch((e) => console.log(e));
-    } else {
-      DeleteData("listing/sold/delete", props.product.id)
-        .then(() => setDetails(!details))
-        .catch((e) => console.log(e));
-    }
+    PostPutData("listing/sold/", { ad: props.product.id })
+      .then(() => setDetails(!details))
+      .catch((e) => console.log(e));
   };
   const styling = {
     flex: 1,
     backgroundColor: "lightgrey",
   };
   return (
-    <Card className={classes.root} style={details.sold ? styling : null}>
+    <Card className={classes.root} style={details ? styling : null}>
       {props.product.img ? (
         <div style={{ position: "relative" }}>
           <Container
@@ -57,16 +49,14 @@ function UserAd(props) {
             }}
           >
             <Typography align="center" color="secondary" variant="h3">
-              {details.sold ? "Solgt" : ""}
+              {details ? "Solgt" : ""}
             </Typography>
           </Container>
           <CardMedia
             className={classes.media}
             image={props.product.img}
             title={props.product.name}
-          >
-            {details.sold ? { filter: "greyscale(100%)" } : null}
-          </CardMedia>
+          ></CardMedia>
         </div>
       ) : null}
 
@@ -115,10 +105,10 @@ function UserAd(props) {
           className={classes.infoButton}
           aria-label="Mer info"
           variant="outlined"
-          color={details.sold ? "secondary" : "primary"}
+          color={details ? "secondary" : "primary"}
           onClick={handleClick}
         >
-          {details.sold ? "Solgt" : "Merk solgt"}
+          {details ? "Solgt" : "Merk solgt"}
         </Button>
       </CardActions>
     </Card>
