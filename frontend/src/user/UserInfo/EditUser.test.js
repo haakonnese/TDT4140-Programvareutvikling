@@ -10,9 +10,9 @@ import { act } from "react-dom/test-utils";
 import userEvent from "@testing-library/user-event";
 import { BrowserRouter as Router } from "react-router-dom";
 import { toYoungError, toOldError } from "../errorMessages";
-import { RecordVoiceOverRounded } from "@material-ui/icons";
-import { CallReceived } from "@material-ui/icons";
-import { AirlineSeatLegroomNormal } from "@material-ui/icons";
+// import { RecordVoiceOverRounded } from "@material-ui/icons";
+// import { CallReceived } from "@material-ui/icons";
+// import { AirlineSeatLegroomNormal } from "@material-ui/icons";
 
 jest.mock("../../service/FetchData", () => ({
   GetData: jest.fn(),
