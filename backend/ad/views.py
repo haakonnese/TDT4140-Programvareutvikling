@@ -13,6 +13,7 @@ from rest_framework.permissions import IsAuthenticated
 from user.models import Profile
 from django.contrib.auth.models import User
 import math
+import datetime
 
 
 def index(request):
@@ -24,6 +25,8 @@ def view_ads(request):
     context = []
     data = request.data
     arguments = {}
+    today = datetime.datetime.now()
+    five_days = datetime.timedelta(5)
     if data.get("category") is not None:
         arguments["category"] = data["category"]
     if data.get("city") is not None:
@@ -36,8 +39,7 @@ def view_ads(request):
         profile = Profile.objects.get(user=request.user)
         favorites = Favorite.objects.filter(profile=profile)
         arguments["id__in"] = favorites.values("ad")
-    ads = Ad.objects.filter(**arguments).order_by("-pub_date")
-
+    ads = Ad.objects.filter(**arguments).order_by("-pub_date").exclude(sold_date__lt=(today - five_days))
     if not request.user.is_anonymous:
         profile = Profile.objects.get(user=request.user)
     else:
@@ -205,3 +207,26 @@ def view_users_ads(request):
         if ad.created_by_user == Profile.objects.get(user=request.user):
             context.append(AdSerializer(ad).data)
     return Response(context)
+
+
+@api_view(["POST"])
+@permission_classes([IsAuthenticated])
+def change_sold(request):
+    """
+    Update the sold-field in an ad
+    """
+    ad_id = request.data["id"]
+    sold = request.data["sold"]
+    try:
+        ad = Ad.objects.get(id=ad_id)
+    except Ad.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+    if ad.created_by_user == Profile.objects.get(user=request.user):
+        if sold:
+            ad.sold_date = datetime.datetime.now()
+        else:
+            ad.sold_date = None
+        ad.sold = sold
+        ad.save()
+        return Response("Successfully edited", status=status.HTTP_200_OK)
+    return Response("Currently logged in user did not create this ad", status=status.HTTP_401_UNAUTHORIZED)
