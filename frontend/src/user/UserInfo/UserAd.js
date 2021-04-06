@@ -6,6 +6,7 @@ import {
   CardActions,
   Typography,
   Button,
+  Container,
   // CircularProgress,
   // IconButton,
 } from "@material-ui/core";
@@ -15,7 +16,6 @@ import useStyles from "./styles";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import { PostPutData } from "../../service/FetchData";
-import Container from "react-bootstrap/Container";
 
 UserAd.propTypes = {
   product: PropTypes.object.isRequired,
