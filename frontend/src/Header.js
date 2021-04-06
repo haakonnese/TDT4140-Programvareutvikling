@@ -12,11 +12,9 @@ import {
 import { AccountCircle } from "@material-ui/icons";
 import { connect } from "react-redux";
 import store from "./reducers";
-// import IconButton from "@material-ui/core/IconButton";
-// import SearchIcon from "@material-ui/icons/Search";
 import { Link, useHistory } from "react-router-dom";
-// import Link from "@material-ui/core/Link";
 
+// style til header
 const useStyles = makeStyles((theme) => ({
   toolbar: {
     borderBottom: `1px solid ${theme.palette.divider}`,
@@ -32,25 +30,23 @@ const useStyles = makeStyles((theme) => ({
   logIn: {
     float: "right",
   },
-  ad: {
-    float: "right",
-    marginRight: "1em",
-  },
-  avatar: { backgroundColor: theme.palette.secondary.main },
 }));
 
 function Header(props) {
-  //   const history = useHistory();
   const classes = useStyles();
   const { title, loggedIn } = props;
   const history = useHistory();
+
+  // sirkel med muligheter til innlogget bruker
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
 
+  // vis muligheter til innlogget bruker
   const handleMenu = (event) => {
     setAnchorEl(event.target);
   };
 
+  // skjul muligheter til innlogget bruker
   const handleClose = () => {
     setAnchorEl(null);
   };
@@ -69,9 +65,6 @@ function Header(props) {
             {title}
           </Typography>
         </Link>
-        {/* <IconButton>
-          <SearchIcon />
-        </IconButton> */}
         {loggedIn ? (
           <div>
             <IconButton
@@ -152,6 +145,7 @@ Header.propTypes = {
   title: PropTypes.string,
   loggedIn: PropTypes.bool,
 };
+
 const mapStateToProps = (state) => {
   return { loggedIn: state.loggedIn };
 };
