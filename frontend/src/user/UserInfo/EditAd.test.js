@@ -9,14 +9,12 @@ import { BrowserRouter as Router } from "react-router-dom";
 import { Provider } from "react-redux";
 import store from "./../../reducers";
 
-
 jest.mock("../../service/FetchData", () => ({
   GetData: jest.fn(),
   PostPutData: jest.fn(),
 }));
 
 let container, item, price, city, description, button, category, img;
-
 
 const Ad = {
   id: 1,
@@ -51,7 +49,7 @@ beforeEach(async () => {
       container
     );
   });
- 
+
   document.body.appendChild(container);
   item = container.querySelector("#item");
   userEvent.clear(item);

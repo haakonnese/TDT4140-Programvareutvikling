@@ -14,7 +14,6 @@ import { RecordVoiceOverRounded } from "@material-ui/icons";
 import { CallReceived } from "@material-ui/icons";
 import { AirlineSeatLegroomNormal } from "@material-ui/icons";
 
-
 jest.mock("../../service/FetchData", () => ({
   GetData: jest.fn(),
   PostPutData: jest.fn(),
@@ -45,7 +44,6 @@ beforeEach(async () => {
 
   document.body.appendChild(container);
 
-  
   firstName = container.querySelector("#firstName");
   userEvent.clear(firstName);
   userEvent.type(firstName, "Ola");
@@ -71,7 +69,6 @@ afterEach(() => {
   document.body.removeChild(container);
   container = null;
 });
-
 
 describe("EditUser component", () => {
   test("will get userdata", async () => {
