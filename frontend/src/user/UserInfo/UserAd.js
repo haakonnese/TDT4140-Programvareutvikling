@@ -113,7 +113,8 @@ function UserAd(props) {
           aria-label="Mer info"
           variant="outlined"
           color={details ? "secondary" : "primary"}
-          onClick={handleClick}>
+          onClick={handleClick}
+        >
           {details ? "Solgt" : "Merk solgt"}
         </Button>
       </CardActions>
