@@ -76,7 +76,7 @@ function ProductInfo(props) {
                 <Typography variant="subtitle1">By: {product.city}</Typography>
                 <Typography variant="subtitle1">
                   Selger:{" "}
-                  <Link to={`/bruker/${product.user_id}`}>
+                  <Link to={`/bruker/${product.created_by_user}`}>
                     <MUILink variant="body1" component="button">
                       {product.first_name} {product.last_name}
                     </MUILink>
