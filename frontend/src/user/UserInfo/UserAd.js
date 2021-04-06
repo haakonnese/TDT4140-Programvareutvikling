@@ -97,7 +97,6 @@ function UserAd(props) {
       </CardContent>
       <CardActions disableSpacing className={classes.cardActions}>
         <Link to={`/endreannonse/${props.product.id}`}>
-          {/* Mer info.button, if clicked you get sent to endreannonse*/}
           <Button
             className={classes.infoButton}
             aria-label="Mer info"
@@ -107,7 +106,7 @@ function UserAd(props) {
             Endre info
           </Button>
         </Link>
-        {/* Solgt/Merk Solgt button*/}
+
         <Button
           className={classes.infoButton}
           aria-label="Mer info"
