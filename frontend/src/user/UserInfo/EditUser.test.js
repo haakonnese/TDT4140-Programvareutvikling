@@ -14,14 +14,14 @@ import { RecordVoiceOverRounded } from "@material-ui/icons";
 import { CallReceived } from "@material-ui/icons";
 import { AirlineSeatLegroomNormal } from "@material-ui/icons";
 
-// mock functions
+
 jest.mock("../../service/FetchData", () => ({
   GetData: jest.fn(),
   PostPutData: jest.fn(),
 }));
 
 let container, firstName, lastName, tel, city, birthYear, button;
-// a test user
+
 const profile = {
   user: { first_name: "Ole", last_name: "Oleson" },
   birth_year: "1998",
@@ -45,7 +45,7 @@ beforeEach(async () => {
 
   document.body.appendChild(container);
 
-  // manages userevents, fields aree filled with information.
+  
   firstName = container.querySelector("#firstName");
   userEvent.clear(firstName);
   userEvent.type(firstName, "Ola");
@@ -72,7 +72,7 @@ afterEach(() => {
   container = null;
 });
 
-//Tests if userdata is recieved, birthyear is legal and upload
+
 describe("EditUser component", () => {
   test("will get userdata", async () => {
     const profiletxt = container.querySelector("#firstName");
