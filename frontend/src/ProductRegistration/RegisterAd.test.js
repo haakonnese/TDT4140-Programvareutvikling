@@ -56,7 +56,7 @@ afterEach(() => {
 });
 
 describe("RegisterAd component", () => {
-  // Tests if picture is uploaded
+  
   test("upload", async () => {
     PostPutData.mockImplementation(() => Promise.resolve({ ok: "true" }));
     img = container.querySelector("#imgUpload");
@@ -69,7 +69,7 @@ describe("RegisterAd component", () => {
     });
     expect(PostPutData.mock.calls.length).toBe(1);
   });
-  // Tests if all fields are filled, when registering an ad
+  
   test("not all field filled in", () => {
     PostPutData.mockImplementation(() => Promise.resolve({ ok: "true" }));
     act(() => {
