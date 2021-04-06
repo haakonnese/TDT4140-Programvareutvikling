@@ -76,7 +76,7 @@ describe("SeeRating component", () => {
   });
 
   it("displays the correct number of ratings", () => {
-    const ratings = container.querySelector("#rating");
-    expect(ratings.childElementCount).toBe(3);
+    const ratings = container.querySelectorAll(".rating");
+    expect(ratings.length).toBe(3);
   });
 });

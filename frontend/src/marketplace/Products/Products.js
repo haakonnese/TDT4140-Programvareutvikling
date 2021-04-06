@@ -56,7 +56,7 @@ function Products(props) {
         }
       })
       .catch(() => {
-        setProducts([]);
+        setProducts({ products: [], num_pages: 1 });
       });
   }, [props.filter, currentPage, props.onlyUser, props.loggedIn]);
 

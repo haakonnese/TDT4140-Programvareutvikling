@@ -82,13 +82,19 @@ function SeeRating({ match }) {
             </Typography>
             <Typography variant="h5">Hjemby: {user.city}</Typography>
           </Grid>
-          <div id="rating">
-            {user.ratings.map((rating) => (
-              <Grid item key={rating.ad_id} xs={12} sm={6} md={4} lg={3}>
-                <Rating rating={rating} />
-              </Grid>
-            ))}
-          </div>
+          {user.ratings.map((rating) => (
+            <Grid
+              item
+              className="rating"
+              key={rating.ad_id}
+              xs={12}
+              sm={6}
+              md={4}
+              lg={3}
+            >
+              <Rating rating={rating} />
+            </Grid>
+          ))}
         </Grid>
       )}
     </div>
