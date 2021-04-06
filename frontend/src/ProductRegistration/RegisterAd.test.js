@@ -21,15 +21,11 @@ beforeEach(() => {
     type: "UPDATE_CATEGORY",
     payload: [{ category: "Annet" }],
   });
-  store.dispatch({
-    type: "UPDATE_LOGGED_IN",
-    payload: true,
-  });
   act(() => {
     ReactDOM.render(
       <Provider store={store}>
         <Router>
-          <RegisterAd />
+          <RegisterAd loggedIn={true} />
         </Router>
       </Provider>,
       container
@@ -60,6 +56,7 @@ afterEach(() => {
 });
 
 describe("RegisterAd component", () => {
+  // Tests if picture is uploaded
   test("upload", async () => {
     PostPutData.mockImplementation(() => Promise.resolve({ ok: "true" }));
     img = container.querySelector("#imgUpload");
@@ -72,6 +69,7 @@ describe("RegisterAd component", () => {
     });
     expect(PostPutData.mock.calls.length).toBe(1);
   });
+  // Tests if all fields are filled, when registering an ad
   test("not all field filled in", () => {
     PostPutData.mockImplementation(() => Promise.resolve({ ok: "true" }));
     act(() => {

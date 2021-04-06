@@ -33,9 +33,9 @@ function Product(props) {
           <Container
             style={{
               position: "absolute",
-              top: "100%",
-              zIndex: 0,
-              right: 150,
+              top: "25%",
+              zIndex: 100,
+              right: 0,
             }}
           >
             <Typography align="center" color="secondary" variant="h3">
