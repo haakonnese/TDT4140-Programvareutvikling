@@ -1,30 +1,5 @@
 import { BASE_URL } from "./sellPointURL";
 
-export function GetData(type, userData = null) {
-  // fetches data from the given endpoint and returns the promise (responseJson)
-  let text;
-  if (userData != null) {
-    text = type + "/" + userData;
-  } else {
-    text = type;
-  }
-  const headers = {
-    Accept: "application/json",
-  };
-  if (localStorage.getItem("token") != null) {
-    headers.Authorization = "Token " + localStorage.getItem("token");
-  }
-  return new Promise((resolve, reject) => {
-    fetch(BASE_URL + text, {
-      method: "GET",
-      headers: headers,
-    })
-      .then((response) => response.json())
-      .then((responseJson) => resolve(responseJson))
-      .catch((error) => reject(error));
-  });
-}
-
 export function PostPutData(
   type,
   userData,
@@ -53,10 +28,73 @@ export function PostPutData(
       body: body,
     })
       .then((response) => {
-        if (response.ok || response.created) {
+        if (response.status >= 200 && response.status <= 300) {
           return response.json();
         } else {
-          throw new Error(response.status);
+          reject(response.status);
+        }
+      })
+      .then((responseJson) => resolve(responseJson))
+      .catch((error) => reject(error));
+  });
+}
+
+export function GetData(type, userData = null) {
+  // fetches data from the given endpoint and returns the promise (responseJson)
+  let text;
+  if (userData != null) {
+    text = type + "/" + userData;
+  } else {
+    text = type;
+  }
+  const headers = {
+    Accept: "application/json",
+  };
+  if (localStorage.getItem("token") != null) {
+    headers.Authorization = "Token " + localStorage.getItem("token");
+  }
+  return new Promise((resolve, reject) => {
+    fetch(BASE_URL + text, {
+      method: "GET",
+      headers: headers,
+    })
+      .then((response) => {
+        if (response.status >= 200 && response.status <= 300) {
+          return response.json();
+        } else {
+          reject(response.status);
+        }
+      })
+      .then((responseJson) => resolve(responseJson))
+      .catch((error) => reject(error));
+  });
+}
+
+export function DeleteData(type, userData = null) {
+  // fetches data from the given endpoint and returns the promise (responseJson)
+  let text;
+  if (userData != null) {
+    text = type + "/" + userData;
+  } else {
+    text = type;
+  }
+  const headers = {
+    Accept: "application/json",
+    // "Content-Type": contentType,
+  };
+  if (localStorage.getItem("token") != null) {
+    headers.Authorization = "Token " + localStorage.getItem("token");
+  }
+  return new Promise((resolve, reject) => {
+    fetch(BASE_URL + text, {
+      method: "DELETE",
+      headers: headers,
+    })
+      .then((response) => {
+        if (response.status >= 200 && response.status <= 300) {
+          return response.json();
+        } else {
+          reject(response.status);
         }
       })
       .then((responseJson) => resolve(responseJson))

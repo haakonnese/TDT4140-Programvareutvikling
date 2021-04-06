@@ -35,3 +35,14 @@ class Ad(models.Model):
             size = 1000, image.width * ratio
             image.thumbnail(size)
         image.save(self.img.path, quality=80, optimize=True)
+
+
+class Favorite(models.Model):
+    profile = models.ForeignKey(Profile, on_delete=models.CASCADE, null=False)
+    ad = models.ForeignKey(Ad, on_delete=models.CASCADE, null=False)
+
+    def __str__(self):
+        return self.profile.__str__() + ": " + self.ad.__str__()
+
+    class Meta:
+        unique_together = (("profile", "ad"),)

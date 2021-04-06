@@ -39,6 +39,11 @@ function Products(props) {
   useEffect(() => {
     const data = props.filter;
     data.page = currentPage;
+    if (props.onlyUser) {
+      data.favorite = true;
+    } else {
+      data.favorite = false;
+    }
     PostPutData("listing/listings", data)
       .then((result) => {
         if (result.products.length > 0) {
@@ -50,10 +55,10 @@ function Products(props) {
           setProducts({ products: [], num_pages: 1 });
         }
       })
-      .catch((error) => {
-        console.log("Feil", error);
+      .catch(() => {
+        setProducts([]);
       });
-  }, [props.filter, currentPage]);
+  }, [props.filter, currentPage, props.onlyUser, props.loggedIn]);
 
   const changeBack = () => {
     setPage(currentPage - 1);
@@ -67,10 +72,26 @@ function Products(props) {
 
   return (
     <main>
+      {props.onlyUser ? (
+        <Grid
+          container
+          justify="flex-start"
+          spacing={4}
+          style={{
+            width: "100%",
+            margin: 0,
+            marginTop: 10,
+          }}
+        >
+          <Grid item xs={12}>
+            <Typography variant="h5">Lagrede annonser</Typography>{" "}
+          </Grid>
+        </Grid>
+      ) : null}
       <Filter />
       <Grid
         container
-        justify="center"
+        // justify="center"
         spacing={4}
         style={{
           width: "100%",
@@ -78,6 +99,11 @@ function Products(props) {
           marginTop: 20,
         }}
       >
+        {products.products.length === 0 ? (
+          <Grid item xs={12}>
+            <Typography>Det er ingen annonser å vise</Typography>
+          </Grid>
+        ) : null}
         {products.products.map((product) => (
           <Grid item key={product.id} xs={12} sm={6} md={4} lg={3}>
             <Product product={product} />
@@ -115,11 +141,14 @@ function Products(props) {
     </main>
   );
 }
+
 Products.propTypes = {
+  loggedIn: PropTypes.bool,
+  onlyUser: PropTypes.bool.isRequired,
   filter: PropTypes.object,
 };
 const mapStateToProps = (state) => {
-  return { filter: state.filter };
+  return { filter: state.filter, loggedIn: state.loggedIn };
 };
 
 export default connect(mapStateToProps)(Products);

@@ -14,7 +14,8 @@ import { useHistory } from "react-router-dom";
 import PropTypes from "prop-types";
 
 import { emailError, passwordError } from "../errorMessages";
-export default function Registation(props) {
+import { connect } from "react-redux";
+function EditPassword(props) {
   // css for jsx
   const classes = useStyles();
   const history = useHistory();
@@ -25,7 +26,9 @@ export default function Registation(props) {
   const [passwordCheck, setPasswordCheck] = useState("");
   const [error, setError] = useState({ errorMessage: "", errorType: "" });
   // check if logged in
-
+  if (!props.loggedIn) {
+    history.replace("/404");
+  }
   // submit-button. What to do when someone tries to register
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -105,7 +108,12 @@ export default function Registation(props) {
     </Container>
   );
 }
-Registation.propTypes = {
+EditPassword.propTypes = {
   changeLoggedIn: PropTypes.func,
   loggedIn: PropTypes.bool,
 };
+
+const mapStateToProps = (state) => {
+  return { loggedIn: state.loggedIn };
+};
+export default connect(mapStateToProps)(EditPassword);

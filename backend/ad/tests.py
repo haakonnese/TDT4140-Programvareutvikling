@@ -1,7 +1,7 @@
 import unittest
 from rest_framework.test import APIClient
 from user.models import Profile
-from .models import Ad, Category
+from .models import Ad, Category, Favorite
 from django.contrib.auth.models import User
 from rest_framework.authtoken.models import Token
 import os
@@ -35,6 +35,7 @@ class AdsTest(unittest.TestCase):
         os.remove(os.path.dirname(__file__) + "/../media/product/test.jpg")
         os.remove(os.path.dirname(__file__) + "/../media/product/test1.jpg")
         os.remove(os.path.dirname(__file__) + "/../media/product/test2.jpg")
+        os.remove(os.path.dirname(__file__) + "/../media/product/test3.jpg")
         # Sletter kategorien brukt i testene
         category1 = Category.objects.get(category="test")
         category1.delete()
@@ -75,6 +76,29 @@ class AdsTest(unittest.TestCase):
         self.assertEqual(ad1.price, d["price"]),
         self.assertEqual(ad1.category, Category.objects.get(category=d["category"]))
 
+        # Favoriser en annonse
+        response = self.client.post("/api/listing/favorite/save", {"ad": ad1.id})
+        # Sjekk at responsen er 201 favorite created.
+        self.assertEqual(response.status_code, 201, "Post favorite failed")
+        favorite = Favorite.objects.filter(profile=Profile.objects.get(user=user1), ad=ad1)
+        self.assertEqual(len(favorite), 1, "Not correct response for post favorite")
+
+        response = self.client.get("/api/listing/favorites")
+        # Sjekk at responsen er 200.
+        self.assertEqual(response.status_code, 200, "Get all favorites of user failed")
+        favorite = Favorite.objects.filter(profile=Profile.objects.get(user=user1))
+        self.assertEqual(len(favorite), 1, "Not correct response for getting all favorites")
+
+        response = self.client.delete("/api/listing/favorite/delete/" + str(ad1.id))
+        # Sjekk at responsen er 200.
+        self.assertEqual(response.status_code, 200, "Delete favorite failed")
+        favorite = Favorite.objects.filter(profile=Profile.objects.get(user=user1), ad=ad1)
+        self.assertEqual(len(favorite), 0, "Favorite is not removed from user")
+
+        # Sjekker responsen som funker
+        # response = self.client.get("ad/view/1", d, format="json")
+        # self.assertEqual(response.status_code, 200)
+        # ad1.delete()
         # tester å se en annonse og endre annonse
         ny = {
             "created_by_user": User.objects.get(username="user1").id,
@@ -82,7 +106,7 @@ class AdsTest(unittest.TestCase):
             "description": "Endret annonse",
             "price": 20,
             "city": "Oslo",
-            "img": open(os.path.dirname(__file__) + "/../media/test/test2.jpg", "rb"),
+            "img": open(os.path.dirname(__file__) + "/../media/test/test3.jpg", "rb"),
             "category": "Test",
         }
         ad_id = ad1.id.__str__()

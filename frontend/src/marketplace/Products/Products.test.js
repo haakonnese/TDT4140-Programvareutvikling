@@ -56,7 +56,7 @@ describe("Products component", () => {
       ReactDOM.render(
         <Provider store={store}>
           <Router>
-            <Products />
+            <Products onlyUser={false} />
           </Router>
         </Provider>,
         container
@@ -68,5 +68,28 @@ describe("Products component", () => {
     const price2 = screen.getByText("900kr");
     expect(price1).toBeInTheDocument();
     expect(price2).toBeInTheDocument();
+  });
+  it("shows saved ads", async () => {
+    const container = document.createElement("div");
+    document.body.appendChild(container);
+    PostPutData.mockImplementation(() => Promise.resolve(products));
+    store.dispatch({
+      type: "UPDATE_LOGGED_IN",
+      payload: true,
+    });
+    await act(async () => {
+      ReactDOM.render(
+        <Provider store={store}>
+          <Router>
+            <Products onlyUser={true} />
+          </Router>
+        </Provider>,
+        container
+      );
+    });
+    //   console.log(container)
+
+    const saved = screen.getByText("Lagrede annonser");
+    expect(saved).toBeInTheDocument();
   });
 });
