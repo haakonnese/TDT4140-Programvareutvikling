@@ -35,6 +35,7 @@ class AdsTest(unittest.TestCase):
         os.remove(os.path.dirname(__file__) + "/../media/product/test.jpg")
         os.remove(os.path.dirname(__file__) + "/../media/product/test1.jpg")
         os.remove(os.path.dirname(__file__) + "/../media/product/test2.jpg")
+        os.remove(os.path.dirname(__file__) + "/../media/product/test3.jpg")
         # Sletter kategorien brukt i testene
         category1 = Category.objects.get(category="test")
         category1.delete()
@@ -107,7 +108,7 @@ class AdsTest(unittest.TestCase):
             "description": "Endret annonse",
             "price": 20,
             "city": "Oslo",
-            "img": open(os.path.dirname(__file__) + "/../media/test/test2.jpg", "rb"),
+            "img": open(os.path.dirname(__file__) + "/../media/test/test3.jpg", "rb"),
             "category": "Test",
             "sold": False,
         }

@@ -15,6 +15,7 @@ import EditAd from "./user/UserInfo/EditAd";
 import { Provider } from "react-redux";
 import { GetData } from "./service/FetchData";
 import GiveRating from "./rating/GiveRating";
+import SeeRating from "./rating/SeeRating";
 import store from "./reducers";
 import EditPassword from "./user/UserInfo/EditPassword";
 
@@ -68,6 +69,8 @@ function App() {
             <Route exact path="/passordredigering" component={EditPassword} />
             <Route exact path="/products/:id" component={ProductInfo} />
             <Route exact path="/endreannonse/:id" component={EditAd} />
+            <Route exact path="/" component={Products}></Route>
+            <Route exact path="/bruker/:userId" component={SeeRating}></Route>
             <Route exact path="/products/:id" component={ProductInfo} />
             <Route exact path="/rating/:id" component={GiveRating} />
           </Switch>
