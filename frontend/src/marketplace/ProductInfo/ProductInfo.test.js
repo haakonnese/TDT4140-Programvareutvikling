@@ -7,6 +7,7 @@ import { act } from "react-dom/test-utils";
 import ProductInfo from "./ProductInfo";
 import { Provider } from "react-redux";
 import store from "./../../reducers";
+import { BrowserRouter as Router } from "react-router-dom";
 
 jest.mock("../../service/FetchData", () => ({
   GetData: jest.fn(),
@@ -32,7 +33,9 @@ describe("ProductInfo component", () => {
     await act(async () => {
       ReactDOM.render(
         <Provider store={store}>
-          <ProductInfo match={{ params: { id: 1 } }} />
+          <Router>
+            <ProductInfo match={{ params: { id: 1 } }} />
+          </Router>
         </Provider>,
         container
       );
