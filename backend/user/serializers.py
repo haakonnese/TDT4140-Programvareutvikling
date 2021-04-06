@@ -3,18 +3,27 @@ from django.contrib.auth.models import User
 from .models import Profile
 
 
-# User serializer
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ("username", "password", "first_name", "last_name")
 
     def create(self, validated_data):
-        """Create user with validated data"""
+        """
+        Lager et nytt bruker objekt
+        :param validated_data: data som innholder alle detaljer om en bruker
+        :return: returnerer en ny bruker
+        """
         user = User.objects.create_user(**validated_data)
         return user
 
     def update(self, instance, validated_data):
+        """
+        Oppdaterer en eksisterende bruker
+        :param instance: instansen som skal oppdateres
+        :param validated_data: Data som inneholder den oppdaterte infoen.
+        :return: returnerer instansen
+        """
         instance.username = validated_data.get("username", instance.username)
         instance.first_name = validated_data.get("first_name", instance.first_name)
         instance.last_name = validated_data.get("last_name", instance.last_name)
@@ -31,9 +40,9 @@ class ProfileSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         """
-        Overriding the default create method of the Model serializer.
-        :param validated_data: data containing all the details of profile
-        :return: returns a successfully created profile record
+        Lager et nytt profil objekt
+        :param validated_data: data som innholder alle detaljer om en profil
+        :return: returnerer en ny profil
         """
         user_data = validated_data.pop("user")
         user = UserSerializer.create(UserSerializer(), validated_data=user_data)
@@ -46,6 +55,12 @@ class ProfileSerializer(serializers.ModelSerializer):
         return profile
 
     def update(self, instance, validated_data):
+        """
+        Oppdaterer en eksisterende profil
+        :param instance: instansen som skal oppdateres
+        :param validated_data: Data som inneholder den oppdaterte infoen.
+        :return: returnerer instansen
+        """
         user_data = validated_data.get("user")
         if user_data is not None:
             UserSerializer.update(UserSerializer(), instance=instance.user, validated_data=user_data)
