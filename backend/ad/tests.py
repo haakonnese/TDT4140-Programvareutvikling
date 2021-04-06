@@ -139,6 +139,7 @@ class AdsTest(unittest.TestCase):
         self.assertEqual(response5.status_code, 200)
         ny_ad2 = Ad.objects.get(name="Annonsetest")
         self.assertEqual(ny_ad2.sold, solgt["sold"])
+        self.assertIsNotNone(ny_ad2.sold_date)
 
         # slett annonse
         response4 = self.client.delete("/api/listing/listing/" + ad_id + "/delete")

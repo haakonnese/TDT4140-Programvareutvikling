@@ -24,6 +24,7 @@ class Ad(models.Model):
     city = models.CharField(max_length=100, default="Ikke oppgitt")
     rating = models.ForeignKey(Rating, on_delete=models.SET_NULL, null=True)
     sold = models.BooleanField(default=False)
+    sold_date = models.DateTimeField(null=True)
 
     def __str__(self):
         return self.name
