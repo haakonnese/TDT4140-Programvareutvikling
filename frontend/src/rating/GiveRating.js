@@ -16,6 +16,7 @@ import { Rating } from "@material-ui/lab";
 import InputTextField from "../standardComponents/InputTextField";
 import useStyles from "../standardComponents/styles";
 import { Link, useHistory } from "react-router-dom";
+import { connect } from "react-redux";
 
 function GiveRating(props) {
   const classes = useStyles();
@@ -176,4 +177,7 @@ GiveRating.propTypes = {
   match: PropTypes.object.isRequired,
   loggedIn: PropTypes.bool.isRequired,
 };
-export default GiveRating;
+const mapStateToProps = (state) => {
+  return { loggedIn: state.loggedIn };
+};
+export default connect(mapStateToProps)(GiveRating);
