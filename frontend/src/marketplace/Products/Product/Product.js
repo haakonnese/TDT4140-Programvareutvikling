@@ -6,13 +6,14 @@ import {
   CardActions,
   Typography,
   Button,
+  Container,
 } from "@material-ui/core";
 // favourite-button to add product to favourite-list
 import useStyles from "./styles";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import HeartButton from "../../HeartButton";
-import Container from "react-bootstrap/Container";
+
 Product.propTypes = {
   product: PropTypes.object.isRequired,
   errorType: PropTypes.string,
@@ -33,9 +34,9 @@ function Product(props) {
           <Container
             style={{
               position: "absolute",
-              top: "100%",
-              zIndex: 0,
-              right: 150,
+              top: "25%",
+              zIndex: 100,
+              right: 0,
             }}
           >
             <Typography align="center" color="secondary" variant="h3">

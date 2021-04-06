@@ -6,6 +6,7 @@ import {
   CardActions,
   Typography,
   Button,
+  Container,
   // CircularProgress,
   // IconButton,
 } from "@material-ui/core";
@@ -15,7 +16,6 @@ import useStyles from "./styles";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import { PostPutData } from "../../service/FetchData";
-import Container from "react-bootstrap/Container";
 
 UserAd.propTypes = {
   product: PropTypes.object.isRequired,
@@ -25,11 +25,14 @@ UserAd.propTypes = {
 function UserAd(props) {
   // css for jsx
   const classes = useStyles();
+  // sets if a product is sold or not
   const [details, setDetails] = useState(props.product.sold);
   console.log(details);
+  // manages click on solgt/merk solgt button
   const handleClick = (e) => {
     e.preventDefault();
     setDetails(!details);
+    // sends id and sold-bool-value to backend
     PostPutData("listing/sold", { id: props.product.id, sold: !details });
     console.log(e);
   };
@@ -38,6 +41,7 @@ function UserAd(props) {
     backgroundColor: "lightgrey",
   };
   return (
+    // A card which contains image and info about the Ad
     <Card className={classes.root} style={details ? styling : null}>
       {props.product.img ? (
         <div style={{ position: "relative" }}>
@@ -102,6 +106,7 @@ function UserAd(props) {
             Endre info
           </Button>
         </Link>
+
         <Button
           className={classes.infoButton}
           aria-label="Mer info"
