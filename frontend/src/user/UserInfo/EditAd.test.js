@@ -9,6 +9,7 @@ import { BrowserRouter as Router } from "react-router-dom";
 import { Provider } from "react-redux";
 import store from "./../../reducers";
 
+// mock functions
 jest.mock("../../service/FetchData", () => ({
   GetData: jest.fn(),
   PostPutData: jest.fn(),
@@ -16,6 +17,7 @@ jest.mock("../../service/FetchData", () => ({
 
 let container, item, price, city, description, button, category, img;
 
+// a test Ad
 const Ad = {
   id: 1,
   name: "stol",
@@ -49,7 +51,7 @@ beforeEach(async () => {
       container
     );
   });
-
+  // Manages userevents, fields are filled in with information
   document.body.appendChild(container);
   item = container.querySelector("#item");
   userEvent.clear(item);
@@ -76,7 +78,7 @@ afterEach(() => {
   document.body.removeChild(container);
   container = null;
 });
-
+// tests if image is uploaded, if all fields are filled in.
 describe("EditAd component", () => {
   test("upload image", async () => {
     PostPutData.mockImplementation(() => Promise.resolve({ ok: "true" }));
