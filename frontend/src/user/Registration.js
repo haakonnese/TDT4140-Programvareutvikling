@@ -14,15 +14,14 @@ import { Link, useHistory } from "react-router-dom";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import store from "./../reducers";
-
 import {
   emailError,
   passwordError,
   toYoungError,
   toOldError,
 } from "./errorMessages";
+
 function Registation(props) {
-  // css for jsx
   const classes = useStyles();
   const history = useHistory();
   const { loggedIn } = props;
@@ -32,13 +31,12 @@ function Registation(props) {
     phone: "",
     city: "",
   });
-  // hooks
   const [passwordCheck, setPasswordCheck] = useState("");
   const [error, setError] = useState({ errorMessage: "", errorType: "" });
   // check if logged in
   useEffect(() => {
     if (loggedIn) {
-      history.push("/");
+      history.replace("/");
     }
   }, []);
 
@@ -56,8 +54,8 @@ function Registation(props) {
       // send registration to database and then do something with the result
       PostPutData("user/register", details)
         .then((result) => {
-          // console.log(result);
           if (result.token) {
+            // store token and set logged inn to true via reducer
             localStorage.setItem("token", result.token);
             store.dispatch({
               type: "UPDATE_LOGGED_IN",

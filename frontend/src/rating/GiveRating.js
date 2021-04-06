@@ -26,8 +26,9 @@ function GiveRating(props) {
   const [error, setError] = useState(false);
   const [empty, setEmpty] = useState(false);
   const history = useHistory();
+  // send til logg inn side dersom man ikke er logget inn
   if (!props.loggedIn) {
-    history.replace("/logginn");
+    history.push("/logginn");
   }
   useEffect(() => {
     GetData("listing/listing", props.match.params.id).then((result) => {
@@ -37,6 +38,7 @@ function GiveRating(props) {
   }, []);
   const handleSubmit = (e) => {
     e.preventDefault();
+    // sjekk for å se om man kan gi tilbakemelding på produkt
     if (
       !(
         details.description == null ||

@@ -6,12 +6,12 @@ export function PostPutData(
   contentType = "application/json",
   method = "POST"
 ) {
-  // fetches data from the given endpoint and returns the promise (responseJson)
+  // post or puts data to the given endpoint and returns the promise (responseJson) of return data
   return new Promise((resolve, reject) => {
     const headers = {
       Accept: "application/json",
-      // "Content-Type": contentType,
     };
+    // if user is logged in, add token to authorization header
     if (localStorage.getItem("token") != null) {
       headers.Authorization = "Token " + localStorage.getItem("token");
     }
@@ -28,6 +28,7 @@ export function PostPutData(
       body: body,
     })
       .then((response) => {
+        //  check if response is in "good" range
         if (response.status >= 200 && response.status <= 300) {
           return response.json();
         } else {
@@ -40,7 +41,7 @@ export function PostPutData(
 }
 
 export function GetData(type, userData = null) {
-  // fetches data from the given endpoint and returns the promise (responseJson)
+  // gets data from the given endpoint and returns the promise (responseJson)
   let text;
   if (userData != null) {
     text = type + "/" + userData;
@@ -50,6 +51,7 @@ export function GetData(type, userData = null) {
   const headers = {
     Accept: "application/json",
   };
+  // if user is logged in, add token to authorization header
   if (localStorage.getItem("token") != null) {
     headers.Authorization = "Token " + localStorage.getItem("token");
   }
@@ -59,6 +61,7 @@ export function GetData(type, userData = null) {
       headers: headers,
     })
       .then((response) => {
+        //  check if response is in "good" range
         if (response.status >= 200 && response.status <= 300) {
           return response.json();
         } else {
@@ -71,7 +74,7 @@ export function GetData(type, userData = null) {
 }
 
 export function DeleteData(type, userData = null) {
-  // fetches data from the given endpoint and returns the promise (responseJson)
+  // deletes data from the given endpoint and returns the promise (responseJson)
   let text;
   if (userData != null) {
     text = type + "/" + userData;
@@ -80,8 +83,8 @@ export function DeleteData(type, userData = null) {
   }
   const headers = {
     Accept: "application/json",
-    // "Content-Type": contentType,
   };
+  // if user is logged in, add token to authorization header
   if (localStorage.getItem("token") != null) {
     headers.Authorization = "Token " + localStorage.getItem("token");
   }
@@ -91,6 +94,7 @@ export function DeleteData(type, userData = null) {
       headers: headers,
     })
       .then((response) => {
+        //  check if response is in "good" range
         if (response.status >= 200 && response.status <= 300) {
           return response.json();
         } else {

@@ -25,7 +25,7 @@ function LogIn(props) {
   // check if logged in
   useEffect(() => {
     if (loggedIn) {
-      history.push("/");
+      history.replace("/");
     }
   }, []);
 
@@ -48,7 +48,6 @@ function LogIn(props) {
         }
       })
       .catch(() => {
-        // console.log(error);
         setWrongPassword(true);
       });
   };

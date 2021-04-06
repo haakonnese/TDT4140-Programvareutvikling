@@ -9,6 +9,9 @@ import { connect } from "react-redux";
 function HeartButton(props) {
   const classes = useStyles();
   const [favorite, setFavorite] = useState(props.product.favorite);
+
+  // send til forskjellige endepunkt om annonsen skal slettes fra favorittannonser
+  // eller legges til der
   function toggleFavorite() {
     if (!favorite) {
       PostPutData("listing/favorite/save", { ad: props.product.id })
@@ -29,6 +32,7 @@ function HeartButton(props) {
           aria-label="Favoriser"
           onClick={toggleFavorite}
         >
+          {/* Fyll hjertet blått dersom man har lagret annonsen */}
           {favorite ? (
             <Favorite color="primary" />
           ) : (

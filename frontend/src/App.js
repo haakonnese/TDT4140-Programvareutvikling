@@ -1,5 +1,5 @@
 import Header from "./Header";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Registation from "./user/Registration";
 import SignIn from "./user/LogIn";
 import Products from "./marketplace/Products/Products";
@@ -20,11 +20,15 @@ import store from "./reducers";
 import EditPassword from "./user/UserInfo/EditPassword";
 
 function App() {
+  const [categoryError, setCategoryError] = useState(false);
+  // default når appen lastes.
   useEffect(() => {
+    // sett logg inn til true dersom token er lagret
     store.dispatch({
       type: "UPDATE_LOGGED_IN",
       payload: localStorage.getItem("token") != null,
     });
+    // last inn kategorier
     GetData("listing/categories")
       .then((data) => {
         store.dispatch({
@@ -33,21 +37,27 @@ function App() {
         });
       })
       .catch((e) => {
+        // dersom man er 'logget inn' som ugyldig
+        // bruker og dermed ikke kan laste inn kategorier,
+        // fjern at man er logget inn og last inn kategorier på ny
         if (e === 401) {
           store.dispatch({
             type: "UPDATE_LOGGED_IN",
             payload: false,
           });
+          setCategoryError(true);
         } else {
           console.log("Feil");
         }
       });
-  }, []);
+  }, [categoryError]);
   return (
+    // Bruk provider slik at props kan nås av alle komponenter
     <Provider store={store}>
       <Router>
         <Header title="SellPoint" />
         <div className="App">
+          {/* Send bruker til riktig komponent når en gitt link er tastet inn */}
           <Switch>
             <Route exact path="/registrer" component={Registation} />
             <Route exact path="/logginn" component={SignIn} />

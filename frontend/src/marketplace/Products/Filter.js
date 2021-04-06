@@ -15,6 +15,7 @@ function Filter(props) {
   }, [details.category]);
 
   function search() {
+    // sjekk at min ikke er større enn maks
     if (
       Number.isInteger(details.min) &&
       Number.isInteger(details.max) &&
@@ -23,6 +24,7 @@ function Filter(props) {
       setError({ error: true, errorMessage: priceError });
     } else {
       setError({ error: false, errorMessage: "" });
+      // oppdater filter-prop via reducer
       store.dispatch({
         type: "UPDATE_FILTER",
         payload: details,

@@ -42,12 +42,11 @@ import { useHistory } from "react-router-dom";
 //   ],
 // };
 function SeeRating({ match }) {
-  //   const classes = useStyles();
   const [user, setUser] = useState(null);
   const history = useHistory();
-  //
 
   useEffect(() => {
+    // hent info om bruker man ønsker å se
     GetData("rating/user", match.params.userId)
       .then((result) => {
         if (result) {
@@ -82,6 +81,7 @@ function SeeRating({ match }) {
             </Typography>
             <Typography variant="h5">Hjemby: {user.city}</Typography>
           </Grid>
+          {/* Vis alle ratinger en bruker har fått */}
           {user.ratings.map((rating) => (
             <Grid
               item
