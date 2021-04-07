@@ -90,11 +90,8 @@ function UserAd(props) {
             {props.product.category}
           </Typography>
         </div>
-        {/* <br />
-        <Typography varient="h2" color="textSecondary">
-          {props.product.description}
-        </Typography> */}
       </CardContent>
+      {/* knapp for å komme til "endre annonse"-siden */}
       <CardActions disableSpacing className={classes.cardActions}>
         <Link to={`/endreannonse/${props.product.id}`}>
           <Button

@@ -7,32 +7,6 @@ import { connect } from "react-redux";
 import PropTypes from "prop-types";
 
 function Products(props) {
-  // Product test
-  // const product = [
-  //   {
-  //     id: 1,
-  //     name: "stol",
-  //     description: "lite brukt stol til god pris",
-  //     price: 200,
-  //     firstName: "Hans",
-  //     lastName: "Pettersen",
-  //     sellerTlf: 98765432,
-  //     imgUrl:
-  //       "https://www.if.no/magasinet/imageshop/img_shp_img_ymq7qsg42u-780x450.jpeg",
-  //   },
-  //   {
-  //     id: 2,
-  //     name: "bord",
-  //     description: "lite brukt bord til god pris",
-  //     price: 900,
-  //     firstName: "Kari",
-  //     lastName: "Bakken",
-  //     sellerTlf: 12345678,
-  //     imgUrl:
-  //       "https://www.if.no/magasinet/imageshop/img_shp_img_ymq7qsg42u-780x450.jpeg",
-  //   },
-  // ];
-
   // hooks
   const [currentPage, setPage] = useState(1);
   const [products, setProducts] = useState({ num_pages: 1, products: [] });
@@ -60,6 +34,7 @@ function Products(props) {
       });
   }, [props.filter, currentPage, props.onlyUser, props.loggedIn]);
 
+  // funksjoner for å oppdatere hvilken side man er på
   const changeBack = () => {
     setPage(currentPage - 1);
     console.log(currentPage);
@@ -120,6 +95,7 @@ function Products(props) {
           alignItems: "center",
         }}
       >
+        {/* kanpper for å endre side */}
         <Button
           style={{ width: "50%" }}
           disabled={currentPage <= 1}

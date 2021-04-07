@@ -26,7 +26,7 @@ function Product(props) {
     flex: 1,
     backgroundColor: "lightgrey",
   };
-
+  // et Card-element med annonsens bilde, navn, pris og kategori
   return (
     <Card className={classes.root} style={props.product.sold ? styling : null}>
       {props.product.img ? (
@@ -68,11 +68,8 @@ function Product(props) {
             {props.product.category}
           </Typography>
         </div>
-        {/* <br />
-        <Typography variant="h2" color="textSecondary">
-          {props.product.description}
-        </Typography> */}
       </CardContent>
+      {/* knapp for å se ytterligere info om annonsen */}
       <CardActions disableSpacing className={classes.cardActions}>
         <Link to={`/products/${props.product.id}`}>
           <Button
@@ -84,8 +81,6 @@ function Product(props) {
             Mer info
           </Button>
         </Link>
-        {/* En knapp for å legge produkt til i favoritter - kan jobbes på med onClick osv. */}
-        {/* Kan kommenteres ut når vi har opprettet favoritter hos bruker */}
         <HeartButton product={props.product} />
       </CardActions>
     </Card>

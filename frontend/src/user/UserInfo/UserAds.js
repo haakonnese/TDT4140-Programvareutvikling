@@ -8,7 +8,7 @@ function UserAds() {
   const [products, setProducts] = useState([]);
 
   useEffect(() => {
-    // { token: localStorage.getItem("token") }
+    // henter ut produktene til den innloggede brukeren
     GetData("listing/listings", "mylistings")
       .then((result) => {
         if (result.length > 0) {
@@ -24,6 +24,7 @@ function UserAds() {
         console.log("Feil", error);
       });
   }, []);
+  // grid med brukerens produkter
   return (
     <main>
       <Grid
@@ -35,13 +36,11 @@ function UserAds() {
           marginTop: 20,
         }}
       >
-        {products
-          // .filter((product) => product.created_by_user === 1)
-          .map((product) => (
-            <Grid item key={product.id} xs={12} sm={6} md={4} lg={3}>
-              <UserAd product={product} />
-            </Grid>
-          ))}
+        {products.map((product) => (
+          <Grid item key={product.id} xs={12} sm={6} md={4} lg={3}>
+            <UserAd product={product} />
+          </Grid>
+        ))}
       </Grid>
     </main>
   );
