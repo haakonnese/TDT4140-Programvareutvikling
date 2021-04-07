@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Grid } from "@material-ui/core";
+import { Grid, Typography } from "@material-ui/core";
 import { GetData } from "../../service/FetchData";
 import UserAd from "./UserAd";
 
@@ -36,6 +36,11 @@ function UserAds() {
           marginTop: 20,
         }}
       >
+        {products.length === 0 ? (
+          <Grid item xs={12}>
+            <Typography>Du har ikke opprettet noen annonser enda</Typography>
+          </Grid>
+        ) : null}
         {products.map((product) => (
           <Grid item key={product.id} xs={12} sm={6} md={4} lg={3}>
             <UserAd product={product} />
