@@ -9,13 +9,9 @@ import {
   Container,
 } from "@material-ui/core";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
-// import { Autocomplete } from "@material-ui/lab";
-// import PostAdd from "@material-ui/icons/PostAdd";
 import useStyles from "../../standardComponents/styles";
 import InputTextField from "../../standardComponents/InputTextField";
 import { useHistory } from "react-router-dom";
-// import Registration from "../../user/Registration";
-// import { phoneError } from "./errorMessages";
 import { emailError, toYoungError, toOldError } from "../errorMessages";
 import { connect } from "react-redux";
 
@@ -33,12 +29,12 @@ function EditUser() {
     city: "",
   });
 
+  // hook
   const [error, setError] = useState({ errorMessage: "", errorType: "" });
 
   useEffect(() => {
     GetData("user/user")
       .then((result) => {
-        // console.log(result);
         if (result) {
           setDetails(result);
         } else {
@@ -73,7 +69,7 @@ function EditUser() {
         });
     }
   };
-
+  // skjema for å endre navn, tlfnr, by og fødelsdato
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
@@ -108,20 +104,6 @@ function EditUser() {
             details={details}
             setDetails={setDetails}
           />
-          {/* <InputTextField
-            value="username"
-            user={true}
-            type="email"
-            id="username"
-            label="E-post"
-            errorMessage={error.errorMessage}
-            errorType={error.errorType}
-            displayHelper={emailError}
-            autoComplete="email"
-            val={details.user.username}
-            details={details}
-            setDetails={setDetails}
-          /> */}
           <InputTextField
             value="phone"
             user={false}
