@@ -15,7 +15,6 @@ import useStyles from "../standardComponents/styles";
 import InputTextField from "../standardComponents/InputTextField";
 import { useHistory } from "react-router-dom";
 import { connect } from "react-redux";
-// import { phoneError } from "./errorMessages";
 
 // const categories = [
 //   { type: "Kjøretøy" },
@@ -44,6 +43,8 @@ function RegisterAd(props) {
     }
   }, []);
   const [preview, setPreview] = useState(false);
+
+  // forhåndsvis bilde
   function previewImage(e) {
     if (e.target.files[0]) {
       const reader = new FileReader();
@@ -62,6 +63,7 @@ function RegisterAd(props) {
   const handleSubmit = (e) => {
     e.preventDefault();
     let allow = true;
+    // sjekk om nødvenidge felter er utfylt
     for (const key in details) {
       if (
         ["price", "name", "city", "category", "description", "img"].includes(
@@ -73,6 +75,8 @@ function RegisterAd(props) {
       }
     }
     if (allow) {
+      // send formdata ettersom bilde også skal sendes med
+      // legg inn all info som bruker har gitt i formdataen
       const formData = new FormData();
       if (!(details.img instanceof String)) {
         formData.append("img", details.img);
@@ -94,7 +98,7 @@ function RegisterAd(props) {
       PostPutData(type, formData, "multipart/form-data", method)
         .then((result) => {
           if (result) {
-            history.push("/");
+            history.replace("/");
           }
         })
         .catch((e) => console.log(e));

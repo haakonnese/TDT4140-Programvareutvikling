@@ -35,6 +35,7 @@ class AdsTest(unittest.TestCase):
         os.remove(os.path.dirname(__file__) + "/../media/product/test.jpg")
         os.remove(os.path.dirname(__file__) + "/../media/product/test1.jpg")
         os.remove(os.path.dirname(__file__) + "/../media/product/test2.jpg")
+        os.remove(os.path.dirname(__file__) + "/../media/product/test3.jpg")
         # Sletter kategorien brukt i testene
         category1 = Category.objects.get(category="test")
         category1.delete()
@@ -57,6 +58,7 @@ class AdsTest(unittest.TestCase):
             "city": "Trondheim",
             "img": open(os.path.dirname(__file__) + "/../media/test/test.jpg", "rb"),
             "category": "Test",
+            "sold": False,
         }
         self.client.credentials(HTTP_AUTHORIZATION="Token " + str(Token.objects.get(user=user1)))
 
@@ -74,6 +76,7 @@ class AdsTest(unittest.TestCase):
         self.assertEqual(ad1.description, d["description"])
         self.assertEqual(ad1.price, d["price"]),
         self.assertEqual(ad1.category, Category.objects.get(category=d["category"]))
+        self.assertEqual(ad1.sold, d["sold"])
 
         # Favoriser en annonse
         response = self.client.post("/api/listing/favorite/save", {"ad": ad1.id})
@@ -105,8 +108,9 @@ class AdsTest(unittest.TestCase):
             "description": "Endret annonse",
             "price": 20,
             "city": "Oslo",
-            "img": open(os.path.dirname(__file__) + "/../media/test/test2.jpg", "rb"),
+            "img": open(os.path.dirname(__file__) + "/../media/test/test3.jpg", "rb"),
             "category": "Test",
+            "sold": False,
         }
         ad_id = ad1.id.__str__()
 
@@ -116,7 +120,8 @@ class AdsTest(unittest.TestCase):
         ad2 = response2.data
         self.assertEqual(ad2["name"], d["name"])
         self.assertEqual(ad2["description"], d["description"])
-        self.assertEqual(ad2["price"], d["price"]),
+        self.assertEqual(ad2["price"], d["price"])
+        self.assertEqual(ad2["sold"], d["sold"])
 
         # endre annonse
         response3 = self.client.put("/api/listing/listing/" + ad_id + "/edit", ny)
@@ -127,6 +132,15 @@ class AdsTest(unittest.TestCase):
         self.assertEqual(ny_ad.price, ny["price"])
         self.assertEqual(ny_ad.city, ny["city"])
         self.assertEqual(ny_ad.category, Category.objects.get(category=ny["category"]))
+        self.assertEqual(ny_ad.sold, ny["sold"])
+
+        # endre sold
+        solgt = {"id": ad_id, "sold": True}
+        response5 = self.client.post("/api/listing/sold", solgt)
+        self.assertEqual(response5.status_code, 200)
+        ny_ad2 = Ad.objects.get(name="Annonsetest")
+        self.assertEqual(ny_ad2.sold, solgt["sold"])
+        self.assertIsNotNone(ny_ad2.sold_date)
 
         # slett annonse
         response4 = self.client.delete("/api/listing/listing/" + ad_id + "/delete")

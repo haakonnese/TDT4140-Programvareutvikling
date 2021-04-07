@@ -7,6 +7,8 @@ import { act } from "react-dom/test-utils";
 import userEvent from "@testing-library/user-event";
 import { BrowserRouter as Router } from "react-router-dom";
 import GiveRating from "./GiveRating";
+import { Provider } from "react-redux";
+import store from "../reducers";
 
 jest.mock("../service/FetchData", () => ({
   GetData: jest.fn(),
@@ -26,6 +28,10 @@ beforeEach(async () => {
     sellerTlf: 98765432,
     rating: null,
   };
+  store.dispatch({
+    type: "UPDATE_LOGGED_IN",
+    payload: true,
+  });
 });
 
 afterEach(() => {
@@ -40,9 +46,11 @@ describe("GiveRating component", () => {
     GetData.mockImplementation(() => Promise.resolve(products));
     await act(async () => {
       ReactDOM.render(
-        <Router>
-          <GiveRating match={{ params: { id: 1 } }} loggedIn={true} />
-        </Router>,
+        <Provider store={store}>
+          <Router>
+            <GiveRating match={{ params: { id: 1 } }} loggedIn={true} />
+          </Router>
+        </Provider>,
         container
       );
     });
@@ -56,9 +64,11 @@ describe("GiveRating component", () => {
     GetData.mockImplementation(() => Promise.resolve(products));
     await act(async () => {
       ReactDOM.render(
-        <Router>
-          <GiveRating match={{ params: { id: 1 } }} loggedIn={true} />
-        </Router>,
+        <Provider store={store}>
+          <Router>
+            <GiveRating match={{ params: { id: 1 } }} loggedIn={true} />
+          </Router>
+        </Provider>,
         container
       );
     });
@@ -73,9 +83,11 @@ describe("GiveRating component", () => {
     GetData.mockImplementation(() => Promise.resolve(products));
     await act(async () => {
       ReactDOM.render(
-        <Router>
-          <GiveRating match={{ params: { id: 1 } }} loggedIn={true} />
-        </Router>,
+        <Provider store={store}>
+          <Router>
+            <GiveRating match={{ params: { id: 1 } }} loggedIn={true} />
+          </Router>
+        </Provider>,
         container
       );
     });

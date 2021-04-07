@@ -8,13 +8,10 @@ import Copyright from "./service/Copyright";
 const useStyles = makeStyles((theme) => ({
   footer: {
     backgroundColor: theme.palette.background.paper,
-    // marginTop: theme.spacing(8),
     padding: theme.spacing(6, 0),
     bottom: 0,
     position: "absolute",
     width: "100%",
-    // marginTop: "100%" /* Footer height */,
-    // position: absolute,
   },
 }));
 

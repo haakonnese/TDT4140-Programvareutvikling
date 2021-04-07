@@ -6,6 +6,7 @@ import {
   CardActions,
   Typography,
   Button,
+  Container,
 } from "@material-ui/core";
 // favourite-button to add product to favourite-list
 import useStyles from "./styles";
@@ -21,16 +22,41 @@ Product.propTypes = {
 function Product(props) {
   // css for jsx
   const classes = useStyles();
+  const styling = {
+    flex: 1,
+    backgroundColor: "lightgrey",
+  };
   // et Card-element med annonsens bilde, navn, pris og kategori
   return (
-    <Card className={classes.root}>
+    <Card className={classes.root} style={props.product.sold ? styling : null}>
       {props.product.img ? (
+        <div style={{ position: "relative" }}>
+          <Container
+            style={{
+              position: "absolute",
+              top: "25%",
+              zIndex: 100,
+              right: 0,
+            }}
+          >
+            <Typography align="center" color="secondary" variant="h3">
+              {props.product.sold ? "Solgt" : ""}
+            </Typography>
+          </Container>
+          <CardMedia
+            className={classes.media}
+            image={props.product.img}
+            title={props.product.name}
+          ></CardMedia>
+        </div>
+      ) : null}
+      {/* {props.product.img ? (
         <CardMedia
           className={classes.media}
           image={props.product.img}
           title={props.product.name}
         />
-      ) : null}
+      ) : null} */}
       <CardContent>
         <div className={classes.cardContent}>
           <Typography gutterBottom>{props.product.name}</Typography>

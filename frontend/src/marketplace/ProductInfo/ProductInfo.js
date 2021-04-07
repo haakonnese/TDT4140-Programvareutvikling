@@ -6,6 +6,7 @@ import {
   CardContent,
   Typography,
   Button,
+  Link as MUILink,
   // IconButton,
 } from "@material-ui/core";
 import PropTypes from "prop-types";
@@ -77,7 +78,12 @@ function ProductInfo(props) {
               <div>
                 <Typography variant="subtitle1">By: {product.city}</Typography>
                 <Typography variant="subtitle1">
-                  Selger: {product.first_name} {product.last_name}
+                  Selger:{" "}
+                  <Link to={`/bruker/${product.created_by_user}`}>
+                    <MUILink variant="body1" component="button">
+                      {product.first_name} {product.last_name}
+                    </MUILink>
+                  </Link>
                 </Typography>
                 <Typography variant="subtitle1">
                   Tlf: {product.phone}

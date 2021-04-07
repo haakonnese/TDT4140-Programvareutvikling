@@ -11,7 +11,7 @@ class RatingSerializer(serializers.ModelSerializer):
         fields = ("stars", "description", "written_by_user")
 
     def create(self, validated_data):
-        """Create rating with validated data"""
+        """Lager en rating med validert data"""
         profile_data = validated_data.pop("written_by_user")
         profile = Profile.objects.get(pk=profile_data)
         rating, created = Rating.objects.update_or_create(
