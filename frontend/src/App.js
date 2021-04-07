@@ -18,6 +18,7 @@ import GiveRating from "./rating/GiveRating";
 import SeeRating from "./rating/SeeRating";
 import store from "./reducers";
 import EditPassword from "./user/UserInfo/EditPassword";
+import Error from "./Error";
 
 function App() {
   const [categoryError, setCategoryError] = useState(false);
@@ -83,6 +84,8 @@ function App() {
             <Route exact path="/bruker/:userId" component={SeeRating}></Route>
             <Route exact path="/products/:id" component={ProductInfo} />
             <Route exact path="/rating/:id" component={GiveRating} />
+            <Route exact path="/404" component={Error} />
+            <Route path="/" component={Error} />
           </Switch>
         </div>
         <Footer title="SellPoint" description="" />
