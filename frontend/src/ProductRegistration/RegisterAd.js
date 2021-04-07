@@ -15,7 +15,6 @@ import useStyles from "../standardComponents/styles";
 import InputTextField from "../standardComponents/InputTextField";
 import { useHistory } from "react-router-dom";
 import { connect } from "react-redux";
-// import { phoneError } from "./errorMessages";
 
 // const categories = [
 //   { type: "Kjøretøy" },
@@ -39,6 +38,8 @@ function RegisterAd(props) {
   });
 
   const [preview, setPreview] = useState(false);
+
+  // forhåndsvis bilde
   function previewImage(e) {
     if (e.target.files[0]) {
       const reader = new FileReader();
@@ -56,15 +57,21 @@ function RegisterAd(props) {
   // handle submit from button
   const handleSubmit = (e) => {
     e.preventDefault();
-    // error-handeling
     let allow = true;
-    // send registration to database and then do something with the result
+    // sjekk om nødvenidge felter er utfylt
     for (const key in details) {
-      if (details[key] === "" || details[key] == null) {
+      if (
+        ["price", "name", "city", "category", "description", "img"].includes(
+          key
+        ) &&
+        (details[key] === "" || details[key] === null)
+      ) {
         allow = false;
       }
     }
     if (allow) {
+      // send formdata ettersom bilde også skal sendes med
+      // legg inn all info som bruker har gitt i formdataen
       const formData = new FormData();
       formData.append("img", details.img);
       formData.append("category", details.category);
@@ -72,11 +79,19 @@ function RegisterAd(props) {
       formData.append("name", details.name);
       formData.append("price", details.price);
       formData.append("city", details.city);
-      // formData.append("created_by_user", "");
-      PostData("listing/register", formData, "multipart/form-data")
+      formData.append("created_by_user", "");
+      let method = "POST";
+      let type = "listing/register";
+      if (props.edit) {
+        formData.append("id", details.id);
+        method = "PUT";
+        type = "listing/listing/" + details.id + "/edit";
+      }
+
+      PostPutData(type, formData, "multipart/form-data", method)
         .then((result) => {
           if (result) {
-            history.push("/");
+            history.replace("/");
           }
         })
         .catch((e) => console.log(e));
@@ -220,6 +235,6 @@ RegisterAd.propTypes = {
 };
 
 const mapStateToProps = (state) => {
-  return { categories: state.categories };
+  return { categories: state.categories, loggedIn: state.loggedIn };
 };
 export default connect(mapStateToProps)(RegisterAd);

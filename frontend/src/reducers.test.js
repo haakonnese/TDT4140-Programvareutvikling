@@ -2,11 +2,7 @@ import store, { filter } from "./reducers";
 
 describe("category reducer", () => {
   it("should return the initial state", () => {
-    expect(store.getState().categories).toEqual([
-      {
-        category: "",
-      },
-    ]);
+    expect(store.getState().categories).toEqual([]);
   });
 
   it("should handle UPDATE_CATEGORY", () => {

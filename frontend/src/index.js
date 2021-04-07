@@ -2,12 +2,6 @@ import React from "react";
 import ReactDOM from "react-dom";
 
 import App from "./App";
-// import Header from "./Header";
-// import React from "react";
-// import "./App.css";
-
-// import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-// import Footer from "./Footer";
 
 ReactDOM.render(
   <React.Fragment>

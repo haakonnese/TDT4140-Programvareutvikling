@@ -11,11 +11,13 @@ import Typography from "@material-ui/core/Typography";
 import useStyles from "../standardComponents/styles";
 import Container from "@material-ui/core/Container";
 import PropTypes from "prop-types";
+import { connect } from "react-redux";
+import store from "./../reducers";
 
-export default function LogIn(props) {
+function LogIn(props) {
   // css for jsx
   const classes = useStyles();
-  const { changeLoggedIn, loggedIn } = props;
+  const { loggedIn } = props;
   // hooks
   const [details, setDetails] = useState({ username: "", password: "" });
   const [wrongPassword, setWrongPassword] = useState(false);
@@ -23,7 +25,7 @@ export default function LogIn(props) {
   // check if logged in
   useEffect(() => {
     if (loggedIn) {
-      history.push("/");
+      history.replace("/");
     }
   }, []);
 
@@ -36,14 +38,16 @@ export default function LogIn(props) {
       .then((result) => {
         if (result.token) {
           localStorage.setItem("token", result.token);
-          changeLoggedIn(true);
+          store.dispatch({
+            type: "UPDATE_LOGGED_IN",
+            payload: localStorage.getItem("token") != null,
+          });
           history.push("/");
         } else {
           setWrongPassword(true);
         }
       })
       .catch(() => {
-        // console.log(error);
         setWrongPassword(true);
       });
   };
@@ -138,6 +142,10 @@ export default function LogIn(props) {
 }
 
 LogIn.propTypes = {
-  changeLoggedIn: PropTypes.func,
   loggedIn: PropTypes.bool,
 };
+
+const mapStateToProps = (state) => {
+  return { loggedIn: state.loggedIn };
+};
+export default connect(mapStateToProps)(LogIn);

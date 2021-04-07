@@ -6,14 +6,13 @@ import {
   CardActions,
   Typography,
   Button,
-  CircularProgress,
-  // IconButton,
+  Container,
 } from "@material-ui/core";
 // favourite-button to add product to favourite-list
-// import FavoriteBorderIcon from "@material-ui/icons/FavoriteBorder";
 import useStyles from "./styles";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
+import HeartButton from "../../HeartButton";
 
 Product.propTypes = {
   product: PropTypes.object.isRequired,
@@ -23,35 +22,54 @@ Product.propTypes = {
 function Product(props) {
   // css for jsx
   const classes = useStyles();
+  const styling = {
+    flex: 1,
+    backgroundColor: "lightgrey",
+  };
 
   return (
-    <Card className={classes.root}>
+    <Card className={classes.root} style={props.product.sold ? styling : null}>
       {props.product.img ? (
+        <div style={{ position: "relative" }}>
+          <Container
+            style={{
+              position: "absolute",
+              top: "25%",
+              zIndex: 100,
+              right: 0,
+            }}
+          >
+            <Typography align="center" color="secondary" variant="h3">
+              {props.product.sold ? "Solgt" : ""}
+            </Typography>
+          </Container>
+          <CardMedia
+            className={classes.media}
+            image={props.product.img}
+            title={props.product.name}
+          ></CardMedia>
+        </div>
+      ) : null}
+      {/* {props.product.img ? (
         <CardMedia
           className={classes.media}
           image={props.product.img}
           title={props.product.name}
         />
-      ) : (
-        <CircularProgress />
-      )}
+      ) : null} */}
       <CardContent>
         <div className={classes.cardContent}>
-          <Typography varient="h5" gutterBottom>
-            {props.product.name}
-          </Typography>
-          <Typography varient="h5">{props.product.price}kr</Typography>
+          <Typography gutterBottom>{props.product.name}</Typography>
+          <Typography>{props.product.price}kr</Typography>
         </div>
         <div className={classes.cardContent}>
-          <Typography varient="h2" color="textSecondary">
-            {props.product.city}
-          </Typography>
-          <Typography varient="h2" color="textSecondary">
+          <Typography color="textSecondary">{props.product.city}</Typography>
+          <Typography color="textSecondary">
             {props.product.category}
           </Typography>
         </div>
         {/* <br />
-        <Typography varient="h2" color="textSecondary">
+        <Typography variant="h2" color="textSecondary">
           {props.product.description}
         </Typography> */}
       </CardContent>
@@ -68,9 +86,7 @@ function Product(props) {
         </Link>
         {/* En knapp for å legge produkt til i favoritter - kan jobbes på med onClick osv. */}
         {/* Kan kommenteres ut når vi har opprettet favoritter hos bruker */}
-        {/* <IconButton className={classes.iconButton} aria-label="Favoriser">
-          <FavoriteBorderIcon />
-        </IconButton> */}
+        <HeartButton product={props.product} />
       </CardActions>
     </Card>
   );

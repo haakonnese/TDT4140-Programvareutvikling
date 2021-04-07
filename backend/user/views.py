@@ -11,7 +11,13 @@ from django.contrib.auth.models import User
 
 @api_view(["POST"])
 def register_profile(request):
-    """Funksjon that creates a new profile."""
+    """
+    Funksjon som lager en ny profil og
+    returnerer en tilhørende token.
+    Output format: {
+    "token": "..."
+    }
+    """
     if request.method == "POST":
         # creates a profileserializer
         serializer = ProfileSerializer(data=request.data)
@@ -25,10 +31,23 @@ def register_profile(request):
 
 @api_view(["GET"])
 def get_profile(request):
-    """Returns the profile of the user currently logged on."""
+    """Returnerer profilen til brukeren som er innlogget.
+    Output format: {
+    "user": {
+        "username": "test@gmail.com",
+        "password": "...",
+        "first_name": "Test",
+        "last_name": "Tester"
+    },
+    "city": "Trondheim",
+    "phone": "22222222",
+    "birth_year": "2000"
+    }
+    """
     response = Response()
     if request.user.is_anonymous:
         return Response(status=status.HTTP_403_FORBIDDEN)
+    print(request.user)
     response.data = ProfileSerializer(request.user.profile).data
     response.status_code = status.HTTP_200_OK
     return response
@@ -36,13 +55,14 @@ def get_profile(request):
 
 @receiver(post_save, sender=settings.AUTH_USER_MODEL)
 def create_auth_token(sender, instance=None, created=False, **kwargs):
+    """Lager en token tilhørende instansen"""
     if created:
         Token.objects.create(user=instance)
 
 
 @api_view(["PUT"])
 def edit_profile(request):
-    """Edits the profile currently logged on."""
+    """Endrer profilen til brukeren som er innlogget."""
     response = Response()
     data = request.data
     if request.user.is_anonymous:
@@ -67,7 +87,7 @@ def edit_profile(request):
 
 @api_view(["PUT"])
 def edit_password(request):
-    """Changes the password of the user currently logged on."""
+    """Endrer passordet til brukeren som er innlogget."""
     response = Response()
     if request.user.is_anonymous:
         response.status_code = status.HTTP_403_FORBIDDEN

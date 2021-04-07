@@ -21,11 +21,15 @@ beforeEach(() => {
     type: "UPDATE_CATEGORY",
     payload: [{ category: "Annet" }],
   });
+  store.dispatch({
+    type: "UPDATE_LOGGED_IN",
+    payload: true,
+  });
   act(() => {
     ReactDOM.render(
       <Provider store={store}>
         <Router>
-          <RegisterAd loggedIn={true} />
+          <RegisterAd />
         </Router>
       </Provider>,
       container

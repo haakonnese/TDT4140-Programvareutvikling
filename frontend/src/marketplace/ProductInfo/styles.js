@@ -19,7 +19,7 @@ export default makeStyles((theme) => ({
     justifyContent: "space-between",
   },
   sellerInfo: {
-    maxWidth: "100%",
+    display: "flex",
     justifyContent: "space-between",
   },
 }));
