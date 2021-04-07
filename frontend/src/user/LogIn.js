@@ -38,6 +38,7 @@ function LogIn(props) {
       .then((result) => {
         if (result.token) {
           localStorage.setItem("token", result.token);
+          localStorage.setItem("userId", result.user_id);
           store.dispatch({
             type: "UPDATE_LOGGED_IN",
             payload: localStorage.getItem("token") != null,

@@ -34,7 +34,10 @@ function ProductInfo(props) {
   // hooks
   const history = useHistory();
   const [product, setProduct] = useState();
-
+  const styling = {
+    flex: 1,
+    backgroundColor: "lightgrey",
+  };
   // "match" matcher gitt id med id fra url
   useEffect(() => {
     GetData("listing/listing", props.match.params.id)
@@ -95,7 +98,10 @@ function ProductInfo(props) {
                   <HeartButton product={product} />
                 </div>
                 <div>
-                  {product.rating == null && props.loggedIn ? (
+                  {product.rating == null &&
+                  props.loggedIn &&
+                  product.created_by_user !==
+                    Number(localStorage.getItem("userId")) ? (
                     <Link align="right" to={`/rating/${product.id}`}>
                       <Button
                         className={classes.infoButton}
@@ -128,8 +134,9 @@ ProductInfo.propTypes = {
   match: PropTypes.object.isRequired,
   errorType: PropTypes.string,
   loggedIn: PropTypes.bool.isRequired,
+  userId: PropTypes.number,
 };
 const mapStateToProps = (state) => {
-  return { loggedIn: state.loggedIn };
+  return { loggedIn: state.loggedIn, userId: state.userId };
 };
 export default connect(mapStateToProps)(ProductInfo);

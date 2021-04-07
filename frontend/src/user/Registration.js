@@ -57,6 +57,7 @@ function Registation(props) {
           if (result.token) {
             // store token and set logged inn to true via reducer
             localStorage.setItem("token", result.token);
+            localStorage.setItem("userId", result.user_id);
             store.dispatch({
               type: "UPDATE_LOGGED_IN",
               payload: localStorage.getItem("token") != null,

@@ -37,6 +37,7 @@ function loggedInReducer(state = false, action = "DEFAULT_LOGGED_IN") {
       // fjern token dersom man logger ut
       if (action.payload === false) {
         localStorage.removeItem("token");
+        localStorage.removeItem("userId");
       }
       return action.payload;
     default:
