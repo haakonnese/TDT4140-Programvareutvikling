@@ -76,7 +76,10 @@ def get_rating(request, id):
             d = get_info_rating(rating, ad)
             sum_ += rating.stars
             ratings.append(d)
-    data["avg_rating"] = round(sum_ / len(ratings), 2)
+    if len(ratings) > 0:
+        data["avg_rating"] = round(sum_ / len(ratings), 2)
+    else:
+        data["avg_rating"] = "Ingen tilbakemeldinger enda"
     data["ratings"] = ratings
     response.data = data
     response.status = status.HTTP_200_OK
