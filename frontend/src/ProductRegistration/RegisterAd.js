@@ -1,5 +1,5 @@
 import { React, useState } from "react";
-import { PostData } from "../service/FetchData";
+import { PostPutData } from "../service/FetchData";
 import PropTypes from "prop-types";
 import {
   Avatar,
