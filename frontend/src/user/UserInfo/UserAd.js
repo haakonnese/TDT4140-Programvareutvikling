@@ -27,14 +27,13 @@ function UserAd(props) {
   const classes = useStyles();
   // sets if a product is sold or not
   const [details, setDetails] = useState(props.product.sold);
-  console.log(details);
   // manages click on solgt/merk solgt button
   const handleClick = (e) => {
     e.preventDefault();
-    setDetails(!details);
     // sends id and sold-bool-value to backend
-    PostPutData("listing/sold", { id: props.product.id, sold: !details });
-    console.log(e);
+    PostPutData("listing/sold", { id: props.product.id, sold: !details })
+      .then(() => setDetails(!details))
+      .catch(() => console.log("Feil"));
   };
   const styling = {
     flex: 1,
@@ -53,7 +52,15 @@ function UserAd(props) {
               right: 0,
             }}
           >
-            <Typography align="center" color="secondary" variant="h3">
+            <Typography
+              style={{
+                textShadow:
+                  "-2px 0 black, 0 2px black, 2px 0 black, 0 -2px black",
+              }}
+              align="center"
+              color="secondary"
+              variant="h3"
+            >
               {details ? "Solgt" : ""}
             </Typography>
           </Container>

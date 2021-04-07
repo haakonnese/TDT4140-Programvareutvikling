@@ -34,7 +34,10 @@ function ProductInfo(props) {
   // hooks
   const history = useHistory();
   const [product, setProduct] = useState();
-
+  const styling = {
+    flex: 1,
+    backgroundColor: "lightgrey",
+  };
   // "match" matcher gitt id med id fra url
   useEffect(() => {
     GetData("listing/listing", props.match.params.id)
@@ -58,13 +61,42 @@ function ProductInfo(props) {
   return (
     <main className={classes.main}>
       {product ? (
-        <Card key={product.id} className={classes.root} justify="center">
+        <Card
+          key={product.id}
+          style={product.sold ? styling : null}
+          className={classes.root}
+          justify="center"
+        >
           {product.img ? (
-            <CardMedia
-              className={classes.media}
-              image={product.img}
-              title={product.name}
-            />
+            <div style={{ position: "relative" }}>
+              <div
+                style={{
+                  position: "absolute",
+                  top: "25%",
+                  zIndex: 100,
+                  right: 0,
+                  width: "100%",
+                }}
+              >
+                <Typography
+                  style={{
+                    textShadow:
+                      "-2px 0 black, 0 2px black, 2px 0 black, 0 -2px black",
+                  }}
+                  align="center"
+                  color="secondary"
+                  variant="h3"
+                >
+                  {product.sold ? "Solgt" : ""}
+                </Typography>
+              </div>
+              <CardMedia
+                className={classes.media}
+                image={product.img}
+                title={product.name}
+                // style={product.sold ? { filter: "grayscale(100%)" } : null}
+              ></CardMedia>
+            </div>
           ) : null}
           <CardContent>
             <div className={classes.cardContent}>
@@ -95,7 +127,10 @@ function ProductInfo(props) {
                   <HeartButton product={product} />
                 </div>
                 <div>
-                  {product.rating == null && props.loggedIn ? (
+                  {product.rating == null &&
+                  props.loggedIn &&
+                  product.created_by_user !==
+                    Number(localStorage.getItem("userId")) ? (
                     <Link align="right" to={`/rating/${product.id}`}>
                       <Button
                         className={classes.infoButton}
@@ -128,8 +163,9 @@ ProductInfo.propTypes = {
   match: PropTypes.object.isRequired,
   errorType: PropTypes.string,
   loggedIn: PropTypes.bool.isRequired,
+  userId: PropTypes.number,
 };
 const mapStateToProps = (state) => {
-  return { loggedIn: state.loggedIn };
+  return { loggedIn: state.loggedIn, userId: state.userId };
 };
 export default connect(mapStateToProps)(ProductInfo);

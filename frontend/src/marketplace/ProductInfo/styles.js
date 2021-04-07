@@ -11,8 +11,8 @@ export default makeStyles((theme) => ({
     width: "100%",
   },
   media: {
-    height: "50px",
-    paddingTop: "50%",
+    height: "30vw",
+    // paddingTop: "50%",
   },
   cardContent: {
     display: "flex",

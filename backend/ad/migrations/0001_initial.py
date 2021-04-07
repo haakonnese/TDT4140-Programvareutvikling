@@ -9,46 +9,46 @@ class Migration(migrations.Migration):
     initial = True
 
     dependencies = [
-        ('user', '0001_initial'),
+        ("user", "0001_initial"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='Ad',
+            name="Ad",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('pub_date', models.DateTimeField(auto_now=True)),
-                ('name', models.CharField(max_length=100)),
-                ('description', models.TextField()),
-                ('price', models.PositiveIntegerField()),
-                ('img', models.ImageField(upload_to='product/')),
-                ('city', models.CharField(default='Ikke oppgitt', max_length=100)),
-                ('sold', models.BooleanField(default=False)),
-                ('sold_date', models.DateTimeField(null=True)),
+                ("id", models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name="ID")),
+                ("pub_date", models.DateTimeField(auto_now=True)),
+                ("name", models.CharField(max_length=100)),
+                ("description", models.TextField()),
+                ("price", models.PositiveIntegerField()),
+                ("img", models.ImageField(upload_to="product/")),
+                ("city", models.CharField(default="Ikke oppgitt", max_length=100)),
+                ("sold", models.BooleanField(default=False)),
+                ("sold_date", models.DateTimeField(null=True)),
             ],
         ),
         migrations.CreateModel(
-            name='Category',
+            name="Category",
             fields=[
-                ('category', models.CharField(max_length=40, primary_key=True, serialize=False)),
+                ("category", models.CharField(max_length=40, primary_key=True, serialize=False)),
             ],
         ),
         migrations.CreateModel(
-            name='Favorite',
+            name="Favorite",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('ad', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='ad.ad')),
-                ('profile', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='user.profile')),
+                ("id", models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name="ID")),
+                ("ad", models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to="ad.ad")),
+                ("profile", models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to="user.profile")),
             ],
         ),
         migrations.AddField(
-            model_name='ad',
-            name='category',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='ad.category'),
+            model_name="ad",
+            name="category",
+            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to="ad.category"),
         ),
         migrations.AddField(
-            model_name='ad',
-            name='created_by_user',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='user.profile'),
+            model_name="ad",
+            name="created_by_user",
+            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to="user.profile"),
         ),
     ]

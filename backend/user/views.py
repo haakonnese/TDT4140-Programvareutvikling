@@ -7,6 +7,18 @@ from django.dispatch import receiver
 from django.conf import settings
 from rest_framework import status
 from django.contrib.auth.models import User
+from rest_framework.authtoken.views import ObtainAuthToken
+from django.core.exceptions import ObjectDoesNotExist
+
+
+class LogIn(ObtainAuthToken):
+    def post(self, request, *args, **kwargs):
+        response = super(LogIn, self).post(request, *args, **kwargs)
+        try:
+            token = Token.objects.get(key=response.data["token"])
+            return Response({"token": token.key, "user_id": token.user_id})
+        except ObjectDoesNotExist:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
 
 
 @api_view(["POST"])
@@ -25,7 +37,7 @@ def register_profile(request):
         if serializer.is_valid(raise_exception=ValueError):
             user = serializer.create(validated_data=request.data)
             token = Token.objects.get(user=user.user)
-            return Response({"token": token.key}, status=status.HTTP_201_CREATED)
+            return Response({"token": token.key, "user_id": user.user.id}, status=status.HTTP_201_CREATED)
     return Response(status=status.HTTP_400_BAD_REQUEST)
 
 

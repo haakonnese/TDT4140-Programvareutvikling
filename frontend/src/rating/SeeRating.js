@@ -56,7 +56,7 @@ function SeeRating({ match }) {
         }
       })
       .catch(() => history.replace("/404"));
-  }, []);
+  }, [match.params.userId]);
 
   return (
     <div>

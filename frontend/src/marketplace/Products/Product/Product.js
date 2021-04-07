@@ -39,7 +39,15 @@ function Product(props) {
               right: 0,
             }}
           >
-            <Typography align="center" color="secondary" variant="h3">
+            <Typography
+              style={{
+                textShadow:
+                  "-2px 0 black, 0 2px black, 2px 0 black, 0 -2px black",
+              }}
+              align="center"
+              color="secondary"
+              variant="h3"
+            >
               {props.product.sold ? "Solgt" : ""}
             </Typography>
           </Container>

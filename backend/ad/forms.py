@@ -7,5 +7,5 @@ class ImageForm(forms.ModelForm):
 
     class Meta:
         model = Ad
-        fields = ("created_by_user", "name", "description", "price", "city", "img", "category", "sold")
+        fields = ("created_by_user", "name", "description", "price", "city", "img", "category")
         # fields = ('image',)

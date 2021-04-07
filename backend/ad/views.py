@@ -39,7 +39,9 @@ def view_ads(request):
         profile = Profile.objects.get(user=request.user)
         favorites = Favorite.objects.filter(profile=profile)
         arguments["id__in"] = favorites.values("ad")
-    ads = Ad.objects.filter(**arguments).order_by("-pub_date").exclude(sold_date__lt=(today - five_days))
+        ads = Ad.objects.filter(**arguments).order_by("-pub_date")
+    else:
+        ads = Ad.objects.filter(**arguments).exclude(sold_date__lt=(today - five_days)).order_by("-pub_date")
     if not request.user.is_anonymous:
         profile = Profile.objects.get(user=request.user)
     else:

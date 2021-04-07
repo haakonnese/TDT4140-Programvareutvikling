@@ -9,18 +9,18 @@ class Migration(migrations.Migration):
     initial = True
 
     dependencies = [
-        ('ad', '0001_initial'),
-        ('rating', '0001_initial'),
+        ("ad", "0001_initial"),
+        ("rating", "0001_initial"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='ad',
-            name='rating',
-            field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, to='rating.rating'),
+            model_name="ad",
+            name="rating",
+            field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, to="rating.rating"),
         ),
         migrations.AlterUniqueTogether(
-            name='favorite',
-            unique_together={('profile', 'ad')},
+            name="favorite",
+            unique_together={("profile", "ad")},
         ),
     ]
