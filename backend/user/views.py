@@ -8,16 +8,18 @@ from django.conf import settings
 from rest_framework import status
 from django.contrib.auth.models import User
 from rest_framework.authtoken.views import ObtainAuthToken
-from rest_framework.authtoken.models import Token
+from django.core.exceptions import ObjectDoesNotExist
+
 
 class LogIn(ObtainAuthToken):
     def post(self, request, *args, **kwargs):
         response = super(LogIn, self).post(request, *args, **kwargs)
         try:
-            token = Token.objects.get(key=response.data['token'])
-            return Response({'token': token.key, 'user_id': token.user_id})
-        except:
+            token = Token.objects.get(key=response.data["token"])
+            return Response({"token": token.key, "user_id": token.user_id})
+        except ObjectDoesNotExist:
             return Response(status=status.HTTP_400_BAD_REQUEST)
+
 
 @api_view(["POST"])
 def register_profile(request):
