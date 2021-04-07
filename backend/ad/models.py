@@ -22,9 +22,9 @@ class Ad(models.Model):
     img = models.ImageField(upload_to="product/")
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
     city = models.CharField(max_length=100, default="Ikke oppgitt")
-    rating = models.ForeignKey(Rating, on_delete=models.SET_NULL, null=True)
+    rating = models.ForeignKey(Rating, on_delete=models.SET_NULL, null=True, blank=True)
     sold = models.BooleanField(default=False)
-    sold_date = models.DateTimeField(null=True)
+    sold_date = models.DateTimeField(null=True, blank=True)
 
     def __str__(self):
         return self.name

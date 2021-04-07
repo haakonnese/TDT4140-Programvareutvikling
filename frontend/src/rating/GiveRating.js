@@ -79,7 +79,7 @@ function GiveRating(props) {
                       {product.first_name} {product.last_name}
                     </Typography>
                     <Typography gutterBottom color="textSecondary">
-                      {product.price}kr
+                      {product.price.toLocaleString("no-NO")}kr
                     </Typography>
                   </div>
                 </CardContent>

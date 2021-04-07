@@ -68,7 +68,9 @@ function Product(props) {
       <CardContent>
         <div className={classes.cardContent}>
           <Typography gutterBottom>{props.product.name}</Typography>
-          <Typography>{props.product.price}kr</Typography>
+          <Typography>
+            {props.product.price.toLocaleString("no-NO")}kr
+          </Typography>
         </div>
         <div className={classes.cardContent}>
           <Typography color="textSecondary">{props.product.city}</Typography>

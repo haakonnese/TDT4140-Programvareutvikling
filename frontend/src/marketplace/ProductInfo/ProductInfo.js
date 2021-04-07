@@ -103,7 +103,9 @@ function ProductInfo(props) {
               <Typography variant="h5" gutterBottom>
                 {product.name}
               </Typography>
-              <Typography variant="subtitle1">{product.price}kr</Typography>
+              <Typography variant="subtitle1">
+                {product.price.toLocaleString("no-NO")}kr
+              </Typography>
             </div>
 
             <div className={classes.sellerInfo}>

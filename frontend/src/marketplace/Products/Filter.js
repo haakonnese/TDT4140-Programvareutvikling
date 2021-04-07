@@ -55,41 +55,59 @@ function Filter(props) {
               variant="outlined"
               margin="normal"
               id="min"
-              type="number"
+              pattern="[\d\s]+"
               label="Fra kr"
               error={error.error}
               fullWidth
               onChange={(e) => {
-                if (e.target.value < 0) {
+                const num = e.target.value.replace(/\s+/g, "");
+                if (num < 0) {
                   setDetails({ ...details, min: 0 });
+                } else if (num > 999999999) {
+                  return undefined;
                 } else if (e.target.value !== "") {
-                  setDetails({ ...details, min: parseInt(e.target.value) });
+                  setDetails({ ...details, min: parseInt(num) });
                 } else {
                   setDetails({ ...details, min: false });
                 }
               }}
-              value={Number.isInteger(details.min) ? details.min : ""}
+              value={
+                Number.isInteger(details.min)
+                  ? details.min.toLocaleString("no-NO")
+                  : ""
+              }
             />
           </Grid>
           <Grid item xs={6}>
             <TextField
               variant="outlined"
               margin="normal"
-              type="number"
+              // type="number"
+              pattern="[\d\s]+"
               id="max"
               label="Til kr"
               error={error.error}
               fullWidth
               onChange={(e) => {
-                if (e.target.value < 0) {
+                const num = e.target.value.replace(/\s+/g, "");
+                if (num < 0) {
                   setDetails({ ...details, max: 0 });
+                } else if (num > 999999999) {
+                  return undefined;
                 } else if (e.target.value !== "") {
-                  setDetails({ ...details, max: parseInt(e.target.value) });
+                  setDetails({
+                    ...details,
+                    max: parseInt(num),
+                  });
                 } else {
                   setDetails({ ...details, max: false });
                 }
               }}
-              value={Number.isInteger(details.max) ? details.max : ""}
+              value={
+                Number.isInteger(details.max)
+                  ? details.max.toLocaleString("no-NO")
+                  : ""
+              }
             />
           </Grid>
         </Grid>
