@@ -22,6 +22,7 @@ import Error from "./Error";
 
 function App() {
   const [categoryError, setCategoryError] = useState(false);
+  const [ready, setReady] = useState(false);
   // default når appen lastes.
   useEffect(() => {
     // sett logg inn til true dersom token er lagret
@@ -36,6 +37,7 @@ function App() {
           type: "UPDATE_CATEGORY",
           payload: data,
         });
+        setReady(true);
       })
       .catch((e) => {
         // dersom man er 'logget inn' som ugyldig
@@ -53,44 +55,56 @@ function App() {
       });
   }, [categoryError]);
   return (
-    // Bruk provider slik at props kan nås av alle komponenter
-    <Provider store={store}>
-      <Router>
-        <Header title="SellPoint" />
-        <div className="App">
-          {/* Send bruker til riktig komponent når en gitt link er tastet inn */}
-          <Switch>
-            <Route exact path="/registrer" component={Registation} />
-            <Route exact path="/logginn" component={SignIn} />
-            <Route exact path="/opprett" component={RegisterAd} />
-            <Route
-              exact
-              path="/lagredeannonser"
-              render={() => <Products onlyUser={true} />}
-            />
+    <div>
+      {!ready ? null : (
+        // Bruk provider slik at props kan nås av alle komponenter
+        <Provider store={store}>
+          <Router>
+            <Header title="SellPoint" />
+            <div className="App">
+              {/* Send bruker til riktig komponent når en gitt link er tastet inn */}
+              <Switch>
+                <Route exact path="/registrer" component={Registation} />
+                <Route exact path="/logginn" component={SignIn} />
+                <Route exact path="/opprett" component={RegisterAd} />
+                <Route
+                  exact
+                  path="/lagredeannonser"
+                  render={() => <Products onlyUser={true} />}
+                />
 
-            <Route
-              exact
-              path="/"
-              render={() => <Products onlyUser={false} />}
-            />
-            <Route exact path="/brukerprofil" component={UserProfile} />
-            <Route exact path="/brukerannonser" component={UserAds} />
-            <Route exact path="/profilredigering" component={EditUser} />
-            <Route exact path="/passordredigering" component={EditPassword} />
-            <Route exact path="/products/:id" component={ProductInfo} />
-            <Route exact path="/endreannonse/:id" component={EditAd} />
-            <Route exact path="/" component={Products}></Route>
-            <Route exact path="/bruker/:userId" component={SeeRating}></Route>
-            <Route exact path="/products/:id" component={ProductInfo} />
-            <Route exact path="/rating/:id" component={GiveRating} />
-            <Route exact path="/404" component={Error} />
-            <Route path="/" component={Error} />
-          </Switch>
-        </div>
-        <Footer title="SellPoint" description="" />
-      </Router>
-    </Provider>
+                <Route
+                  exact
+                  path="/"
+                  render={() => <Products onlyUser={false} />}
+                />
+                <Route exact path="/brukerprofil" component={UserProfile} />
+                <Route exact path="/brukerannonser" component={UserAds} />
+                <Route exact path="/profilredigering" component={EditUser} />
+                <Route
+                  exact
+                  path="/passordredigering"
+                  component={EditPassword}
+                />
+                <Route exact path="/products/:id" component={ProductInfo} />
+                <Route exact path="/endreannonse/:id" component={EditAd} />
+                <Route exact path="/" component={Products}></Route>
+                <Route
+                  exact
+                  path="/bruker/:userId"
+                  component={SeeRating}
+                ></Route>
+                <Route exact path="/products/:id" component={ProductInfo} />
+                <Route exact path="/rating/:id" component={GiveRating} />
+                <Route exact path="/404" component={Error} />
+                <Route path="/" component={Error} />
+              </Switch>
+            </div>
+            <Footer title="SellPoint" description="" />
+          </Router>
+        </Provider>
+      )}
+    </div>
   );
 }
 
