@@ -37,12 +37,10 @@ function Products(props) {
   // funksjoner for å oppdatere hvilken side man er på
   const changeBack = () => {
     setPage(currentPage - 1);
-    console.log(currentPage);
   };
 
   const changeNext = () => {
     setPage(currentPage + 1);
-    console.log(currentPage);
   };
 
   return (

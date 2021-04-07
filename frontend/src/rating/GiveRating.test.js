@@ -48,7 +48,7 @@ describe("GiveRating component", () => {
       ReactDOM.render(
         <Provider store={store}>
           <Router>
-            <GiveRating match={{ params: { id: 1 } }} loggedIn={true} />
+            <GiveRating match={{ params: { id: 1 } }} />
           </Router>
         </Provider>,
         container
@@ -66,7 +66,7 @@ describe("GiveRating component", () => {
       ReactDOM.render(
         <Provider store={store}>
           <Router>
-            <GiveRating match={{ params: { id: 1 } }} loggedIn={true} />
+            <GiveRating match={{ params: { id: 1 } }} />
           </Router>
         </Provider>,
         container
@@ -85,7 +85,7 @@ describe("GiveRating component", () => {
       ReactDOM.render(
         <Provider store={store}>
           <Router>
-            <GiveRating match={{ params: { id: 1 } }} loggedIn={true} />
+            <GiveRating match={{ params: { id: 1 } }} />
           </Router>
         </Provider>,
         container
