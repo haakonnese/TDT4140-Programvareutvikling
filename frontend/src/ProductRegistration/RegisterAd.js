@@ -39,7 +39,7 @@ function RegisterAd(props) {
   const [disabled, setDisabled] = useState(false);
   useEffect(() => {
     if (props.details) {
-      setDetails(props.details);
+      setDetails({ ...props.details, price: parseInt(props.details.price) });
       setPreview(props.details.img);
     }
   }, []);
@@ -112,7 +112,6 @@ function RegisterAd(props) {
         });
     }
   };
-
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
@@ -137,15 +136,30 @@ function RegisterAd(props) {
               autoFocus
             />
 
-            <InputTextField
-              value="price"
-              type="number"
+            <TextField
+              variant="outlined"
+              margin="normal"
+              pattern="[\d\s]+"
               id="price"
               label="Pris"
               autoComplete="off"
-              val={details.price}
-              details={details}
-              setDetails={setDetails}
+              fullWidth
+              onChange={(e) => {
+                const num = e.target.value.replace(/\s+/g, "");
+                if (num < 0) {
+                  setDetails({ ...details, price: 0 });
+                } else if (num > 999999999) {
+                  return undefined;
+                } else if (e.target.value !== "") {
+                  setDetails({
+                    ...details,
+                    price: parseInt(num),
+                  });
+                } else {
+                  setDetails({ ...details, price: false });
+                }
+              }}
+              value={details.price.toLocaleString("no-NO")}
             />
 
             <InputTextField

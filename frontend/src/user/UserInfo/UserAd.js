@@ -87,7 +87,9 @@ function UserAd(props) {
           <Typography varient="h5" gutterBottom>
             {props.product.name}
           </Typography>
-          <Typography varient="h5">{props.product.price}kr</Typography>
+          <Typography varient="h5">
+            {props.product.price.toLocaleString("no-NO")}kr
+          </Typography>
         </div>
         <div className={classes.cardContent}>
           <Typography varient="h2" color="textSecondary">

@@ -103,7 +103,9 @@ function ProductInfo(props) {
               <Typography variant="h5" gutterBottom>
                 {product.name}
               </Typography>
-              <Typography variant="subtitle1">{product.price}kr</Typography>
+              <Typography variant="subtitle1">
+                {product.price.toLocaleString("no-NO")}kr
+              </Typography>
             </div>
 
             <div className={classes.sellerInfo}>
@@ -129,13 +131,14 @@ function ProductInfo(props) {
                 <div>
                   {product.rating == null &&
                   props.loggedIn &&
+                  product.sold &&
                   product.created_by_user !==
                     Number(localStorage.getItem("userId")) ? (
                     <Link align="right" to={`/rating/${product.id}`}>
                       <Button
                         className={classes.infoButton}
                         aria-label="Mer info"
-                        variant="outlined"
+                        variant="contained"
                         color="primary"
                       >
                         Gi tilbakemelding på produkt

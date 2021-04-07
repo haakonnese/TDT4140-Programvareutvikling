@@ -27,6 +27,7 @@ beforeEach(async () => {
     lastName: "Pettersen",
     sellerTlf: 98765432,
     rating: null,
+    sold: true,
   };
   store.dispatch({
     type: "UPDATE_LOGGED_IN",

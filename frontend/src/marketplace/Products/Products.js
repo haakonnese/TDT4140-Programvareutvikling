@@ -9,7 +9,7 @@ import PropTypes from "prop-types";
 function Products(props) {
   // hooks
   const [currentPage, setPage] = useState(1);
-  const [products, setProducts] = useState({ num_pages: 1, products: [] });
+  const [products, setProducts] = useState({ num_pages: 1, products: false });
   useEffect(() => {
     const data = props.filter;
     data.page = currentPage;
@@ -42,7 +42,6 @@ function Products(props) {
   const changeNext = () => {
     setPage(currentPage + 1);
   };
-
   return (
     <main>
       {props.onlyUser ? (
@@ -72,16 +71,22 @@ function Products(props) {
           marginTop: 20,
         }}
       >
-        {products.products.length === 0 ? (
-          <Grid item xs={12}>
-            <Typography>Det er ingen annonser å vise</Typography>
-          </Grid>
-        ) : null}
-        {products.products.map((product) => (
-          <Grid item key={product.id} xs={12} sm={6} md={4} lg={3}>
-            <Product product={product} />
-          </Grid>
-        ))}
+        {products.products === false ? null : (
+          <div style={{ width: "100%" }}>
+            {products.products.length === 0 ? (
+              <Grid item xs={12}>
+                <Typography>Det er ingen annonser å vise</Typography>
+              </Grid>
+            ) : null}
+          </div>
+        )}
+        {products.products === false
+          ? null
+          : products.products.map((product) => (
+              <Grid item key={product.id} xs={12} sm={6} md={4} lg={3}>
+                <Product product={product} />
+              </Grid>
+            ))}
       </Grid>
       <Container
         justify="center"
