@@ -1,4 +1,4 @@
-import { React, useState } from "react";
+import { React, useState, useEffect } from "react";
 import { PostPutData } from "../service/FetchData";
 import PropTypes from "prop-types";
 import {
@@ -36,7 +36,12 @@ function RegisterAd(props) {
     description: "",
     img: "",
   });
-
+  useEffect(() => {
+    if (props.details) {
+      setDetails(props.details);
+      setPreview(props.details.img);
+    }
+  }, []);
   const [preview, setPreview] = useState(false);
 
   // forhåndsvis bilde
@@ -73,7 +78,9 @@ function RegisterAd(props) {
       // send formdata ettersom bilde også skal sendes med
       // legg inn all info som bruker har gitt i formdataen
       const formData = new FormData();
-      formData.append("img", details.img);
+      if (!(details.img instanceof String)) {
+        formData.append("img", details.img);
+      }
       formData.append("category", details.category);
       formData.append("description", details.description);
       formData.append("name", details.name);
@@ -107,7 +114,7 @@ function RegisterAd(props) {
             <PostAdd />
           </Avatar>
           <Typography component="h1" variant="h5">
-            Registrer annonse
+            {props.edit ? "Endre" : "Registrer"} annonse
           </Typography>
           <form className={classes.form} onSubmit={handleSubmit}>
             <InputTextField
@@ -180,7 +187,7 @@ function RegisterAd(props) {
                 style={{ width: "100%" }}
                 component="span"
               >
-                Last opp et bilde
+                {props.edit ? "Endre" : "Last opp ett"} bilde
               </Button>
             </label>
             <input
@@ -198,7 +205,7 @@ function RegisterAd(props) {
                 position: "relative",
                 zIndex: -1,
               }}
-              required
+              required={!props.edit}
             />
             {preview && (
               <img
@@ -219,7 +226,7 @@ function RegisterAd(props) {
               color="primary"
               className={classes.submit}
             >
-              Registrer
+              {props.edit ? "Endre" : "Registrer"}
             </Button>
           </form>
         </div>
@@ -232,6 +239,8 @@ function RegisterAd(props) {
 RegisterAd.propTypes = {
   loggedIn: PropTypes.bool,
   categories: PropTypes.array,
+  details: PropTypes.object,
+  edit: PropTypes.bool,
 };
 
 const mapStateToProps = (state) => {
