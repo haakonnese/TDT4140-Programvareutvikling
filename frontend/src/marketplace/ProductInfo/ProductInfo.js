@@ -61,13 +61,42 @@ function ProductInfo(props) {
   return (
     <main className={classes.main}>
       {product ? (
-        <Card key={product.id} className={classes.root} justify="center">
+        <Card
+          key={product.id}
+          style={product.sold ? styling : null}
+          className={classes.root}
+          justify="center"
+        >
           {product.img ? (
-            <CardMedia
-              className={classes.media}
-              image={product.img}
-              title={product.name}
-            />
+            <div style={{ position: "relative" }}>
+              <div
+                style={{
+                  position: "absolute",
+                  top: "25%",
+                  zIndex: 100,
+                  right: 0,
+                  width: "100%",
+                }}
+              >
+                <Typography
+                  style={{
+                    textShadow:
+                      "-2px 0 black, 0 2px black, 2px 0 black, 0 -2px black",
+                  }}
+                  align="center"
+                  color="secondary"
+                  variant="h3"
+                >
+                  {product.sold ? "Solgt" : ""}
+                </Typography>
+              </div>
+              <CardMedia
+                className={classes.media}
+                image={product.img}
+                title={product.name}
+                // style={product.sold ? { filter: "grayscale(100%)" } : null}
+              ></CardMedia>
+            </div>
           ) : null}
           <CardContent>
             <div className={classes.cardContent}>
