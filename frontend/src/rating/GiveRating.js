@@ -88,7 +88,7 @@ function GiveRating(props) {
                   image={product.img}
                 />
               </Card>
-              {product.rating == null && !rated ? (
+              {product.rating == null && !rated && product.sold ? (
                 <div className={classes.paper}>
                   <Box borderColor="transparent" mb={3}>
                     <Typography component="h1" variant="h5">
@@ -156,9 +156,15 @@ function GiveRating(props) {
                         variant="h5"
                         style={{ textAlign: "center" }}
                       >
-                        {rated
-                          ? "Takk for tilbakemeldingen"
-                          : "Det er allerede gitt tilbakemelding på denne annonsen"}
+                        {rated ? (
+                          "Takk for tilbakemeldingen"
+                        ) : (
+                          <div>
+                            {product.rating !== null
+                              ? "Det er allerede gitt tilbakemelding på denne annonsen"
+                              : "Denne varen er ikke solgt enda. Du kan derfor ikke gi tilbakemelding"}
+                          </div>
+                        )}
                       </Typography>
                     </Box>
                     <Link to="/">

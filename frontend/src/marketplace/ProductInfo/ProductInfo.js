@@ -129,13 +129,14 @@ function ProductInfo(props) {
                 <div>
                   {product.rating == null &&
                   props.loggedIn &&
+                  product.sold &&
                   product.created_by_user !==
                     Number(localStorage.getItem("userId")) ? (
                     <Link align="right" to={`/rating/${product.id}`}>
                       <Button
                         className={classes.infoButton}
                         aria-label="Mer info"
-                        variant="outlined"
+                        variant="contained"
                         color="primary"
                       >
                         Gi tilbakemelding på produkt
