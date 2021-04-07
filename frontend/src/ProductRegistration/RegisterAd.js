@@ -36,6 +36,7 @@ function RegisterAd(props) {
     description: "",
     img: "",
   });
+  const [disabled, setDisabled] = useState(false);
   useEffect(() => {
     if (props.details) {
       setDetails(props.details);
@@ -61,6 +62,7 @@ function RegisterAd(props) {
 
   // handle submit from button
   const handleSubmit = (e) => {
+    setDisabled(true);
     e.preventDefault();
     let allow = true;
     // sjekk om nødvenidge felter er utfylt
@@ -99,9 +101,15 @@ function RegisterAd(props) {
         .then((result) => {
           if (result) {
             history.replace("/");
+          } else {
+            console.log(e);
+            setDisabled(false);
           }
         })
-        .catch((e) => console.log(e));
+        .catch((e) => {
+          console.log(e);
+          setDisabled(false);
+        });
     }
   };
 
@@ -224,6 +232,7 @@ function RegisterAd(props) {
               id="submit"
               variant="contained"
               color="primary"
+              disabled={disabled}
               className={classes.submit}
             >
               {props.edit ? "Endre" : "Registrer"}
