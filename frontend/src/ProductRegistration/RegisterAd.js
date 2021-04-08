@@ -159,7 +159,11 @@ function RegisterAd(props) {
                   setDetails({ ...details, price: false });
                 }
               }}
-              value={details.price.toLocaleString("no-NO")}
+              value={
+                details.price !== false
+                  ? details.price.toLocaleString("no-NO")
+                  : ""
+              }
             />
 
             <InputTextField
