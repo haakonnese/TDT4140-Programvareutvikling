@@ -34,6 +34,7 @@ function Products(props) {
       });
   }, [props.filter, currentPage, props.onlyUser, props.loggedIn]);
 
+  useEffect(() => setPage(1), [props.filter, props.onlyUser]);
   // funksjoner for å oppdatere hvilken side man er på
   const changeBack = () => {
     setPage(currentPage - 1);
