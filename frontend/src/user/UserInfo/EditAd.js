@@ -18,11 +18,11 @@ function EditAd({ match }) {
   useEffect(() => {
     GetData("listing/listing", match.params.id)
       .then((result) => {
-        console.log(result);
         if (result.id) {
           result.img = "http://127.0.0.1:8000" + result.img;
           result.price = result.price.toString();
           setDetails(result);
+
           if (
             parseInt(localStorage.getItem("userId")) !== result.created_by_user
           ) {
@@ -39,13 +39,7 @@ function EditAd({ match }) {
   }, []);
   // bruker skjemaet fra RegisterAd for å registrere ny informasjon om annonsen
   return (
-    <div>
-      {details ? (
-        <RegisterAd loggedIn={true} details={details} edit={true} />
-      ) : (
-        ""
-      )}
-    </div>
+    <div>{details ? <RegisterAd details={details} edit={true} /> : ""}</div>
   );
 }
 const mapStateToProps = (state) => {

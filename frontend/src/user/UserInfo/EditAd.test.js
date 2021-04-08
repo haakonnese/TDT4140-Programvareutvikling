@@ -17,14 +17,23 @@ jest.mock("../../service/FetchData", () => ({
 let container, item, price, city, description, button, category, img;
 
 const Ad = {
-  id: 1,
-  name: "stol",
-  description: "lite brukt stol til god pris",
-  price: 200,
-  city: "Trondheim",
   category: "Kjøretøy",
+  city: "Trondheim",
+  created_by_user: 2,
+  description:
+    "2 år gammel subaru. Har gått 50 000km, selges grunnet flytting.",
+  favorite: false,
+  first_name: "Jostein",
+  id: 4,
   img:
-    "https://www.if.no/magasinet/imageshop/img_shp_img_ymq7qsg42u-780x450.jpeg",
+    "http://127.0.0.1:8000/media/product/4WD-kampanje_Aleksander_R%C3%B8rnes_BiN-61.jpg_1017x678.jpg",
+  last_name: "Tandberg",
+  name: "Subaru",
+  phone: "9999998",
+  price: "100000000",
+  rating: null,
+  sold: true,
+  sold_date: "2021-04-07T11:38:08.547451Z",
 };
 
 beforeEach(async () => {
@@ -37,6 +46,7 @@ beforeEach(async () => {
     type: "UPDATE_LOGGED_IN",
     payload: true,
   });
+  localStorage.setItem("userId", "2");
   container = document.createElement("div");
   GetData.mockImplementation(() => Promise.resolve(Ad));
   await act(async () => {
