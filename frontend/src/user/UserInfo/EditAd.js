@@ -18,10 +18,16 @@ function EditAd({ match }) {
   useEffect(() => {
     GetData("listing/listing", match.params.id)
       .then((result) => {
+        console.log(result);
         if (result.id) {
           result.img = "http://127.0.0.1:8000" + result.img;
           result.price = result.price.toString();
           setDetails(result);
+          if (
+            parseInt(localStorage.getItem("userId")) !== result.created_by_user
+          ) {
+            history.replace("/404");
+          }
           // console.log(products);
         } else {
           console.log("Feil");
